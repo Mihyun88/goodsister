@@ -25,7 +25,7 @@ EP = {"apt_trade": "RTMSDataSvcAptTradeDev/getRTMSDataSvcAptTradeDev",
       "apt_rent": "RTMSDataSvcAptRent/getRTMSDataSvcAptRent",
       "offi_rent": "RTMSDataSvcOffiRent/getRTMSDataSvcOffiRent"}
 OUT = Path(__file__).resolve().parent.parent / "tools" / "data"
-HH_CACHE = Path(__file__).resolve().parent / ".households_cache.json"
+HH_CACHE = Path(__file__).resolve().parent / "households_cache.json"
 BLD = "https://apis.data.go.kr/1613000/BldRgstHubService/"
 
 
