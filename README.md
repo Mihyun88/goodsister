@@ -1,4 +1,6 @@
-# lotte
+# goodsister — 착한언니복덕방 AI 부동산 도구
+
+사이트: https://mihyun88.github.io/goodsister/tools/
 
 - `index.html` — 덕수궁 롯데캐슬 136 Premium 분양 랜딩 페이지
 - `tools/index.html` — **착한언니 AI 부동산 도구** (브라우저에서 바로 열기)
