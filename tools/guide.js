@@ -29,13 +29,13 @@
       const id = G.short[h.slice(2)];
       if (id) { const key = rootOf[id] || "tips"; showTab(key); renderGuide(key, id); scrollTo(0, 0); return; }
     }
-    const key = TABS.includes(h) ? h : null;
+    const base = h.split("?")[0], key = TABS.includes(base) ? base : null;
     if (key) { showTab(key); if (key === "jachwi" || key === "tips") renderGuide(key); }
   }
 
   // 탭 클릭 → 주소에 반영 (공유 가능한 링크)
   document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => {
-    if (location.hash.slice(1) !== b.dataset.tab) history.replaceState(null, "", "#" + b.dataset.tab);
+    if (location.hash.slice(1).split("?")[0] !== b.dataset.tab) history.replaceState(null, "", "#" + b.dataset.tab);
     if (b.dataset.tab === "jachwi" || b.dataset.tab === "tips") renderGuide(b.dataset.tab);
   }));
   window.addEventListener("hashchange", route);

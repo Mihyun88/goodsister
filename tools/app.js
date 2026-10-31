@@ -73,16 +73,33 @@
     const [by, amt] = Object.entries(parts).sort((a, b) => a[1] - b[1])[0];
     return { amt: Math.max(0, Math.min(amt, p)), by };
   }
+  /** 대출 선택: max(한도 최대) · custom(원하는 금액, 한도 이내) · none(대출 없음) */
+  function loanFor(p, o, income) {
+    if (o.mode === "none") return { amt: 0, by: "대출 없음" };
+    const lim = loanParts(p, o, income);
+    if (o.mode === "custom" && o.loan != null && o.loan < lim.amt) return { amt: Math.min(o.loan, p), by: "희망 대출액" };
+    return lim;
+  }
   function solve(assets, o, income) {
     let lo = 0, hi = 1000000;
     for (let i = 0; i < 60; i++) {
       const p = (lo + hi) / 2;
-      const loan = o.loan != null ? Math.min(o.loan, p) : loanParts(p, o, income).amt;
+      const loan = loanFor(p, o, income).amt;
       if (p + buyCost(p) <= assets + loan) lo = p; else hi = p;
     }
-    const loan = o.loan != null ? { amt: Math.min(o.loan, lo), by: "직접 입력" } : loanParts(lo, o, income);
+    const loan = loanFor(lo, o, income);
     return { P: lo, loan, cost: buyCost(lo) };
   }
+
+  // 대출 선택에 따라 입력칸 보이기
+  const fb = $("#f-budget"), hintTxt = {
+    max: "LTV · 가격별 상한 · 스트레스 DSR 안에서 가장 많이 받는 경우로 계산해요.",
+    custom: "원하는 금액만큼만 빌려요. 규제 한도보다 크게 넣으면 한도까지만 계산해요.",
+    none: "대출 없이 현금(과 돌려받을 보증금)만으로 살 수 있는 집을 찾아요." };
+  const syncLoan = () => { const m = fb.loanmode.value; fb.querySelector(".loan-amt").hidden = m !== "custom";
+    fb.querySelector(".need-loan legend").textContent = m === "none" ? "소득 (N년 후 저축 계산용)" : "소득 (DSR 계산용)"; $("#seg-hint").textContent = hintTxt[m]; };
+  fb.querySelectorAll('[name=loanmode]').forEach(r => r.addEventListener("change", syncLoan)); syncLoan();
+  window.GS_syncLoan = syncLoan;
 
   let budgetState = null;
   $("#f-budget").addEventListener("submit", e => {
@@ -90,7 +107,7 @@
     const out = $("#o-budget"); if (!needData(out, T, "아파트 매매")) return;
     const f = e.target, v = n => +f[n].value || 0;
     const o = { first: f.first.checked, rate: v("rate"), stress: v("stress"), term: v("term") || 30, dsr: v("dsr"), debt: v("debt"),
-      loan: f.loan.value === "" ? null : v("loan") * 10000 };
+      mode: f.loanmode.value, loan: f.loan.value === "" ? null : v("loan") * 10000 };
     const r = v("ret") / 100, ig = v("incg") / 100, hg = v("hpg") / 100, save = v("save");
     const start = (v("cash") + v("dep")) * 10000;
     const hz = [0, 1, 3, 5].map(n => {
@@ -132,8 +149,8 @@
         <div class="t">${label(x.n)}</div><div class="p">${money(x.P0)}</div>
         <div class="s">${x.n ? `명목 ${money(x.P)}` : "최대 매매가"}</div></button>`).join("")}</div>
       <p class="lim">${label(h.n)} 기준 · 자산 <b>${money(h.assets)}</b> + 대출 <b>${money(h.loan.amt)}</b>
-        <span class="tag">${esc(h.loan.by)}에서 막힘</span> − 취득세·중개보수 <b>${money(h.cost)}</b>
-        · 월 상환 약 <b>${Math.round(mpay).toLocaleString()}만 원</b> (금리 ${o.rate}%, ${o.term}년)
+        <span class="tag">${o.mode === "none" ? "대출 없이 계산" : o.mode === "custom" && h.loan.by === "희망 대출액" ? "희망 대출액만큼" : `${esc(h.loan.by)}에서 막힘`}</span> − 취득세·중개보수 <b>${money(h.cost)}</b>
+        ${h.loan.amt ? `· 월 상환 약 <b>${Math.round(mpay).toLocaleString()}만 원</b> (금리 ${o.rate}%, ${o.term}년)` : ""}
         ${h.n ? `<br>${h.n}년 뒤 집값이 연 ${(hg * 100).toFixed(1)}% 오른다고 보고 <b>오늘 시세로 환산</b>한 가격(${money(h.P0)})으로 단지를 골랐습니다.` : ""}</p>
       ${topDong.length ? `<h3>이 가격대에서 거래가 가장 많은 동네 TOP3</h3>
         <div class="kpis">${topDong.map(([d, n], i) => `<div class="kpi"><div class="l">${i + 1}위</div><div class="v" style="font-size:1rem">${esc(d)}</div><div class="l">최근 6개월 ${n}건</div></div>`).join("")}</div>` : ""}
@@ -144,6 +161,7 @@
         <td>${r.last[0].slice(2, 4)}.${r.last[0].slice(4, 6)} · ${r.last[3]}층 · ${money(r.last[2])}</td></tr>`).join("")}</table>`
         : `<p class="verdict na">최근 6개월 실거래 중 이 예산에 맞는 거래가 없습니다. 평형·지역·세대수 조건을 넓혀 보세요.</p>`}
       <div class="check"><b>착한언니 체크포인트</b><br>
+        ${o.mode === "none" ? "· 대출 없이 현금(과 돌려받을 보증금)만으로 계산했어요. 대출을 쓰면 볼 수 있는 단지가 크게 늘어나요.<br>" : ""}
         · 대출 한도 = <b>LTV</b>(${o.first ? "생애최초 70%" : "40%"}) · <b>가격별 상한</b>(15억 이하 6억, 25억 이하 4억, 초과 2억) · <b>스트레스 DSR</b>(연소득 ${o.dsr}%, 금리 ${o.rate}%+가산 ${o.stress}%p) 중 가장 작은 값입니다. 2025.10.15 대책 기준이라 이후 바뀌었을 수 있어요. 은행 상담으로 꼭 확인하세요.<br>
         · DSR은 <b>세전 소득</b> 기준입니다. 실수령액을 넣으면 한도가 작게 나옵니다.<br>
         · N년 후 자산은 현금·보증금이 연 ${budgetState.ret}%로 불고, 매달 같은 금액을 모은다고 가정했습니다. 수익률은 보장되지 않습니다.<br>

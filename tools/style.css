@@ -187,3 +187,19 @@ body{font-family:"Pretendard Variable",Pretendard,"Noto Sans KR",system-ui,sans-
   .guide .cols{flex-direction:column}
   .guide .col{min-width:0}
 }
+/* ---- 결과 공유 ---- */
+.sharebar{margin-top:1.1rem;border:1.5px dashed #e8b4c6;background:#fff8fa;border-radius:14px;padding:1rem}
+.sharebar b{display:block;font-size:.92rem;margin-bottom:.6rem}
+.sb-btns{display:flex;gap:.5rem;flex-wrap:wrap}
+.sb-btns button{flex:1 1 auto;font:inherit;font-weight:700;font-size:.9rem;padding:.75rem .9rem;border-radius:10px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.sb-btns button.sb-main{background:#FEE500;border-color:#FEE500;color:#191919;flex-basis:100%}
+.toast{position:fixed;left:50%;bottom:90px;transform:translate(-50%,20px);background:#1A1917;color:#fff;padding:.8rem 1.1rem;border-radius:12px;font-size:.9rem;opacity:0;pointer-events:none;transition:all .25s;z-index:60;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.seg{display:flex;background:#F1F0EC;border-radius:12px;padding:4px;gap:4px;margin-bottom:.6rem}
+.seg label{flex:1;margin:0!important;cursor:pointer}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg span{display:block;text-align:center;padding:.6rem .2rem;border-radius:9px;font-size:.86rem;font-weight:600;color:#5C5A55;transition:all .15s}
+.seg input:checked+span{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.seg input:focus-visible+span{outline:2px solid var(--brand)}
+.seg-hint{font-size:.78rem;color:#8E8C86;margin:-.1rem 0 .7rem;line-height:1.5}
+[hidden]{display:none!important}
