@@ -194,10 +194,11 @@ class Renderer:
             src = (p.get("source") or [[""]])[0][0] or f.get("display_source", "")
             if not src:
                 return ""
-            name = hashlib.sha1(src.split("?")[0].encode()).hexdigest()[:16]
+            ext = (re.search(r"\.(png|jpe?g|gif|webp|svg)$", src.split("?")[0].lower()) or [None, "png"])[1].replace("jpeg", "jpg")
+            name = hashlib.sha1(src.split("?")[0].encode()).hexdigest()[:16] + "." + ext
             self.images.append((bid, src, b.get("space_id", ""), name))
             cap = self.rich(p.get("caption"))
-            return f'<figure><img loading="lazy" src="guide/img/{name}.img" alt="">{f"<figcaption>{cap}</figcaption>" if cap else ""}</figure>'
+            return f'<figure><img loading="lazy" src="guide/img/{name}" alt="">{f"<figcaption>{cap}</figcaption>" if cap else ""}</figure>'
         if t == "page":
             href, internal = self.link_for(bid)
             if href is None:
@@ -289,10 +290,10 @@ def main():
         pages[pid]["src"] = f"https://www.notion.so/{pid.replace('-', '')}"
         images += r.images
     for bid, src, space, name in images:
-        if f"{name}.img" in keep:
+        if name in keep:
             continue
-        keep.add(f"{name}.img")
-        path = IMG / f"{name}.img"
+        keep.add(name)
+        path = IMG / name
         if path.exists():
             continue
         u = (src if src.startswith("http") and "amazonaws" not in src and "notion" not in src else
@@ -304,9 +305,7 @@ def main():
         except Exception as e:
             print(f"  ! 이미지 실패 {bid}: {e}", file=sys.stderr)
     for old in IMG.iterdir():
-        if old.suffix == ".img" and old.name not in keep:
-            old.unlink()
-        elif old.suffix == ".src":
+        if old.name not in keep:
             old.unlink()
     data = {"synced": time.strftime("%Y-%m-%d"), "roots": {k: v for k, v in order.items()},
             "pages": {k: {kk: vv for kk, vv in v.items()} for k, v in pages.items() if "html" in v}}
