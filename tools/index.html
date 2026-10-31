@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>착한언니 AI 부동산 도구</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">착한언니 <b>AI 부동산 도구</b></div>
+  <nav class="tabs" role="tablist">
+    <button class="tab active" data-tab="budget">① 내 예산으로 서울 어디까지?</button>
+    <button class="tab" data-tab="rent">② 첫 자취 동네 추천기</button>
+    <button class="tab" data-tab="check">③ 이 아파트, 비싸게 사는 걸까?</button>
+  </nav>
+</header>
+
+<div id="nodata" class="notice" hidden></div>
+
+<main>
+<!-- ① 예산 -->
+<section id="tab-budget" class="panel active">
+  <p class="hook">“현금 3억 있는데 서울 아파트 살 수 있을까요? AI에 넣어봤습니다.”</p>
+  <div class="grid">
+    <form class="card form" id="f-budget">
+      <label>보유 현금 <span class="u">(억 원)</span><input type="number" step="0.1" min="0" name="cash" value="3"></label>
+      <label>대출 <span class="u">(억 원)</span>
+        <input type="number" step="0.1" min="0" name="loan" value="">
+        <small>비워두면 아래 기준으로 자동 추정</small></label>
+      <label class="row"><input type="checkbox" name="first" checked> 생애최초 / 무주택 실수요</label>
+      <label>평형
+        <select name="band"><option value="">전체</option><option value="s">60㎡ 이하 (~24평)</option><option value="m" selected>60~85㎡ (25~34평)</option><option value="l">85㎡ 초과</option></select></label>
+      <label>희망 지역 <span class="u">(여러 개 선택, 비우면 서울 전체)</span>
+        <div class="chips" id="gu-chips"></div></label>
+      <button type="submit" class="btn">예산에 맞는 단지 찾기</button>
+    </form>
+    <div class="card out" id="o-budget"><p class="muted">왼쪽에 조건을 넣고 버튼을 눌러주세요.</p></div>
+  </div>
+</section>
+
+<!-- ② 자취 -->
+<section id="tab-rent" class="panel">
+  <p class="hook">“연세대 붙었는데 신촌 월세가 너무 비싸면 어디 살아야 할까요?”</p>
+  <div class="grid">
+    <form class="card form" id="f-rent">
+      <label>학교·직장<select name="dest" id="dest-sel"></select></label>
+      <label>보증금 한도 <span class="u">(만 원)</span><input type="number" step="100" min="0" name="dep" value="1000"></label>
+      <label>월세 한도 <span class="u">(만 원)</span><input type="number" step="5" min="0" name="mon" value="60"></label>
+      <label>집 크기
+        <select name="size"><option value="1">원룸급 (전용 33㎡ 이하)</option><option value="2">투룸급 (33~60㎡)</option></select></label>
+      <label>편도 통근시간 한도 <span class="u">(분)</span><input type="number" step="5" min="10" name="max" value="40"></label>
+      <button type="submit" class="btn">동네 비교하기</button>
+    </form>
+    <div class="card out" id="o-rent"><p class="muted">왼쪽에 조건을 넣고 버튼을 눌러주세요.</p></div>
+  </div>
+</section>
+
+<!-- ③ 가격 검토 -->
+<section id="tab-check" class="panel">
+  <p class="hook">“이 가격에 사도 괜찮을까? 최근 거래·유사 평형·거래량으로 따져봤습니다.”</p>
+  <div class="grid">
+    <form class="card form" id="f-check">
+      <label>아파트 이름<input name="q" id="apt-q" list="apt-list" placeholder="예: 래미안, 헬리오시티" autocomplete="off"><datalist id="apt-list"></datalist></label>
+      <label>단지 선택<select name="cx" id="apt-sel"><option value="">이름을 먼저 입력하세요</option></select></label>
+      <label>전용면적<select name="ar" id="ar-sel"></select></label>
+      <label>매수 희망 가격 <span class="u">(억 원)</span><input type="number" step="0.05" min="0" name="price" value=""></label>
+      <button type="submit" class="btn">가격 검토하기</button>
+    </form>
+    <div class="card out" id="o-check"><p class="muted">단지와 희망 가격을 넣어주세요.</p></div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <p id="src"></p>
+  <p>참고용 정보이며 투자·대출 판단의 근거가 될 수 없습니다. 실거래는 계약 후 30일 내 신고되므로 최근 1~2개월 수치는 이후 늘어날 수 있습니다.</p>
+</footer>
+
+<script src="data/trades.js"></script>
+<script src="data/rents.js"></script>
+<script src="geo.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
