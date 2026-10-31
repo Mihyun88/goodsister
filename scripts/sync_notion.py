@@ -313,6 +313,10 @@ def main():
     data["short"] = {f"{k[:8]}{k[-4:]}": k for k in data["pages"]}
     body = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
     (OUT / "pages.js").write_text(f"window.GS_GUIDE={body};\n", encoding="utf-8")
+    # 랜딩페이지용 가벼운 목차 (제목·아이콘·링크만)
+    toc = {k: [{"t": data["pages"][i]["title"], "i": data["pages"][i]["icon"], "h": f"g-{i[:8]}{i[-4:]}"}
+               for i in ids[1:] if i in data["pages"]] for k, ids in data["roots"].items()}
+    (OUT / "toc.js").write_text("window.GS_TOC=" + json.dumps({"synced": data["synced"], **toc}, ensure_ascii=False) + ";\n", encoding="utf-8")
     print(f"완료: 페이지 {len(data['pages'])}개, 이미지 {len(keep)}개 -> tools/guide/")
 
 

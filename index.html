@@ -3,16 +3,230 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>착한언니복덕방 AI 부동산 도구</title>
-<meta name="description" content="내 예산으로 살 수 있는 서울 아파트, 첫 자취 동네, 아파트 적정가를 국토부 실거래가로 확인하세요. 착한언니복덕방">
-<meta property="og:title" content="착한언니복덕방 AI 부동산 도구">
-<meta property="og:description" content="내 예산으로 서울 어디까지? 첫 자취 동네 추천, 이 아파트 비싸게 사는 걸까?">
+<title>착한언니복덕방 | 이대·신촌 부동산, 데이터로 같이 고르는 집</title>
+<meta name="description" content="무사고 12년 공인중개사 착한언니복덕방. 이대·신촌 오피스텔 월세·전세·매매, 마포·서대문 아파트, 첫 자취·첫 집 상담. 국토부 실거래가로 만든 AI 부동산 도구를 무료로 써보세요.">
+<meta property="og:title" content="착한언니복덕방 — 데이터로 같이 고르는 집">
+<meta property="og:description" content="이대·신촌 오피스텔·마포 서대문 아파트, 첫 자취·첫 집 상담. AI 부동산 도구 무료 제공.">
 <meta property="og:image" content="tools/img/banner.png">
-<meta http-equiv="refresh" content="0; url=tools/">
-<link rel="canonical" href="tools/">
-<script>location.replace("tools/" + location.hash);</script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--brand:#D64270;--brand-d:#b5305b;--navy:#1a1d2e;--cream:#FFF8F0;--line:#eee;--muted:#777;--kakao:#FEE500}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans KR',system-ui,sans-serif;color:#222;background:#fff;line-height:1.6}
+a{color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:0 1.2rem}
+/* nav */
+.nav{position:sticky;top:0;z-index:10;background:rgba(214,66,112,.97);backdrop-filter:blur(6px)}
+.nav .wrap{display:flex;align-items:center;gap:1rem;height:62px}
+.nav img{height:40px;display:block}
+.nav .menu{display:flex;gap:1.1rem;margin-left:auto;align-items:center}
+.nav .menu a{color:#fff;text-decoration:none;font-size:.9rem;font-weight:500;opacity:.92}
+.nav .menu a:hover{opacity:1}
+.btn-k{background:var(--kakao);color:#191919!important;text-decoration:none;font-weight:700;border-radius:10px;padding:.75rem 1.2rem;display:inline-flex;align-items:center;gap:.4rem;opacity:1!important}
+.nav .btn-k{padding:.45rem .9rem;font-size:.85rem}
+@media(max-width:760px){.nav .menu a:not(.btn-k){display:none}}
+/* hero */
+.hero{background:var(--brand);color:#fff;padding:4.5rem 0 5rem;position:relative;overflow:hidden}
+.hero h1{font-size:clamp(1.9rem,4.6vw,3rem);font-weight:900;line-height:1.3;letter-spacing:-.02em}
+.hero h1 em{font-style:normal;background:linear-gradient(transparent 62%,rgba(255,255,255,.28) 62%)}
+.hero p.sub{font-size:clamp(1rem,2vw,1.15rem);margin:1.1rem 0 2rem;opacity:.95;max-width:640px}
+.hero .ctas{display:flex;gap:.7rem;flex-wrap:wrap}
+.btn-w{background:#fff;color:var(--brand);text-decoration:none;font-weight:700;border-radius:10px;padding:.75rem 1.2rem}
+.hero .badges{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:2.2rem}
+.hero .badges span{border:1px solid rgba(255,255,255,.55);border-radius:99px;padding:.3rem .8rem;font-size:.82rem}
+.hero .house{position:absolute;right:-40px;bottom:-30px;width:340px;opacity:.12}
+/* sections */
+section{padding:4.2rem 0}
+section.alt{background:var(--cream)}
+.eyebrow{color:var(--brand);font-weight:700;font-size:.85rem;letter-spacing:.04em}
+h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:900;color:var(--navy);margin:.3rem 0 .6rem;letter-spacing:-.01em}
+.lead{color:#555;max-width:680px;margin-bottom:2rem}
+.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.4rem;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.card .ic{font-size:1.8rem}
+.card h3{font-size:1.08rem;margin:.5rem 0 .4rem;color:var(--navy)}
+.card p{font-size:.92rem;color:#555}
+a.card{text-decoration:none;display:block;transition:transform .15s,border-color .15s}
+a.card:hover{transform:translateY(-3px);border-color:var(--brand)}
+a.card .go{display:inline-block;margin-top:.7rem;color:var(--brand);font-weight:700;font-size:.88rem}
+.card .q{font-size:.85rem;color:var(--brand);font-weight:500;margin-top:.5rem}
+/* live strip */
+.live{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.8rem;margin-top:1.4rem}
+.live div{background:#fff;border-radius:14px;padding:1rem 1.1rem;border:1px solid var(--line)}
+.live .l{font-size:.8rem;color:var(--muted)}.live .v{font-size:1.45rem;font-weight:900;color:var(--navy)}
+.live .up{color:#d0284a}.live .dn{color:#2a78d6}
+.note{font-size:.78rem;color:var(--muted);margin-top:.8rem}
+/* promise */
+.promise{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+.promise li{list-style:none;background:#fff;border-radius:14px;padding:1.1rem 1.2rem;border-left:4px solid var(--brand);font-size:.95rem}
+.promise li b{display:block;color:var(--navy);margin-bottom:.2rem}
+/* tips */
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:.6rem}
+.tips a{display:flex;gap:.6rem;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem;text-decoration:none;font-size:.93rem;font-weight:500}
+.tips a:hover{border-color:var(--brand);color:var(--brand)}
+.tips .i{font-size:1.2rem}
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;counter-reset:s}
+.steps div{background:#fff;border-radius:16px;padding:1.3rem;position:relative;border:1px solid var(--line)}
+.steps div::before{counter-increment:s;content:counter(s);position:absolute;top:-14px;left:1.2rem;width:30px;height:30px;border-radius:50%;background:var(--brand);color:#fff;font-weight:900;display:grid;place-items:center}
+.steps b{display:block;margin:.4rem 0 .2rem;color:var(--navy)}
+.steps p{font-size:.9rem;color:#555}
+.cta-big{background:var(--navy);color:#fff;border-radius:20px;padding:2.4rem 2rem;display:flex;gap:1.5rem;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:2rem}
+.cta-big h3{font-size:1.35rem}.cta-big p{opacity:.85;font-size:.95rem}
+.sns{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.4rem}
+.sns a{border:1px solid var(--line);border-radius:12px;padding:.7rem 1rem;text-decoration:none;font-weight:500;background:#fff}
+.sns a:hover{border-color:var(--brand);color:var(--brand)}
+/* footer */
+footer{background:#1a1a19;color:#c3c2b7;padding:2.4rem 0 3rem;font-size:.82rem;line-height:1.9}
+footer b{color:#fff}
+footer a{color:#c3c2b7}
+footer .disc{margin-top:1rem;color:#8a8984;font-size:.76rem}
+</style>
 </head>
-<body style="font-family:sans-serif;text-align:center;padding:3rem">
-<p><a href="tools/">착한언니복덕방 AI 부동산 도구로 이동</a></p>
+<body>
+
+<header class="nav"><div class="wrap">
+  <a href="./"><img src="tools/img/logo.png" alt="착한언니복덕방"></a>
+  <nav class="menu">
+    <a href="#about">우리가 하는 일</a>
+    <a href="#ai">AI 부동산 도구</a>
+    <a href="#tips">꿀팁</a>
+    <a href="#contact">상담</a>
+    <a class="btn-k" href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">💬 카톡 상담</a>
+  </nav>
+</div></header>
+
+<div class="hero"><div class="wrap">
+  <h1>감으로 고르지 않고,<br><em>데이터로 같이 고르는 집</em></h1>
+  <p class="sub">무사고 12년 공인중개사 착한언니가 이대·신촌 오피스텔부터 마포·서대문 아파트까지,
+    국토부 실거래가와 한국부동산원 데이터로 내 예산에 맞는 집을 같이 찾아드려요.</p>
+  <div class="ctas">
+    <a class="btn-k" href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">💬 카카오톡으로 상담하기</a>
+    <a class="btn-w" href="tools/#budget">🔎 내 예산으로 서울 어디까지? 계산해보기</a>
+  </div>
+  <div class="badges"><span>🏠 서울에서 부동산 12년</span><span>✅ 무사고 공인중개사</span><span>📍 이대·신촌 전문</span><span>📊 AI 도구 무료</span></div>
+  <svg class="house" viewBox="0 0 100 60" fill="none" stroke="#fff" stroke-width="3"><path d="M5 40 L50 8 L95 40"/><path d="M70 22 V10 H78 V28"/></svg>
+</div></div>
+
+<section id="about"><div class="wrap">
+  <div class="eyebrow">WHAT WE DO</div>
+  <h2>착한언니복덕방이 하는 일</h2>
+  <p class="lead">"이 동네 안전해요?"보다 "역에서 이 집까지 밤에 어떤 길로 가요?"를 같이 묻는 부동산이에요.
+    물어보지 않으면 놓치기 쉬운 것까지 먼저 챙겨드려요.</p>
+  <div class="grid">
+    <div class="card"><div class="ic">🏢</div><h3>이대·신촌 오피스텔 월세·전세·매매</h3>
+      <p>학생·사회초년생·직장인이 많이 찾는 이대·신촌 오피스텔을 가장 잘 아는 동네 부동산이에요.</p>
+      <p class="q">주거용 계약 가능 호실, 관리비 실제 금액까지 확인</p></div>
+    <div class="card"><div class="ic">🏙️</div><h3>마포·서대문 아파트 매매</h3>
+      <p>서울 전역 토지거래허가구역 시대, 매매약정부터 허가·본계약까지 단계별로 함께 챙겨요.</p>
+      <p class="q">실거래가·거래량 데이터로 적정가 검토</p></div>
+    <div class="card"><div class="ic">🎒</div><h3>첫 자취방 · 사회초년생 전월세</h3>
+      <p>동네 고르기부터 방 보기, 등기부등본, 잔금일 전입신고까지 처음이라도 안전하게.</p>
+      <p class="q">보증금 지키는 특약, 보증보험 가능 여부 확인</p></div>
+    <div class="card"><div class="ic">🔑</div><h3>첫 집 마련 · 신혼부부 상담</h3>
+      <p>생애최초·신혼 혜택, 대출 한도, 월세 vs 매수 시나리오까지 내 숫자로 같이 계산해요.</p>
+      <p class="q">현금·소득·출퇴근지만 알려주세요</p></div>
+  </div>
+</div></section>
+
+<section id="ai" class="alt"><div class="wrap">
+  <div class="eyebrow">AI REAL ESTATE TOOLS</div>
+  <h2>AI 부동산 도구, 무료로 써보세요</h2>
+  <p class="lead">국토교통부 실거래가와 한국부동산원 통계를 매주·매달 자동으로 업데이트해요.
+    상담 전에 먼저 숫자로 확인해보세요.</p>
+  <div class="grid">
+    <a class="card" href="tools/#budget"><div class="ic">💰</div><h3>내 예산으로 서울 어디까지?</h3>
+      <p>현금·소득을 넣으면 지금·1년·3년·5년 후 살 수 있는 서울 아파트 단지를 찾아드려요.</p><span class="go">계산해보기 →</span></a>
+    <a class="card" href="tools/#rent"><div class="ic">🎓</div><h3>첫 자취 동네 추천기</h3>
+      <p>학교·직장, 보증금, 월세 한도로 통근 가능한 동네와 실제 월세 시세를 비교해요.</p><span class="go">동네 찾기 →</span></a>
+    <a class="card" href="tools/#check"><div class="ic">⚖️</div><h3>이 아파트, 비싸게 사는 걸까?</h3>
+      <p>단지와 희망 가격을 넣으면 최근 거래·유사 단지·거래량과 비교해 판단해드려요.</p><span class="go">가격 검토 →</span></a>
+    <a class="card" href="tools/#market"><div class="ic">📊</div><h3>이번 주 서울 시황</h3>
+      <p>구별 매매·전세 변동률, 수급지수, 월별 거래량과 거래 많은 단지 TOP을 한눈에.</p><span class="go">시황 보기 →</span></a>
+    <a class="card" href="tools/#news"><div class="ic">🗞️</div><h3>부동산 정책 뉴스</h3>
+      <p>지금 서울에 적용 중인 대출·규제 핵심과 최근 정책 발표를 쉬운 말로 정리했어요.</p><span class="go">뉴스 보기 →</span></a>
+  </div>
+  <div class="live" id="live"></div>
+  <p class="note" id="live-note"></p>
+</div></section>
+
+<section id="promise"><div class="wrap">
+  <div class="eyebrow">OUR PROMISE</div>
+  <h2>계약 전, 착한언니가 꼭 확인해드려요</h2>
+  <p class="lead">1천 원으로 보증금을 지키는 일, 귀찮아도 저희가 먼저 해요.</p>
+  <ul class="promise">
+    <li><b>📄 등기부등본, 잔금날 아침에 한 번 더</b>계약할 때 깨끗했던 등기부가 잔금날까지 깨끗하다는 보장은 없어요.</li>
+    <li><b>🏦 전입신고·보증보험 가능 여부</b>대출·보증보험이 안 되는 집은 보러 가기 전에 먼저 걸러요.</li>
+    <li><b>✍️ 내 상황에 맞는 특약</b>수리 약속, 보증금 반환, 근저당 말소 등 꼭 필요한 특약을 넣어요.</li>
+    <li><b>🌙 밤길까지 생각한 동네 추천</b>낮 2시의 골목이 아니라 밤 11시에 걷는 길을 기준으로 봐요.</li>
+  </ul>
+</div></section>
+
+<section id="tips" class="alt"><div class="wrap">
+  <div class="eyebrow">TIPS & GUIDES</div>
+  <h2>착한언니 부동산 꿀팁</h2>
+  <p class="lead">현장에서 매일 받는 질문을 정리했어요. 블로그에서 더 많은 글을 볼 수 있어요.</p>
+  <h3 style="font-size:1rem;margin:.4rem 0 .7rem;color:var(--navy)">🏠 첫 자취방 가이드</h3>
+  <div class="tips" id="toc-jachwi"></div>
+  <h3 style="font-size:1rem;margin:1.6rem 0 .7rem;color:var(--navy)">🏡 내 집 마련 · 계약 꿀팁</h3>
+  <div class="tips" id="toc-tips"></div>
+  <div class="sns">
+    <a href="https://blog.naver.com/ellarang" target="_blank" rel="noopener">📝 네이버 블로그 이웃추가</a>
+    <a href="https://www.instagram.com/goodsister4080/" target="_blank" rel="noopener">📸 인스타그램 @goodsister4080</a>
+  </div>
+</div></section>
+
+<section id="contact"><div class="wrap">
+  <div class="eyebrow">CONTACT</div>
+  <h2>상담은 카카오톡으로 편하게</h2>
+  <p class="lead">전화가 부담스러워도 괜찮아요. 아래 내용만 보내주시면 착한언니가 같이 좁혀드려요.</p>
+  <div class="steps">
+    <div><b>카카오톡 채널 추가</b><p>'착한언니복덕방' 채널을 추가해요.</p></div>
+    <div><b>조건 보내기</b><p>예산(보증금·월세 또는 현금·소득), 출퇴근지, 입주 희망일, 꼭 필요한 조건 2가지</p></div>
+    <div><b>맞춤 매물·숫자 받기</b><p>조건에 맞는 매물과 실거래 시세, 대출·비용 계산을 같이 보내드려요.</p></div>
+  </div>
+  <div class="cta-big">
+    <div><h3>지금 바로 물어보세요</h3><p>이대·신촌 오피스텔, 마포·서대문 아파트, 첫 자취·첫 집 모두 상담해요.</p></div>
+    <a class="btn-k" href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">💬 카카오톡 채널로 상담하기</a>
+  </div>
+  <p class="note">📞 전화 상담: <a href="tel:02-364-4080">02-364-4080</a> · ✉️ ellarang@naver.com</p>
+</div></section>
+
+<footer><div class="wrap">
+  <b>착한언니복덕방</b> · 신촌자이엘라부동산<br>
+  대표 신수경 · 서울시 서대문구 대현동 104-36 신촌자이엘라 B101호<br>
+  전화 02-364-4080 · 메일 ellarang@naver.com<br>
+  사업자등록번호 204-29-31241 <a href="https://www.ftc.go.kr/www/biz/bizCommList.do?key=5375" target="_blank" rel="noopener">사업자정보 조회</a> · 통신판매업 신고면제<br>
+  <a href="https://blog.naver.com/ellarang" target="_blank" rel="noopener">블로그</a> · <a href="https://www.instagram.com/goodsister4080/" target="_blank" rel="noopener">인스타그램</a> · <a href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">카카오톡 채널</a>
+  <p class="disc">AI 부동산 도구의 결과는 국토교통부 실거래가·한국부동산원 공개 자료를 바탕으로 한 참고 정보이며, 투자·대출 판단의 근거가 될 수 없습니다. 실제 계약 전에는 공인중개사와 함께 확인하세요.</p>
+</div></footer>
+
+<script src="tools/data/market.js"></script>
+<script src="tools/guide/toc.js"></script>
+<script>
+(() => {
+  // 이번 주 시황 (부동산원 R-ONE, 주간 자동 갱신)
+  const M = window.GS_MARKET, live = document.getElementById("live");
+  if (M) {
+    const n = M.weeks.length - 1, S = M.series;
+    const ch = (a, k = 1) => a && a[n] != null && a[n - k] ? (a[n] / a[n - k] - 1) * 100 : null;
+    const f = x => x == null ? "-" : `<span class="${x > 0 ? "up" : x < 0 ? "dn" : ""}">${x > 0 ? "▲" : x < 0 ? "▼" : ""}${Math.abs(x).toFixed(2)}%</span>`;
+    const gu = Object.keys(S.sale).filter(g => g.endsWith("구")).map(g => [g, ch(S.sale[g])]).filter(x => x[1] != null).sort((a, b) => b[1] - a[1]);
+    live.innerHTML = `
+      <div><div class="l">서울 아파트 매매가 (이번 주)</div><div class="v">${f(ch(S.sale["서울"]))}</div></div>
+      <div><div class="l">서울 아파트 전세가 (이번 주)</div><div class="v">${f(ch(S.jeonse["서울"]))}</div></div>
+      <div><div class="l">가장 많이 오른 구</div><div class="v">${gu[0] ? gu[0][0] : "-"} <span style="font-size:.95rem">${gu[0] ? f(gu[0][1]) : ""}</span></div></div>
+      <div><div class="l">서울 매매수급지수</div><div class="v">${S.sale_sd["서울"] ? S.sale_sd["서울"][n].toFixed(1) : "-"}</div></div>`;
+    document.getElementById("live-note").textContent = `한국부동산원 주간 아파트가격동향 ${M.dates[n]} 기준 · 매주 자동 업데이트`;
+  }
+  // 노션 꿀팁 목차 (노션에서 고치면 자동 반영)
+  const T = window.GS_TOC;
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  if (T) for (const k of ["jachwi", "tips"]) {
+    document.getElementById("toc-" + k).innerHTML = (T[k] || []).map(p =>
+      `<a href="tools/#${p.h}"><span class="i">${p.i}</span>${esc(p.t.trim().replace(/\s*\|.*$/, ""))}</a>`).join("");
+  }
+})();
+</script>
 </body>
 </html>
