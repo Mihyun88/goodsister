@@ -25,16 +25,34 @@
   <p class="hook">“현금 3억 있는데 서울 아파트 살 수 있을까요? AI에 넣어봤습니다.”</p>
   <div class="grid">
     <form class="card form" id="f-budget">
-      <label>보유 현금 <span class="u">(억 원)</span><input type="number" step="0.1" min="0" name="cash" value="3"></label>
-      <label>대출 <span class="u">(억 원)</span>
-        <input type="number" step="0.1" min="0" name="loan" value="">
-        <small>비워두면 아래 기준으로 자동 추정</small></label>
-      <label class="row"><input type="checkbox" name="first" checked> 생애최초 / 무주택 실수요</label>
+      <fieldset><legend>지금 가진 돈</legend>
+      <label>보유 현금·예금 <span class="u">(억 원)</span><input type="number" step="0.1" min="0" name="cash" value="3"></label>
+      <label>돌려받을 전월세 보증금 <span class="u">(억 원)</span><input type="number" step="0.1" min="0" name="dep" value="0"></label>
+      </fieldset>
+      <fieldset><legend>소득 (DSR 계산용)</legend>
+      <label>세전 연소득 <span class="u">(만 원, 본인+배우자 합산)</span><input type="number" step="100" min="0" name="inc" value="6000"></label>
+      <label>기존 대출 연 원리금 <span class="u">(만 원)</span><input type="number" step="10" min="0" name="debt" value="0"></label>
+      <label>월 저축액 <span class="u">(만 원, N년 후 계산용)</span><input type="number" step="10" min="0" name="save" value="150"></label>
+      <label class="row"><input type="checkbox" name="first" checked> 생애최초 주택 구입</label>
+      </fieldset>
+      <details class="adv"><summary>계산 가정 조정</summary>
+        <label>주담대 금리 <span class="u">(%)</span><input type="number" step="0.1" name="rate" value="4.0"></label>
+        <label>스트레스 금리 가산 <span class="u">(%p)</span><input type="number" step="0.1" name="stress" value="3.0"><small>10.15 대책 수도권·규제지역 변동형 하한 기준. 고정형은 낮아짐</small></label>
+        <label>대출 만기 <span class="u">(년)</span><input type="number" step="5" min="10" name="term" value="30"></label>
+        <label>DSR 한도 <span class="u">(%)</span><input type="number" step="5" name="dsr" value="40"><small>시중은행 40%</small></label>
+        <label>대출 직접 입력 <span class="u">(억 원, 넣으면 위 계산 대신 사용)</span><input type="number" step="0.1" min="0" name="loan" value=""></label>
+        <label>저축 수익률 <span class="u">(연 %, 세후)</span><input type="number" step="0.5" name="ret" value="3"></label>
+        <label>소득 상승률 <span class="u">(연 %)</span><input type="number" step="0.5" name="incg" value="3"></label>
+        <label>서울 집값 상승률 <span class="u">(연 %, 가정)</span><input type="number" step="0.5" name="hpg" value="3"><small>N년 후에는 집값도 오릅니다. 0으로 두면 지나치게 낙관적인 결과가 나옵니다</small></label>
+      </details>
+      <fieldset><legend>찾을 집</legend>
       <label>평형
         <select name="band"><option value="">전체</option><option value="s">60㎡ 이하 (~24평)</option><option value="m" selected>60~85㎡ (25~34평)</option><option value="l">85㎡ 초과</option></select></label>
+      <label class="row" id="hh-row"><input type="checkbox" name="big"> 500세대 이상 단지만</label>
       <label>희망 지역 <span class="u">(여러 개 선택, 비우면 서울 전체)</span>
         <div class="chips" id="gu-chips"></div></label>
-      <button type="submit" class="btn">예산에 맞는 단지 찾기</button>
+      </fieldset>
+      <button type="submit" class="btn">지금·1·3·5년 후 살 수 있는 단지 찾기</button>
     </form>
     <div class="card out" id="o-budget"><p class="muted">왼쪽에 조건을 넣고 버튼을 눌러주세요.</p></div>
   </div>

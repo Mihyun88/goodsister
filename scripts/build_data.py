@@ -9,6 +9,8 @@
 사용법:
   export DATA_GO_KR_KEY='공공데이터포털 Encoding 키'
   python3 scripts/build_data.py --trade-months 12 --rent-months 6
+  # 세대수(500세대 필터용, 건축물대장 조회 — 단지 수만큼 호출, 결과는 캐시됨):
+  python3 scripts/build_data.py --households
 """
 import argparse, datetime as dt, json, os, sys, time, urllib.request
 import xml.etree.ElementTree as ET
@@ -23,6 +25,35 @@ EP = {"apt_trade": "RTMSDataSvcAptTradeDev/getRTMSDataSvcAptTradeDev",
       "apt_rent": "RTMSDataSvcAptRent/getRTMSDataSvcAptRent",
       "offi_rent": "RTMSDataSvcOffiRent/getRTMSDataSvcOffiRent"}
 OUT = Path(__file__).resolve().parent.parent / "tools" / "data"
+HH_CACHE = Path(__file__).resolve().parent / ".households_cache.json"
+BLD = "https://apis.data.go.kr/1613000/BldRgstHubService/"
+
+
+def get_json(u):
+    for i in range(4):
+        try:
+            return json.loads(urllib.request.urlopen(u, timeout=30).read())
+        except Exception:
+            if i == 3:
+                return None
+            time.sleep(2)
+
+
+def households(key, sgg, bjd, bun, ji):
+    """건축물대장 총괄표제부 세대수, 없으면 표제부(동별) 세대수 합."""
+    q = f"?serviceKey={key}&sigunguCd={sgg}&bjdongCd={bjd}&bun={bun}&ji={ji}&numOfRows=100&pageNo=1&_type=json"
+    for op in ("getBrRecapTitleInfo", "getBrTitleInfo"):
+        d = get_json(BLD + op + q)
+        try:
+            items = d["response"]["body"]["items"]
+            items = items["item"] if isinstance(items, dict) else []
+            items = items if isinstance(items, list) else [items]
+        except (TypeError, KeyError):
+            items = []
+        n = sum(int(it.get("hhldCnt") or 0) for it in items)
+        if n:
+            return n
+    return 0
 
 
 def fetch(key, kind, lawd, ymd):
@@ -82,6 +113,7 @@ def main():
     ap.add_argument("--trade-months", type=int, default=12)
     ap.add_argument("--rent-months", type=int, default=6)
     ap.add_argument("--gu", nargs="*", help="LAWD_CD 일부만 (기본: 서울 25개 구 전체)")
+    ap.add_argument("--households", action="store_true", help="건축물대장으로 단지 세대수 조회")
     a = ap.parse_args()
     key = os.environ.get("DATA_GO_KR_KEY")
     if not key:
@@ -99,16 +131,34 @@ def main():
                 if r.get("cdealType"):  # 해제된 거래 제외
                     continue
                 name, dong = r.get("aptNm", ""), r.get("umdNm", "")
-                k = (lawd, dong, name)
+                k = r.get("aptSeq") or (lawd, dong, name)
                 c = cx.setdefault(k, {"g": GU[lawd], "d": dong, "n": name,
-                                      "y": num(r.get("buildYear"), int), "t": []})
+                                      "y": num(r.get("buildYear"), int), "t": [],
+                                      "_lot": (r.get("sggCd") or lawd, r.get("umdCd", ""),
+                                               (r.get("bonbun") or "").zfill(4), (r.get("bubun") or "").zfill(4))})
                 c["t"].append([f"{r.get('dealYear')}{int(num(r.get('dealMonth'), int)):02d}"
                                f"{int(num(r.get('dealDay'), int)):02d}",
                                round(num(r.get("excluUseAr")), 2), won(r.get("dealAmount")),
                                num(r.get("floor"), int), 1 if "직거래" in r.get("dealingGbn", "") else 0])
             print(f"매매 {GU[lawd]} {ym}: {len(rows)}건", flush=True)
+    if a.households:
+        cache = json.loads(HH_CACHE.read_text()) if HH_CACHE.exists() else {}
+        for i, c in enumerate(cx.values()):
+            sgg, bjd, bun, ji = c["_lot"]
+            if not (bjd and bun.strip("0")):
+                continue
+            ck = f"{sgg}-{bjd}-{bun}-{ji}"
+            if ck not in cache:
+                cache[ck] = households(key, sgg, bjd, bun, ji)
+                if i % 100 == 0:
+                    HH_CACHE.write_text(json.dumps(cache))
+                    print(f"세대수 {i}/{len(cx)}", flush=True)
+            if cache[ck]:
+                c["h"] = cache[ck]
+        HH_CACHE.write_text(json.dumps(cache))
     for c in cx.values():
         c["t"].sort()
+        c.pop("_lot", None)
     write_js("trades.js", "GS_TRADES", {"updated": today, "months": tm,
                                          "source": f"국토교통부 실거래가 공개시스템({tm[0][:4]}.{tm[0][4:]}~{tm[-1][:4]}.{tm[-1][4:]} 신고분)",
                                          "complexes": list(cx.values())})
