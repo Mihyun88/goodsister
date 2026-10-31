@@ -30,20 +30,23 @@ BLD = "https://apis.data.go.kr/1613000/BldRgstHubService/"
 
 
 def get_json(u):
-    for i in range(4):
+    for i in range(6):
         try:
             return json.loads(urllib.request.urlopen(u, timeout=30).read())
         except Exception:
-            if i == 3:
+            if i == 5:
                 return None
-            time.sleep(2)
+            time.sleep(1.5 * (i + 1))
 
 
 def households(key, sgg, bjd, bun, ji):
     """건축물대장 총괄표제부 세대수, 없으면 표제부(동별) 세대수 합."""
     q = f"?serviceKey={key}&sigunguCd={sgg}&bjdongCd={bjd}&bun={bun}&ji={ji}&numOfRows=100&pageNo=1&_type=json"
+    failed = True
     for op in ("getBrRecapTitleInfo", "getBrTitleInfo"):
         d = get_json(BLD + op + q)
+        if d is not None:
+            failed = False
         try:
             items = d["response"]["body"]["items"]
             items = items["item"] if isinstance(items, dict) else []
@@ -53,31 +56,52 @@ def households(key, sgg, bjd, bun, ji):
         n = sum(int(it.get("hhldCnt") or 0) for it in items)
         if n:
             return n
-    return 0
+    return None if failed else 0
 
 
 def fetch(key, kind, lawd, ymd):
+    """한 달·한 구 전체 페이지. 포털이 간헐적으로 내는 APPLICATION_ERROR/끊김은 재시도한다."""
     out, page = [], 1
     while True:
         u = (f"https://apis.data.go.kr/1613000/{EP[kind]}?serviceKey={key}"
              f"&LAWD_CD={lawd}&DEAL_YMD={ymd}&numOfRows=1000&pageNo={page}")
-        for i in range(4):
+        for i in range(8):
             try:
-                root = ET.fromstring(urllib.request.urlopen(u, timeout=30).read())
-                break
+                root = ET.fromstring(urllib.request.urlopen(u, timeout=60).read())
+                code = (root.findtext(".//resultCode") or "").strip()
+                if code in ("00", "000"):
+                    break
+                err = root.findtext(".//returnReasonCode") or code
+                if err in ("22",):
+                    raise SystemExit(f"일일 호출 한도 초과 ({kind} {lawd} {ymd})")
+                if err in ("30", "12"):
+                    raise SystemExit(f"API 오류 {err}: 키/경로 확인 필요 ({kind})")
+            except (SystemExit, KeyboardInterrupt):
+                raise
             except Exception:
-                if i == 3:
-                    raise
-                time.sleep(2)
-        code = (root.findtext(".//resultCode") or "").strip()
-        if code not in ("", "00", "000"):
-            raise SystemExit(f"API 오류 {code}: {root.findtext('.//resultMsg')} ({kind} {lawd} {ymd})")
+                pass
+            if i == 7:
+                raise RuntimeError(f"재시도 실패: {kind} {lawd} {ymd} p{page}")
+            time.sleep(1.5 * (i + 1))
         items = [{c.tag: (c.text or "").strip() for c in it} for it in root.iter("item")]
         out += items
         total = int(root.findtext(".//totalCount") or 0)
         if len(out) >= total or not items:
             return out
         page += 1
+
+
+def fetch_many(key, kind, jobs, workers=6):
+    """[(lawd, ym)] -> {(lawd, ym): rows}"""
+    from concurrent.futures import ThreadPoolExecutor
+    res = {}
+    with ThreadPoolExecutor(workers) as ex:
+        futs = {ex.submit(fetch, key, kind, l, y): (l, y) for l, y in jobs}
+        for f in futs:
+            l, y = futs[f]
+            res[(l, y)] = f.result()
+            print(f"{kind} {GU[l]} {y}: {len(res[(l, y)])}건", flush=True)
+    return res
 
 
 def won(s):
@@ -124,41 +148,47 @@ def main():
     # ---- 아파트 매매: 단지별 거래 리스트 ----
     tm = months_back(a.trade_months)
     cx = {}  # (gu, dong, name) -> complex
-    for lawd in gus:
-        for ym in tm:
-            rows = fetch(key, "apt_trade", lawd, ym)
-            for r in rows:
-                if r.get("cdealType"):  # 해제된 거래 제외
-                    continue
-                name, dong = r.get("aptNm", ""), r.get("umdNm", "")
-                k = r.get("aptSeq") or (lawd, dong, name)
-                c = cx.setdefault(k, {"g": GU[lawd], "d": dong, "n": name,
-                                      "y": num(r.get("buildYear"), int), "t": [],
-                                      "_lot": (r.get("sggCd") or lawd, r.get("umdCd", ""),
-                                               (r.get("bonbun") or "").zfill(4), (r.get("bubun") or "").zfill(4))})
-                c["t"].append([f"{r.get('dealYear')}{int(num(r.get('dealMonth'), int)):02d}"
-                               f"{int(num(r.get('dealDay'), int)):02d}",
-                               round(num(r.get("excluUseAr")), 2), won(r.get("dealAmount")),
-                               num(r.get("floor"), int), 1 if "직거래" in r.get("dealingGbn", "") else 0])
-            print(f"매매 {GU[lawd]} {ym}: {len(rows)}건", flush=True)
-    if a.households:
-        cache = json.loads(HH_CACHE.read_text()) if HH_CACHE.exists() else {}
-        for i, c in enumerate(cx.values()):
-            sgg, bjd, bun, ji = c["_lot"]
-            if not (bjd and bun.strip("0")):
+    got = fetch_many(key, "apt_trade", [(l, y) for l in gus for y in tm])
+    for (lawd, ym), rows in got.items():
+        for r in rows:
+            if r.get("cdealType"):  # 해제된 거래 제외
                 continue
-            ck = f"{sgg}-{bjd}-{bun}-{ji}"
-            if ck not in cache:
-                cache[ck] = households(key, sgg, bjd, bun, ji)
-                if i % 100 == 0:
+            name, dong = r.get("aptNm", ""), r.get("umdNm", "")
+            k = r.get("aptSeq") or (lawd, dong, name)
+            c = cx.setdefault(k, {"g": GU[lawd], "d": dong, "n": name,
+                                  "y": num(r.get("buildYear"), int), "t": [],
+                                  "_lot": (r.get("sggCd") or lawd, r.get("umdCd", ""),
+                                           (r.get("bonbun") or "").zfill(4), (r.get("bubun") or "").zfill(4))})
+            c["t"].append([f"{r.get('dealYear')}{int(num(r.get('dealMonth'), int)):02d}"
+                           f"{int(num(r.get('dealDay'), int)):02d}",
+                           round(num(r.get("excluUseAr")), 2), won(r.get("dealAmount")),
+                           num(r.get("floor"), int), 1 if "직거래" in r.get("dealingGbn", "") else 0])
+    if a.households:
+        from concurrent.futures import ThreadPoolExecutor
+        cache = json.loads(HH_CACHE.read_text()) if HH_CACHE.exists() else {}
+        lots = {}
+        for c in cx.values():
+            sgg, bjd, bun, ji = c["_lot"]
+            if bjd and bun.strip("0"):
+                c["_ck"] = f"{sgg}-{bjd}-{bun}-{ji}"
+                lots[c["_ck"]] = c["_lot"]
+        todo = [k for k in lots if k not in cache]
+        print(f"세대수 조회: {len(todo)}개 지번 (캐시 {len(lots) - len(todo)}개)", flush=True)
+        with ThreadPoolExecutor(6) as ex:
+            for i, (k, n) in enumerate(zip(todo, ex.map(lambda k: households(key, *lots[k]), todo))):
+                if n is not None:
+                    cache[k] = n
+                if i % 200 == 0:
                     HH_CACHE.write_text(json.dumps(cache))
-                    print(f"세대수 {i}/{len(cx)}", flush=True)
-            if cache[ck]:
-                c["h"] = cache[ck]
+                    print(f"  세대수 {i}/{len(todo)}", flush=True)
         HH_CACHE.write_text(json.dumps(cache))
+        for c in cx.values():
+            if cache.get(c.get("_ck")):
+                c["h"] = cache[c["_ck"]]
     for c in cx.values():
         c["t"].sort()
         c.pop("_lot", None)
+        c.pop("_ck", None)
     write_js("trades.js", "GS_TRADES", {"updated": today, "months": tm,
                                          "source": f"국토교통부 실거래가 공개시스템({tm[0][:4]}.{tm[0][4:]}~{tm[-1][:4]}.{tm[-1][4:]} 신고분)",
                                          "complexes": list(cx.values())})
@@ -166,11 +196,13 @@ def main():
     # ---- 전월세 (오피스텔 + 아파트, 전용 60㎡ 이하) ----
     rm = months_back(a.rent_months)
     rents = {}
+    got = {tag: fetch_many(key, kind, [(l, y) for l in gus for y in rm])
+           for kind, tag in (("offi_rent", "O"), ("apt_rent", "A"))}
     for lawd in gus:
         rows_out = []
         for ym in rm:
-            for kind, tag in (("offi_rent", "O"), ("apt_rent", "A")):
-                rows = fetch(key, kind, lawd, ym)
+            for tag in ("O", "A"):
+                rows = got[tag][(lawd, ym)]
                 for r in rows:
                     ar = num(r.get("excluUseAr"))
                     if not ar or ar > 60:
@@ -178,7 +210,6 @@ def main():
                     rows_out.append([r.get("umdNm", ""), tag, round(ar, 1), won(r.get("deposit")),
                                      won(r.get("monthlyRent")), ym,
                                      1 if r.get("contractType", "") == "갱신" else 0])
-                print(f"전월세 {GU[lawd]} {ym} {kind}: {len(rows)}건", flush=True)
         rents[GU[lawd]] = rows_out
     write_js("rents.js", "GS_RENTS", {"updated": today, "months": rm,
                                        "source": f"국토교통부 실거래가 공개시스템 오피스텔·아파트 전월세({rm[0][:4]}.{rm[0][4:]}~{rm[-1][:4]}.{rm[-1][4:]} 신고분)",
