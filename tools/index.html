@@ -2,18 +2,20 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>착한언니복덕방 AI 부동산 도구</title>
 <meta name="description" content="내 예산으로 살 수 있는 서울 아파트, 첫 자취 동네, 아파트 적정가를 국토부 실거래가로 확인하세요. 착한언니복덕방">
 <meta property="og:title" content="착한언니복덕방 AI 부동산 도구">
 <meta property="og:description" content="내 예산으로 서울 어디까지? 첫 자취 동네 추천, 이 아파트 비싸게 사는 걸까?">
 <meta property="og:image" content="img/banner.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#FAFAF8">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="top">
-  <div class="brand"><a href="../"><img src="img/logo.png" alt="착한언니복덕방" class="logo"></a><span>AI 부동산 도구</span>
+  <div class="brand"><a class="wm" href="../"><svg viewBox="0 0 40 30" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22 L20 6 L37 22"/><path d="M28 12 V5 H32 V15"/></svg>착한언니복덕방</a><span>AI 부동산 도구</span>
     <nav class="sns"><a href="../">홈</a><a href="https://blog.naver.com/ellarang" target="_blank" rel="noopener">블로그</a><a href="https://www.instagram.com/goodsister4080/" target="_blank" rel="noopener">인스타</a><a href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener" class="kakao">카톡 상담</a></nav></div>
   <nav class="tabs" role="tablist">
     <button class="tab active" data-tab="budget">① 내 예산으로 서울 어디까지?</button>
@@ -132,6 +134,7 @@
   <p id="src"></p>
   <p>참고용 정보이며 투자·대출 판단의 근거가 될 수 없습니다. 실거래는 계약 후 30일 내 신고되므로 최근 1~2개월 수치는 이후 늘어날 수 있습니다.</p>
 </footer>
+<div class="mbar"><a href="tel:023644080" class="mb-tel">📞 전화</a><a href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener" class="mb-k">💬 카카오톡 상담</a></div>
 
 <script src="data/trades.js"></script>
 <script src="data/rents.js"></script>
@@ -143,5 +146,16 @@
 <script src="guide.js"></script>
 <script src="market-ui.js"></script>
 <script src="news-ui.js"></script>
+<script>
+/* 모바일: 결과가 나오면 결과로 스크롤, 활성 탭을 화면 안으로 */
+(() => {
+  const mob = () => matchMedia("(max-width:860px)").matches;
+  ["budget", "rent", "check"].forEach(k => document.getElementById("f-" + k).addEventListener("submit", () =>
+    setTimeout(() => { if (mob()) document.getElementById("o-" + k).scrollIntoView({ behavior: "smooth", block: "start" }); }, 60)));
+  const keep = () => { const a = document.querySelector(".tab.active"); a && a.scrollIntoView({ inline: "center", block: "nearest" }); };
+  document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => setTimeout(keep)));
+  addEventListener("hashchange", () => setTimeout(keep)); setTimeout(keep, 50);
+})();
+</script>
 </body>
 </html>

@@ -132,13 +132,28 @@ def write_js(name, var, obj):
     print(f"  -> tools/data/{name} ({len(body)//1024} KB)")
 
 
+def write_summary():
+    """랜딩페이지용 요약 숫자 (data/summary.js)."""
+    def load(name):
+        t = (OUT / name).read_text(encoding="utf-8")
+        return json.loads(t.split("=", 1)[1].rstrip().rstrip(";"))
+    T, R = load("trades.js"), load("rents.js")
+    write_js("summary.js", "GS_SUMMARY", {
+        "updated": T["updated"], "months": [T["months"][0], T["months"][-1]],
+        "complexes": len(T["complexes"]), "deals": sum(len(c["t"]) for c in T["complexes"]),
+        "rents": sum(len(v) for v in R["rows"].values())})
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--trade-months", type=int, default=12)
     ap.add_argument("--rent-months", type=int, default=6)
     ap.add_argument("--gu", nargs="*", help="LAWD_CD 일부만 (기본: 서울 25개 구 전체)")
     ap.add_argument("--households", action="store_true", help="건축물대장으로 단지 세대수 조회")
+    ap.add_argument("--summary-only", action="store_true", help="기존 데이터로 summary.js 만 다시 생성")
     a = ap.parse_args()
+    if a.summary_only:
+        return write_summary()
     key = os.environ.get("DATA_GO_KR_KEY")
     if not key:
         sys.exit("DATA_GO_KR_KEY 환경변수를 설정하세요 (공공데이터포털 Encoding 키).")
@@ -214,6 +229,7 @@ def main():
     write_js("rents.js", "GS_RENTS", {"updated": today, "months": rm,
                                        "source": f"국토교통부 실거래가 공개시스템 오피스텔·아파트 전월세({rm[0][:4]}.{rm[0][4:]}~{rm[-1][:4]}.{rm[-1][4:]} 신고분)",
                                        "rows": rents})
+    write_summary()
     print("완료. tools/index.html 을 열어 확인하세요.")
 
 
