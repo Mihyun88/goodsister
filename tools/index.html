@@ -19,6 +19,8 @@
     <button class="tab active" data-tab="budget">① 내 예산으로 서울 어디까지?</button>
     <button class="tab" data-tab="rent">② 첫 자취 동네 추천기</button>
     <button class="tab" data-tab="check">③ 이 아파트, 비싸게 사는 걸까?</button>
+    <button class="tab" data-tab="market">📊 시황분석</button>
+    <button class="tab" data-tab="news">🗞️ 정책 뉴스</button>
     <button class="tab" data-tab="jachwi">🏠 첫 자취방 가이드</button>
     <button class="tab" data-tab="tips">🏡 부동산 꿀팁</button>
   </nav>
@@ -97,6 +99,24 @@
   </div>
 </section>
 
+<section id="tab-market" class="panel">
+  <p class="hook">“이번 주 서울 아파트, 어디가 오르고 어디가 많이 팔렸을까?”</p>
+  <div class="card out" id="mk-weekly"></div>
+  <div class="card out" style="margin-top:1rem">
+    <h3>월별 거래량 (서울 아파트 매매 신고 건수)</h3>
+    <div id="mk-bars"></div>
+    <div class="filters"><label>기간 <select id="mk-month"></select></label><label>지역 <select id="mk-gu"></select></label><label class="row"><input type="checkbox" id="mk-big" checked> 100세대 이상 · 준공 직후 거래 제외</label></div>
+    <div id="mk-gutable"></div>
+    <h3 id="mk-top"><span id="mk-toptitle"></span></h3>
+    <div id="mk-toplist"></div>
+    <div class="check"><b>착한언니 체크포인트</b><br>
+      · 거래량은 국토부 실거래 <b>신고 건수</b>(해제 제외)예요. 계약 후 30일 안에 신고하므로 최근 1~2개월은 앞으로 더 늘어나요.<br>
+      · '최고가 갱신'은 수집된 최근 12개월 안에서 같은 단지·같은 면적 이전 거래보다 비싸게 팔린 건수예요. 역대 신고가와는 다를 수 있어요.<br>
+      · 기본값은 <b>100세대 이상</b> 단지만, <b>준공 다음 해까지의 거래는 빼고</b> 집계해요. 신축 건물은 입주 무렵 한 번에 수십 건씩 신고돼 순위를 왜곡하기 쉬워서요. 체크를 풀면 전체가 보여요.<br>
+      · 평당 중위가는 전용면적 기준(전용 1평=3.3㎡)으로 계산했어요.</div>
+  </div>
+</section>
+<section id="tab-news" class="panel"><div class="card out" id="news-box"></div></section>
 <section id="tab-jachwi" class="panel"><article class="guide card" data-root="jachwi"></article></section>
 <section id="tab-tips" class="panel"><article class="guide card" data-root="tips"></article></section>
 </main>
@@ -114,9 +134,13 @@
 
 <script src="data/trades.js"></script>
 <script src="data/rents.js"></script>
+<script src="data/market.js"></script>
+<script src="data/news.js"></script>
 <script src="geo.js"></script>
 <script src="guide/pages.js"></script>
 <script src="app.js"></script>
 <script src="guide.js"></script>
+<script src="market-ui.js"></script>
+<script src="news-ui.js"></script>
 </body>
 </html>
