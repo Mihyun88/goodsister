@@ -272,3 +272,10 @@ body{font-family:"Pretendard Variable",Pretendard,"Noto Sans KR",system-ui,sans-
 .homeblock a{color:var(--brand);font-weight:700}
 /* T6 단위 환산 */
 .conv{display:block;font-size:.8rem;color:#55524C;margin-top:.25rem;min-height:1em}
+
+/* 맨 위로 버튼 */
+.totop{position:fixed;right:16px;bottom:24px;z-index:45;width:46px;height:46px;border-radius:50%;border:1px solid #DDD8D0;background:rgba(255,255,255,.96);color:#1C1A18;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.12);cursor:pointer;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .2s,transform .2s,visibility .2s}
+.totop.show{opacity:1;visibility:visible;transform:none}
+.totop:focus-visible{outline:3px solid #C2325F;outline-offset:2px}
+@media(max-width:860px){.totop{right:12px;bottom:calc(84px + env(safe-area-inset-bottom))}}
+@media(prefers-reduced-motion:reduce){.totop{transition:none}}

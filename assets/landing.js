@@ -6,6 +6,25 @@
   const KAKAO = "https://pf.kakao.com/_xcxoBxnX";
   const safe = (name, fn) => { try { fn(); } catch (e) { console.warn(`[landing] ${name} 실패`, e); } };
 
+  // ---------- 0. 첫 진입은 항상 맨 위에서 + 맨 위로 버튼 ----------
+  safe("top", () => {
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    if (location.hash) {
+      history.replaceState(null, "", location.pathname + location.search);
+      const up = () => scrollTo({ top: 0, behavior: "instant" });
+      up(); addEventListener("load", up, { once: true });
+    }
+  });
+  safe("totop", () => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "totop"; b.setAttribute("aria-label", "맨 위로");
+    b.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 14l6-6 6 6"/></svg>';
+    b.addEventListener("click", () => { scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" }); (document.querySelector("header a, header button") || document.body).focus({ preventScroll: true }); });
+    document.body.appendChild(b);
+    const on = () => b.classList.toggle("show", scrollY > 500);
+    addEventListener("scroll", on, { passive: true }); on();
+  });
+
   // ---------- 1. 등장 효과 (가장 먼저) ----------
   safe("reveal", () => {
     const els = document.querySelectorAll(".rv");

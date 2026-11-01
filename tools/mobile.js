@@ -15,6 +15,16 @@
   document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => { scrollTo({ top: 0, behavior: "instant" }); setTimeout(keep); }));
   addEventListener("hashchange", () => setTimeout(keep)); setTimeout(keep, 50);
 
+  // ---------- 맨 위로 버튼 ----------
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  const tb = document.createElement("button");
+  tb.type = "button"; tb.className = "totop"; tb.setAttribute("aria-label", "맨 위로");
+  tb.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 14l6-6 6 6"/></svg>';
+  tb.addEventListener("click", () => { scrollTo({ top: 0, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth" }); const a = document.querySelector(".tab.active"); a && a.focus({ preventScroll: true }); });
+  document.body.appendChild(tb);
+  const tOn = () => tb.classList.toggle("show", scrollY > 500);
+  addEventListener("scroll", tOn, { passive: true }); tOn();
+
   // ---------- T3: 표 정리 ----------
   const SHOW = 5;
   function tidy(out) {
