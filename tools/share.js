@@ -3,7 +3,7 @@
 (() => {
   const $ = (s, el = document) => el.querySelector(s);
   const T = s => (s || "").replace(/\s+/g, " ").trim();
-  const KAKAO = "http://pf.kakao.com/_xcxoBxnX";
+  const KAKAO = "https://pf.kakao.com/_xcxoBxnX";
   const FORMS = { budget: "f-budget", rent: "f-rent", check: "f-check", cost: "f-cost" };
 
   // ---------- 입력값 ↔ 링크 ----------
@@ -21,9 +21,12 @@
   }
   const linkFor = key => `${location.origin}${location.pathname}#${key}?${params(key).toString()}`;
 
-  function restore() {
+  async function restore() {
     const h = decodeURIComponent(location.hash.slice(1)), [key, qs] = h.split("?");
     if (!FORMS[key] || !qs) return;
+    // S-4: 데이터가 필요한 도구는 불러온 뒤에 채우고 계산
+    const need = { budget: "trades", check: "trades", rent: "rents" }[key];
+    if (need && window.GS_ensure && !(await window.GS_ensure(need))) return;
     const q = new URLSearchParams(qs), f = document.getElementById(FORMS[key]);
     for (const [k, v] of q) {
       const el = f.elements[k];
@@ -124,8 +127,8 @@ ${deals.length ? `\n📄 같은 면적 최근 거래\n${deals.join("\n")}` : ""}
     bar.innerHTML = `<b>📤 이 결과를 가족·친구와 같이 보세요</b>
       <div class="sb-btns">
         ${canShare ? `<button type="button" data-a="share" class="sb-main">카톡·문자로 공유하기</button>` : ""}
-        <button type="button" data-a="copy" class="${canShare ? "" : "sb-main"}">📋 요약 복사</button>
-        <button type="button" data-a="link">🔗 결과 링크 복사</button>
+        <button type="button" data-a="copy" class="${canShare ? "" : "sb-main"}"><span aria-hidden="true">📋</span> 요약 복사</button>
+        <button type="button" data-a="link"><span aria-hidden="true">🔗</span> 결과 링크 복사</button>
       </div>`;
     bar.addEventListener("click", async e => {
       const a = e.target.closest("button")?.dataset.a; if (!a) return;
@@ -135,6 +138,19 @@ ${deals.length ? `\n📄 같은 면적 최근 거래\n${deals.join("\n")}` : ""}
       if (a === "share") { try { await navigator.share({ title: "착한언니복덕방 AI 결과", text }); } catch (err) { if (err && err.name !== "AbortError") toast(await copy(text) ? "요약을 복사했어요." : "공유가 안 됐어요."); } }
     });
     out.querySelector(".check").insertAdjacentElement("beforebegin", bar);
+    // T1: 요약 카드 바로 아래 '착한언니에게 보내기'
+    const anchor = out.querySelector({ budget: ".lim", check: ".kpis", rent: ".verdict", cost: ".kpis" }[key]) || out.querySelector(".verdict");
+    if (anchor && !out.querySelector(".send-k")) {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "send-k"; b.dataset.track = "tools_result_kakao";
+      b.innerHTML = `<span aria-hidden="true">💬</span> 이 결과를 착한언니에게 보내기`;
+      b.addEventListener("click", async () => {
+        const ok = await copy(summary(key));
+        toast(ok ? "결과를 복사했어요. 카톡 창에 붙여넣기 하세요" : "복사가 안 됐어요. 카톡에서 결과를 알려주세요");
+        window.open(KAKAO, "_blank", "noopener");
+      });
+      anchor.insertAdjacentElement("afterend", b);
+    }
   }
   for (const key of Object.keys(FORMS)) {
     const out = document.getElementById("o-" + key);

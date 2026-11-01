@@ -1,6 +1,6 @@
 /* 📊 시황분석 탭: R-ONE 주간 지수(data/market.js) + 실거래 월별 거래량·TOP 단지(data/trades.js) */
 (() => {
-  const M = window.GS_MARKET, T = window.GS_TRADES;
+  const M = window.GS_MARKET; let T = window.GS_TRADES;
   const $ = s => document.querySelector(s);
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const median = a => { if (!a.length) return 0; const s = [...a].sort((x, y) => x - y), m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
@@ -78,7 +78,7 @@
       const r = svg.getBoundingClientRect(), i = Math.max(0, Math.min(xs.length - 1, Math.round((e.clientX - r.left - P.l) / ((W - P.l - P.r) / (xs.length - 1)))));
       xh.setAttribute("x1", X(i)); xh.setAttribute("x2", X(i)); xh.style.display = "";
       svg.querySelectorAll(".dot").forEach(d => { const s = series[d.dataset.k]; d.setAttribute("cx", X(i)); d.setAttribute("cy", Y(s.v[i])); d.style.display = ""; });
-      tip(e, `<b>${xs[i]}</b><br>${series.map(s => `<i style="background:${s.color}"></i>${s.name} ${s.v[i] != null ? s.v[i].toFixed(2) : "-"}${i && s.v[i - 1] ? ` (${pct((s.v[i] / s.v[i - 1] - 1) * 100)})` : ""}`).join("<br>")}`);
+      tip(e, `<b>${esc(xs[i])}</b><br>${series.map(s => `<i style="background:${s.color}"></i>${s.name} ${s.v[i] != null ? s.v[i].toFixed(2) : "-"}${i && s.v[i - 1] ? ` (${pct((s.v[i] / s.v[i - 1] - 1) * 100)})` : ""}`).join("<br>")}`);
     });
     svg.querySelector(".hit").addEventListener("mouseleave", e => { xh.style.display = "none"; svg.querySelectorAll(".dot").forEach(d => d.style.display = "none"); tip(e); });
   }
@@ -118,10 +118,10 @@
     const prevM = m === "r3" ? null : months[months.indexOf(m) - 1], prev = prevM ? (byM[prevM] || []) : [];
     const lagged = new Set(months.slice(-2));
     // 월별 막대
-    $("#mk-bars").innerHTML = `<div class="vbars">${months.map((mm, i) => `<div class="vb ${lagged.has(mm) ? "lag" : ""} ${mm === m ? "on" : ""}" data-m="${mm}" data-tip="${ym(mm)} · ${counts[i].toLocaleString()}건${lagged.has(mm) ? " (신고 진행 중)" : ""}">
+    $("#mk-bars").innerHTML = `<div class="vbars">${months.map((mm, i) => `<div class="vb ${lagged.has(mm) ? "lag" : ""} ${mm === m ? "on" : ""}" data-m="${mm}" data-tip="${esc(ym(mm))} · ${counts[i].toLocaleString()}건${lagged.has(mm) ? " (신고 진행 중)" : ""}">
         <span class="vv">${counts[i] >= 1000 ? (counts[i] / 1000).toFixed(1) + "k" : counts[i]}</span><div style="height:${counts[i] / mx * 100}%"></div><span class="vl">${mm.slice(2, 4)}.${mm.slice(4)}</span></div>`).join("")}</div>`;
     $("#mk-bars").querySelectorAll(".vb").forEach(b => {
-      b.onmousemove = e => tip(e, b.dataset.tip); b.onmouseleave = e => tip(e);
+      b.onmousemove = e => tip(e, esc(b.dataset.tip)); b.onmouseleave = e => tip(e);
       b.onclick = () => { sel.value = b.dataset.m; monthly(); };
     });
     // 구별 거래량 표
@@ -156,7 +156,11 @@
   }
 
   let done = false;
-  const render = () => { if (done) return; done = true; weekly(); monthly(); };
+  const render = async () => {
+    if (done) return; done = true; weekly();
+    if (!T) { const ok = window.GS_ensure ? await window.GS_ensure("trades", $("#mk-gutable")) : false; T = window.GS_TRADES; if (!ok || !T) return; }
+    monthly();
+  };
   document.querySelectorAll('.tab[data-tab="market"]').forEach(b => b.addEventListener("click", () => setTimeout(render)));
   if (location.hash === "#market") setTimeout(render);
   window.addEventListener("hashchange", () => location.hash === "#market" && setTimeout(render));

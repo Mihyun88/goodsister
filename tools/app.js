@@ -1,6 +1,7 @@
 /* 착한언니 AI 부동산 도구 — 데이터는 data/*.js (scripts/build_data.py 로 생성) */
 (() => {
-  const T = window.GS_TRADES, R = window.GS_RENTS, GU = window.GS_GU, DEST = window.GS_DEST;
+  let T = window.GS_TRADES, R = window.GS_RENTS;
+  const GU = window.GS_GU, DEST = window.GS_DEST;
   const $ = (s, el = document) => el.querySelector(s);
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
@@ -21,22 +22,36 @@
 
   // ---------- 탭 ----------
   document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => {
-    document.querySelectorAll(".tab").forEach(x => x.classList.toggle("active", x === b));
+    document.querySelectorAll(".tab").forEach(x => { x.classList.toggle("active", x === b); x.setAttribute("aria-selected", String(x === b)); });
     document.querySelectorAll(".panel").forEach(p => p.classList.toggle("active", p.id === "tab-" + b.dataset.tab));
+    preload(b.dataset.tab);
   }));
 
   // ---------- 데이터 상태 ----------
-  const missing = [];
-  if (!T) missing.push("아파트 매매(trades.js) — 도구 ①③");
-  if (!R) missing.push("전월세(rents.js) — 도구 ②");
-  if (missing.length) {
-    const n = $("#nodata"); n.hidden = false;
-    n.innerHTML = `<b>실거래 데이터가 아직 없습니다.</b> 없는 데이터: ${missing.map(esc).join(", ")}<br>
-      공공데이터포털 키를 넣고 <code>python3 scripts/build_data.py</code> 를 한 번 실행하면 <code>tools/data/</code> 가 채워집니다.
-      (본 도구는 임의의 예시 숫자를 쓰지 않습니다.)`;
+  // S-4: 탭별 필요 데이터를 처음 쓸 때 불러온다
+  const KIND = { budget: "trades", check: "trades", market: "trades", rent: "rents" };
+  const NAME = { trades: "아파트 매매", rents: "전월세" };
+  const srcLine = () => { $("#src").textContent = [T && `매매: ${T.source}, ${T.updated} 수집`, R && `전월세: ${R.source}, ${R.updated} 수집`].filter(Boolean).join(" · ") || "출처: 국토교통부 실거래가 공개시스템"; };
+  srcLine();
+  async function ensure(kind, out) {
+    if ((kind === "trades" && T) || (kind === "rents" && R)) return true;
+    if (out) out.innerHTML = `<p class="muted">데이터를 불러오는 중이에요…</p>`;
+    try { await window.GS_load(kind); } catch (e) { console.warn(e); }
+    T = window.GS_TRADES || T; R = window.GS_RENTS || R;
+    if (T) initHH();
+    srcLine();
+    const ok = kind === "trades" ? !!T : !!R;
+    if (!ok) {
+      const n = $("#nodata"); n.hidden = false;
+      n.innerHTML = `<b>${NAME[kind]} 데이터를 불러오지 못했어요.</b> 잠시 후 새로고침해 주세요.`;
+      if (out) out.innerHTML = `<p class="muted">${NAME[kind]} 데이터가 없어 계산할 수 없어요.</p>`;
+    }
+    return ok;
   }
-  $("#src").textContent = [T && `매매: ${T.source}, ${T.updated} 수집`, R && `전월세: ${R.source}, ${R.updated} 수집`].filter(Boolean).join(" · ") || "출처: 국토교통부 실거래가 공개시스템";
-  const needData = (el, ok, what) => { if (!ok) el.innerHTML = `<p class="muted">${what} 데이터가 없어 계산할 수 없습니다. 상단 안내를 확인해 주세요.</p>`; return ok; };
+  window.GS_ensure = ensure;
+  function preload(tab) { const k = KIND[tab]; if (k) ensure(k); }
+  setTimeout(() => preload(location.hash.slice(1).split("?")[0] || "budget"));
+  addEventListener("hashchange", () => preload(location.hash.slice(1).split("?")[0]));
 
   // ======================================================
   // ① 내 예산으로 서울 어디까지? (지금·1·3·5년 후)
@@ -46,11 +61,16 @@
     const c = document.createElement("span"); c.className = "chip"; c.textContent = g;
     c.onclick = () => c.classList.toggle("on"); chipBox.appendChild(c);
   });
-  const hasHH = !!(T && T.complexes.some(c => c.h));
-  if (!hasHH) {
-    const r = $("#hh-row"); r.querySelector("input").disabled = true;
-    r.insertAdjacentHTML("beforeend", ` <small>(세대수 데이터 없음: <code>build_data.py --households</code> 실행 필요)</small>`);
+  let hasHH = false, hhDone = false;
+  function initHH() {
+    if (hhDone || !T) return; hhDone = true;
+    hasHH = T.complexes.some(c => c.h);
+    if (!hasHH) {
+      const r = $("#hh-row"); r.querySelector("input").disabled = true;
+      r.insertAdjacentHTML("beforeend", ` <small>(세대수 데이터 없음: <code>build_data.py --households</code> 실행 필요)</small>`);
+    }
   }
+  initHH();
 
   /** 1주택 취득세(+지방교육세) + 중개보수 상한 추정 (만원) */
   function buyCost(p) {
@@ -102,9 +122,9 @@
   window.GS_syncLoan = syncLoan;
 
   let budgetState = null;
-  $("#f-budget").addEventListener("submit", e => {
+  $("#f-budget").addEventListener("submit", async e => {
     e.preventDefault();
-    const out = $("#o-budget"); if (!needData(out, T, "아파트 매매")) return;
+    const out = $("#o-budget"); if (!(await ensure("trades", out))) return;
     const f = e.target, v = n => +f[n].value || 0;
     const o = { first: f.first.checked, rate: v("rate"), stress: v("stress"), term: v("term") || 30, dsr: v("dsr"), debt: v("debt"),
       mode: f.loanmode.value, loan: f.loan.value === "" ? null : v("loan") * 10000 };
@@ -137,6 +157,19 @@
       }
     }
     rows.sort((x, y) => y.med - x.med);
+    // T4: 서비스 지역(마포·서대문) 고정 블록 — 희망 지역 선택과 무관하게 같은 조건으로
+    const home = [];
+    for (const c of T.complexes) {
+      if (c.g !== "마포구" && c.g !== "서대문구") continue;
+      if (big && !(c.h >= 500)) continue;
+      const byA = {};
+      for (const t of c.t) if (t[0].slice(0, 6) >= from && inBand(t[1])) (byA[area(t[1])] ||= []).push(t);
+      for (const [a, ts] of Object.entries(byA)) { const med = median(ts.map(t => t[2])); if (med <= h.P0) home.push({ c, a: +a, med, n: ts.length }); }
+    }
+    home.sort((x, y) => y.med - x.med);
+    const homeHTML = `<div class="homeblock"><h3>이 예산으로 마포·서대문에서는</h3>${home.length
+      ? `<ul>${home.slice(0, 3).map(r => `<li><b>${esc(r.c.n)}</b> <span class="muted">${esc(r.c.g)} ${esc(r.c.d)} · 전용 ${r.a}㎡</span><span class="r">${money(r.med)}</span></li>`).join("")}</ul>`
+      : `<p>이 조건으로는 마포·서대문 아파트가 어려워요. <b>오피스텔·전세</b>로는 가능할 수 있어요. <a href="#rent">자취·전월세 동네 비교하기 →</a></p>`}</div>`;
     // 가격대 안에서 거래가 가장 많은 동 TOP3 (예산의 80~100% 구간)
     const dongs = {};
     rows.filter(r => r.med >= h.P0 * 0.8).forEach(r => { const k = `${r.c.g} ${r.c.d}`; dongs[k] = (dongs[k] || 0) + r.n; });
@@ -152,6 +185,7 @@
         <span class="tag">${o.mode === "none" ? "대출 없이 계산" : o.mode === "custom" && h.loan.by === "희망 대출액" ? "희망 대출액만큼" : `${esc(h.loan.by)}에서 막힘`}</span> − 취득세·중개보수 <b>${money(h.cost)}</b>
         ${h.loan.amt ? `· 월 상환 약 <b>${Math.round(mpay).toLocaleString()}만 원</b> (금리 ${o.rate}%, ${o.term}년)` : ""}
         ${h.n ? `<br>${h.n}년 뒤 집값이 연 ${(hg * 100).toFixed(1)}% 오른다고 보고 <b>오늘 시세로 환산</b>한 가격(${money(h.P0)})으로 단지를 골랐습니다.` : ""}</p>
+      ${homeHTML}
       ${topDong.length ? `<h3>이 가격대에서 거래가 가장 많은 동네 TOP3</h3>
         <div class="kpis">${topDong.map(([d, n], i) => `<div class="kpi"><div class="l">${i + 1}위</div><div class="v" style="font-size:1rem">${esc(d)}</div><div class="l">최근 6개월 ${n}건</div></div>`).join("")}</div>` : ""}
       ${rows.length ? `<h3>예산에 가장 가까운 단지 TOP ${Math.min(30, rows.length)}${big ? " (500세대 이상)" : ""}</h3>
@@ -185,9 +219,9 @@
   const CONV = 0.05; // 보증금 → 월세 환산 연 5%
   const conv = (dep, mon) => mon + dep * CONV / 12;
 
-  $("#f-rent").addEventListener("submit", e => {
+  $("#f-rent").addEventListener("submit", async e => {
     e.preventDefault();
-    const out = $("#o-rent"); if (!needData(out, R, "전월세")) return;
+    const out = $("#o-rent"); if (!(await ensure("rents", out))) return;
     const f = e.target, [grp, dname] = f.dest.value.split("|"), dpos = DEST[grp][dname];
     const dep = +f.dep.value, mon = +f.mon.value, maxMin = +f.max.value, big = f.size.value === "2";
     const fit = r => (big ? r[2] > 33 : r[2] <= 33) && !r[6]; // 신규 계약만
@@ -237,7 +271,7 @@
     arSel.value = Object.entries(cnt).sort((a, b) => b[1] - a[1])[0][0];
   }
   q.addEventListener("input", () => {
-    if (!T) return;
+    if (!T) { ensure("trades").then(ok => ok && q.dispatchEvent(new Event("input"))); return; }
     const s = q.value.replace(/\s/g, "");
     sel.innerHTML = ""; dl.innerHTML = "";
     if (s.length < 2) { sel.appendChild(new Option("두 글자 이상 입력하세요", "")); arSel.innerHTML = ""; return; }
@@ -249,9 +283,9 @@
   });
   sel.addEventListener("change", fillAreas);
 
-  $("#f-check").addEventListener("submit", e => {
+  $("#f-check").addEventListener("submit", async e => {
     e.preventDefault();
-    const out = $("#o-check"); if (!needData(out, T, "아파트 매매")) return;
+    const out = $("#o-check"); if (!(await ensure("trades", out))) return;
     const c = T.complexes[+sel.value], A = +arSel.value, hope = +e.target.price.value * 10000;
     if (!c || !A) { out.innerHTML = `<p class="muted">단지와 면적을 선택해 주세요.</p>`; return; }
     if (!hope) { out.innerHTML = `<p class="muted">매수 희망 가격을 입력해 주세요.</p>`; return; }
