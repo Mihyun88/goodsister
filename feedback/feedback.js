@@ -1,6 +1,10 @@
 /* 의견 양식: 답변을 글로 정리 → 복사 → 카톡 채널 열기 (저장·전송 없음) */
 (() => {
   const KAKAO = "https://pf.kakao.com/_xcxoBxnX";
+  /* 바로 보내기: 구글 폼 한 문항(장문형)에 정리된 답변을 그대로 넣는다.
+     설정 전(빈 값)에는 기존처럼 '복사 → 카톡' 방식으로 동작. */
+  const GFORM = { action: "", entry: "" }; // 예: { action: "https://docs.google.com/forms/d/e/XXXX/formResponse", entry: "entry.123456789" }
+  const direct = !!(GFORM.action && GFORM.entry);
   const f = document.getElementById("fb"), cnt = document.getElementById("cnt");
   const toastEl = document.createElement("div"); toastEl.className = "toast"; toastEl.setAttribute("role", "status"); document.body.appendChild(toastEl);
   const toast = m => { toastEl.textContent = m; toastEl.classList.add("on"); clearTimeout(toastEl.t); toastEl.t = setTimeout(() => toastEl.classList.remove("on"), 3000); };
@@ -32,6 +36,7 @@
     return L;
   }
   const upd = () => { const n = build().length - 1; cnt.textContent = n ? `${n}개 항목에 답해주셨어요` : ""; };
+  if (direct) { f.querySelector("button[type=submit]").textContent = "보내기"; document.querySelector(".lead").innerHTML = "3분이면 충분해요. 다 채우지 않아도 괜찮아요.<br>맨 아래 <b>보내기</b>만 누르면 바로 착한언니에게 전달돼요."; document.querySelector(".note").textContent = "이름·연락처는 받지 않아요. 고른 답과 적어주신 글만 전달돼요."; }
   f.addEventListener("input", upd); f.addEventListener("change", upd); upd();
   const mail = document.getElementById("mail");
   mail.addEventListener("click", () => {
@@ -43,6 +48,15 @@
     const L = build();
     if (L.length < 2) { toast("한 가지 이상 답해주세요"); f.querySelector("input").focus(); return; }
     const text = L.join("\n");
+    if (direct) {
+      const btn = f.querySelector("button[type=submit]"); btn.disabled = true; btn.textContent = "보내는 중…";
+      try {
+        await fetch(GFORM.action, { method: "POST", mode: "no-cors", body: new URLSearchParams({ [GFORM.entry]: text }) });
+        f.innerHTML = '<div class="done" tabindex="-1"><h2>보내주셔서 고마워요 🙏</h2><p>남겨주신 의견은 착한언니가 하나하나 읽고 고쳐 나갈게요.</p><a class="btn btn-dark" href="../tools/">AI 도구로 돌아가기</a><a class="btn btn-line" href="' + KAKAO + '" target="_blank" rel="noopener">상담도 받아보고 싶다면 카카오톡</a></div>';
+        f.querySelector(".done").focus(); scrollTo({ top: 0 });
+        return;
+      } catch { btn.disabled = false; btn.textContent = "보내기"; toast("전송이 안 됐어요. 아래 방법으로 보내주세요"); }
+    }
     const ok = await copy(text);
     const pv = document.getElementById("pv"), pt = document.getElementById("pv-t");
     pt.value = text; pv.hidden = ok;
