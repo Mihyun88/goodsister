@@ -3,6 +3,7 @@
   const D = window.GS_TIMELINE, el = document.getElementById("tl-box");
   if (!D || !el) return;
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const safeUrl = u => /^(https?:|mailto:|tel:)/i.test(String(u).trim()) ? esc(u) : "#"; // SEC-2
   const AREAS = ["살 때", "가질 때", "팔 때", "대출", "규제", "전월세", "증여"];
   const ST = { "시행": "st-on", "정부안": "st-plan", "검토": "st-plan", "종료": "st-off" };
   const state = { area: "", nowOnly: false, q: "" };
@@ -33,7 +34,7 @@
           <div class="tl-meta"><span class="tl-d">${esc(i.d)}</span><span class="tag">${esc(i.area)}</span><span class="tag dir-${i.dir === "강화" ? "up" : i.dir === "완화" ? "dn" : "nt"}">${esc(i.dir)}</span><span class="tag ${ST[i.st] || ""}">${esc(i.st)}</span>${i.now ? `<span class="tag st-now">지금 적용</span>` : ""}</div>
           <h4>${esc(i.t)}</h4><p>${esc(i.x)}</p>
           <p class="tl-me">👉 ${esc(i.me)}</p>
-          <a class="tl-src" href="${esc(i.src[1])}" target="_blank" rel="noopener">출처: ${esc(i.src[0])} ↗</a></article>`).join("")}</section>`;
+          <a class="tl-src" href="${safeUrl(i.src[1])}" target="_blank" rel="noopener">출처: ${esc(i.src[0])} ↗</a></article>`).join("")}</section>`;
     }
     list.innerHTML = html || `<p class="muted" style="padding:1rem 0">조건에 맞는 항목이 없어요.</p>`;
   }
