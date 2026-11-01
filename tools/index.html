@@ -3,39 +3,52 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <title>착한언니복덕방 AI 부동산 도구</title>
 <meta name="description" content="내 예산으로 살 수 있는 서울 아파트, 첫 자취 동네, 아파트 적정가를 국토부 실거래가로 확인하세요. 착한언니복덕방">
+<link rel="canonical" href="https://mihyun88.github.io/goodsister/tools/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="착한언니복덕방">
+<meta property="og:url" content="https://mihyun88.github.io/goodsister/tools/">
 <meta property="og:title" content="착한언니복덕방 AI 부동산 도구">
 <meta property="og:description" content="내 예산으로 서울 어디까지? 첫 자취 동네 추천, 이 아파트 비싸게 사는 걸까?">
-<meta property="og:image" content="img/banner.png">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
-<meta name="theme-color" content="#FAFAF8">
+<!-- [사람 확인 필요] 1200×630 공유 이미지로 교체 -->
+<meta property="og:image" content="https://mihyun88.github.io/goodsister/tools/img/banner.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" integrity="sha384-GIdEBaqGN9mNkDkMkzMHW8EKUqtpPIe/sLj1X7DIrnc9uPtLROJgmuDlh+3rBw0j" crossorigin="anonymous">
+<meta name="theme-color" content="#FAF8F5">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<a class="skip" href="#main">본문 바로가기</a>
 <header class="top">
-  <div class="brand"><a class="wm" href="../"><svg viewBox="0 0 40 30" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22 L20 6 L37 22"/><path d="M28 12 V5 H32 V15"/></svg>착한언니복덕방</a><span>AI 부동산 도구</span>
-    <nav class="sns"><a href="../">홈</a><a href="https://blog.naver.com/ellarang" target="_blank" rel="noopener">블로그</a><a href="https://www.instagram.com/goodsister4080/" target="_blank" rel="noopener">인스타</a><a href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener" class="kakao">카톡 상담</a></nav></div>
-  <nav class="tabs" role="tablist">
-    <button class="tab active" data-tab="budget">① 내 예산으로 서울 어디까지?</button>
-    <button class="tab" data-tab="rent">② 첫 자취 동네 추천기</button>
-    <button class="tab" data-tab="check">③ 이 아파트, 비싸게 사는 걸까?</button>
-    <button class="tab" data-tab="cost">🧮 부대비용</button>
-    <button class="tab" data-tab="market">📊 시황분석</button>
-    <button class="tab" data-tab="news">🗞️ 정책 뉴스</button>
-    <button class="tab" data-tab="timeline">📜 세금 타임라인</button>
-    <button class="tab" data-tab="jachwi">🏠 첫 자취방 가이드</button>
-    <button class="tab" data-tab="tips">🏡 부동산 꿀팁</button>
+  <div class="brand"><a class="wm" href="../" aria-label="착한언니복덕방 홈"><svg aria-hidden="true" viewBox="0 0 40 30" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22 L20 6 L37 22"/><path d="M28 12 V5 H32 V15"/></svg>착한언니복덕방</a><span>AI 부동산 도구</span>
+    <nav class="sns"><a href="../">홈</a><a href="https://blog.naver.com/ellarang" target="_blank" rel="noopener">블로그</a><a href="https://www.instagram.com/goodsister4080/" target="_blank" rel="noopener">인스타</a><a href="https://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener" class="kakao" data-track="tools_header_kakao">카톡 상담</a></nav></div>
+  <nav class="tabs" role="tablist" aria-label="도구 목록">
+    <span class="tab-grp" aria-hidden="true">계산</span>
+    <button class="tab active" role="tab" aria-selected="true" aria-controls="tab-budget" data-tab="budget">예산</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-rent" data-tab="rent">자취 동네</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-check" data-tab="check">가격 검토</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-cost" data-tab="cost">부대비용</button>
+    <span class="tab-sep" aria-hidden="true"></span><span class="tab-grp" aria-hidden="true">시장</span>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-market" data-tab="market">시황</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-news" data-tab="news">정책 뉴스</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-timeline" data-tab="timeline">세금 타임라인</button>
+    <span class="tab-sep" aria-hidden="true"></span><span class="tab-grp" aria-hidden="true">가이드</span>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-jachwi" data-tab="jachwi">자취방 가이드</button>
+    <button class="tab" role="tab" aria-selected="false" aria-controls="tab-tips" data-tab="tips">꿀팁</button>
   </nav>
 </header>
 
 <div id="nodata" class="notice" hidden></div>
 
-<main>
+<main id="main">
+<h1 class="sr-only">착한언니복덕방 AI 부동산 도구</h1>
 <!-- ① 예산 -->
-<section id="tab-budget" class="panel active">
-  <p class="hook">“현금 3억 있는데 서울 아파트 살 수 있을까요? AI에 넣어봤습니다.”</p>
+<section id="tab-budget" class="panel active" role="tabpanel">
+  <p class="hook">현금과 소득을 넣으면 지금, 1·3·5년 후 살 수 있는 서울 아파트를 찾아드려요.</p>
   <div class="grid">
     <form class="card form" id="f-budget">
       <fieldset><legend>지금 가진 돈</legend>
@@ -80,8 +93,8 @@
 </section>
 
 <!-- ② 자취 -->
-<section id="tab-rent" class="panel">
-  <p class="hook">“연세대 붙었는데 신촌 월세가 너무 비싸면 어디 살아야 할까요?”</p>
+<section id="tab-rent" class="panel" role="tabpanel">
+  <p class="hook">학교·직장과 예산을 넣으면 통근 시간 안의 동네를 실제 월세로 비교해드려요.</p>
   <div class="grid">
     <form class="card form" id="f-rent">
       <label>학교·직장<select name="dest" id="dest-sel"></select></label>
@@ -97,8 +110,8 @@
 </section>
 
 <!-- ③ 가격 검토 -->
-<section id="tab-check" class="panel">
-  <p class="hook">“이 가격에 사도 괜찮을까? 최근 거래·유사 평형·거래량으로 따져봤습니다.”</p>
+<section id="tab-check" class="panel" role="tabpanel">
+  <p class="hook">단지와 희망 가격을 넣으면 최근 거래·유사 단지와 비교해 적정가를 판단해드려요.</p>
   <div class="grid">
     <form class="card form" id="f-check">
       <label>아파트 이름<input name="q" id="apt-q" list="apt-list" placeholder="예: 래미안, 헬리오시티" autocomplete="off"><datalist id="apt-list"></datalist></label>
@@ -111,13 +124,13 @@
   </div>
 </section>
 
-<section id="tab-cost" class="panel">
+<section id="tab-cost" class="panel" role="tabpanel">
   <p class="hook">“집값 말고 실제로 더 드는 돈, 미리 계산해볼까요?”</p>
   <div class="grid">
     <form class="card form" id="f-cost">
       <div class="seg" role="radiogroup" aria-label="계산 종류">
-        <label><input type="radio" name="mode" value="buy" checked><span>🏠 집 살 때</span></label>
-        <label><input type="radio" name="mode" value="rent"><span>🔑 전월세 계약할 때</span></label>
+        <label><input type="radio" name="mode" value="buy" checked><span><span aria-hidden="true">🏠</span> 집 살 때</span></label>
+        <label><input type="radio" name="mode" value="rent"><span><span aria-hidden="true">🔑</span> 전월세 계약할 때</span></label>
       </div>
       <label>집 종류
         <select name="kind"><option value="apt">아파트·주택</option><option value="offi">오피스텔 (전용 85㎡ 이하·주거용)</option></select></label>
@@ -161,8 +174,8 @@
     <div class="card out" id="o-cost"><p class="muted">조건을 넣고 계산해 보세요. 세금·등기비용·중개보수·보증보험을 한 번에 보여드려요.</p></div>
   </div>
 </section>
-<section id="tab-market" class="panel">
-  <p class="hook">“이번 주 서울 아파트, 어디가 오르고 어디가 많이 팔렸을까?”</p>
+<section id="tab-market" class="panel" role="tabpanel">
+  <p class="hook">이번 주 서울 아파트 가격 변동과 거래가 많은 단지를 보여드려요.</p>
   <div class="card out" id="mk-weekly"></div>
   <div class="card out" style="margin-top:1rem">
     <h3>월별 거래량 (서울 아파트 매매 신고 건수)</h3>
@@ -178,27 +191,26 @@
       · 평당 중위가는 전용면적 기준(전용 1평=3.3㎡)으로 계산했어요.</div>
   </div>
 </section>
-<section id="tab-timeline" class="panel"><div class="card out" id="tl-box"></div></section>
-<section id="tab-news" class="panel"><div class="card out" id="news-box"></div></section>
-<section id="tab-jachwi" class="panel"><article class="guide card" data-root="jachwi"></article></section>
-<section id="tab-tips" class="panel"><article class="guide card" data-root="tips"></article></section>
+<section id="tab-timeline" class="panel" role="tabpanel"><div class="card out" id="tl-box"></div></section>
+<section id="tab-news" class="panel" role="tabpanel"><div class="card out" id="news-box"></div></section>
+<section id="tab-jachwi" class="panel" role="tabpanel"><article class="guide card" data-root="jachwi"></article></section>
+<section id="tab-tips" class="panel" role="tabpanel"><article class="guide card" data-root="tips"></article></section>
 </main>
 
 <section class="cta">
   <div><b>내 조건으로 직접 상담받고 싶다면?</b><br>현금·소득·출퇴근지만 남겨주시면 착한언니가 같이 좁혀드려요.</div>
-  <a class="btn-k" href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">💬 카카오톡 채널로 물어보기</a>
+  <a class="btn-k" href="https://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener" data-track="tools_footer_kakao"><span aria-hidden="true">💬</span> 카카오톡 채널로 물어보기</a>
 </section>
 <footer class="foot">
-  <p class="links"><a href="https://blog.naver.com/ellarang" target="_blank" rel="noopener">📝 네이버 블로그 blog.naver.com/ellarang</a> · <a href="https://www.instagram.com/goodsister4080/" target="_blank" rel="noopener">📸 인스타그램 @goodsister4080</a> · <a href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">💛 카카오톡 채널</a></p>
+  <p class="links"><a href="https://blog.naver.com/ellarang" target="_blank" rel="noopener">네이버 블로그 blog.naver.com/ellarang</a> <a href="https://www.instagram.com/goodsister4080/" target="_blank" rel="noopener">인스타그램 @goodsister4080</a> <a href="https://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">카카오톡 채널</a></p>
   <p>© 착한언니복덕방 · 서울에서 부동산 12년 · 이대·신촌 오피스텔 월세·전세·매매</p>
   <p>신촌자이엘라부동산 · 대표 신수경 · 중개사무소 등록번호 11410-2019-00062 · 서울시 서대문구 대현동 104-36 신촌자이엘라 B101호 · 전화 02-364-4080 · ellarang@naver.com · 사업자등록번호 204-29-31241</p>
   <p id="src"></p>
   <p>참고용 정보이며 투자·대출 판단의 근거가 될 수 없습니다. 실거래는 계약 후 30일 내 신고되므로 최근 1~2개월 수치는 이후 늘어날 수 있습니다.</p>
 </footer>
-<div class="mbar"><a href="tel:023644080" class="mb-tel">📞 전화</a><a href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener" class="mb-k">💬 카카오톡 상담</a></div>
+<div class="mbar"><a href="tel:023644080" class="mb-tel" data-track="mbar_tel">전화</a><a href="https://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener" class="mb-k" data-track="mbar_kakao">카카오톡 상담</a></div>
 
-<script src="data/trades.js"></script>
-<script src="data/rents.js"></script>
+<script src="loader.js"></script>
 <script src="data/market.js"></script>
 <script src="data/news.js"></script>
 <script src="data/timeline.js"></script>
@@ -211,16 +223,6 @@
 <script src="timeline-ui.js"></script>
 <script src="cost.js"></script>
 <script src="share.js"></script>
-<script>
-/* 모바일: 결과가 나오면 결과로 스크롤, 활성 탭을 화면 안으로 */
-(() => {
-  const mob = () => matchMedia("(max-width:860px)").matches;
-  ["budget", "rent", "check"].forEach(k => document.getElementById("f-" + k).addEventListener("submit", () =>
-    setTimeout(() => { if (mob()) document.getElementById("o-" + k).scrollIntoView({ behavior: "smooth", block: "start" }); }, 60)));
-  const keep = () => { const a = document.querySelector(".tab.active"); a && a.scrollIntoView({ inline: "center", block: "nearest" }); };
-  document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => { scrollTo({ top: 0, behavior: "instant" }); setTimeout(keep); }));
-  addEventListener("hashchange", () => setTimeout(keep)); setTimeout(keep, 50);
-})();
-</script>
+<script src="mobile.js"></script>
 </body>
 </html>

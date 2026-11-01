@@ -6,7 +6,7 @@
   if (G) for (const [k, ids] of Object.entries(G.roots)) ids.forEach(id => { if (!rootOf[id]) rootOf[id] = k; });
 
   function showTab(key) {
-    document.querySelectorAll(".tab").forEach(x => x.classList.toggle("active", x.dataset.tab === key));
+    document.querySelectorAll(".tab").forEach(x => { x.classList.toggle("active", x.dataset.tab === key); x.setAttribute("aria-selected", String(x.dataset.tab === key)); });
     document.querySelectorAll(".panel").forEach(p => p.classList.toggle("active", p.id === "tab-" + key));
   }
 

@@ -1,4 +1,4 @@
-:root{--pink:#E8005A;--navy:#1a1d2e;--cream:#FFF8F0;--line:#eee;--muted:#888;--ok:#1a8f5a;--warn:#d98a00;--bad:#d0284a}
+:root{--pink:#C2325F;--navy:#1a1d2e;--cream:#FFF8F0;--line:#eee;--muted:#6B6963;--ok:#0F7A54;--warn:#8A5C00;--bad:#B8213F}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Noto Sans KR',system-ui,sans-serif;color:#222;background:var(--cream);line-height:1.55}
 .top{background:var(--navy);color:#fff;padding:1rem 1.2rem .4rem;position:sticky;top:0;z-index:5}
@@ -59,7 +59,7 @@ details.adv label{margin:.7rem 0 0}
 input:disabled+*{color:var(--muted)}
 td.r,th.r{white-space:nowrap}.out{overflow-x:auto}
 /* ---- 브랜드 ---- */
-:root{--pink:#D64270;--brand:#D64270}
+:root{--pink:#C2325F;--brand:#C2325F}
 .top{background:var(--brand)}
 .brand{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
 .brand .logo{height:46px;display:block}
@@ -144,12 +144,12 @@ body{font-family:"Pretendard Variable",Pretendard,"Noto Sans KR",system-ui,sans-
 .top{background:rgba(250,250,248,.94);backdrop-filter:blur(10px);color:var(--ink);border-bottom:1px solid var(--line);padding:.7rem 1.2rem 0}
 .brand .wm{display:flex;align-items:center;gap:6px;color:var(--brand);font-weight:900;font-size:1.05rem;text-decoration:none;letter-spacing:-.02em}
 .brand .wm svg{width:24px;height:18px}
-.brand>span{color:#8E8C86;font-size:.82rem;font-weight:600}
+.brand>span{color:#6B6963;font-size:.82rem;font-weight:600}
 .sns a{color:#5C5A55;border-color:var(--line);background:#fff}
 .sns a.kakao{background:#FEE500;border-color:#FEE500;color:#191919}
 .tabs{gap:.2rem;margin:0 -1.2rem;padding:0 1.2rem;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .tabs::-webkit-scrollbar{display:none}
-.tab{color:#8E8C86;font-weight:600;padding:.75rem .7rem}
+.tab{color:#6B6963;font-weight:600;padding:.75rem .7rem}
 .tab.active{color:var(--ink);border-color:var(--brand)}
 .hook{border-left:0;padding-left:0;font-size:clamp(1.15rem,3.6vw,1.45rem);font-weight:800;letter-spacing:-.02em;color:var(--ink)}
 .card{border:1px solid var(--line);box-shadow:none;border-radius:16px}
@@ -201,7 +201,7 @@ body{font-family:"Pretendard Variable",Pretendard,"Noto Sans KR",system-ui,sans-
 .seg span{display:block;text-align:center;padding:.6rem .2rem;border-radius:9px;font-size:.86rem;font-weight:600;color:#5C5A55;transition:all .15s}
 .seg input:checked+span{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.08)}
 .seg input:focus-visible+span{outline:2px solid var(--brand)}
-.seg-hint{font-size:.78rem;color:#8E8C86;margin:-.1rem 0 .7rem;line-height:1.5}
+.seg-hint{font-size:.78rem;color:#6B6963;margin:-.1rem 0 .7rem;line-height:1.5}
 [hidden]{display:none!important}
 @media(max-width:860px){
   #o-cost table.mk tr:first-child{display:none}
@@ -213,7 +213,7 @@ body{font-family:"Pretendard Variable",Pretendard,"Noto Sans KR",system-ui,sans-
 /* ---- 세금 타임라인 ---- */
 .tl-sum{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:1rem}
 .tl-sum div{background:#F4F2EE;border-radius:12px;padding:.7rem .8rem;text-align:center}
-.tl-sum b{display:block;font-size:1.4rem;font-weight:800}.tl-sum span{font-size:.75rem;color:#8E8C86}
+.tl-sum b{display:block;font-size:1.4rem;font-weight:800}.tl-sum span{font-size:.75rem;color:#6B6963}
 .tl-ctrl{position:sticky;top:96px;z-index:3;background:#fff;padding:.4rem 0 .6rem;border-bottom:1px solid var(--line);margin-bottom:.4rem}
 .tl-ctrl input[type=search]{width:100%;font:inherit;font-size:16px;padding:.65rem .8rem;border:1px solid var(--line);border-radius:10px;background:#FAFAF8}
 .tl-now{margin:.5rem 0 .2rem;font-size:.88rem;font-weight:600;display:flex;gap:.4rem;align-items:center}
@@ -221,7 +221,7 @@ body{font-family:"Pretendard Variable",Pretendard,"Noto Sans KR",system-ui,sans-
 .tl-ctrl .chip{white-space:nowrap}
 .tl-gov{margin-top:1.4rem}
 .tl-gh{border-left:4px solid var(--brand);padding:.2rem 0 .2rem .8rem;margin-bottom:.6rem}
-.tl-gh b{font-size:1.1rem}.tl-gh span{font-size:.8rem;color:#8E8C86;margin-left:.5rem}.tl-gh p{font-size:.86rem;color:#5C5A55;margin-top:.2rem}
+.tl-gh b{font-size:1.1rem}.tl-gh span{font-size:.8rem;color:#6B6963;margin-left:.5rem}.tl-gh p{font-size:.86rem;color:#5C5A55;margin-top:.2rem}
 .tl-it{position:relative;margin-left:.45rem;padding:.9rem 0 .9rem 1.1rem;border-left:2px solid var(--line)}
 .tl-it::before{content:"";position:absolute;left:-7px;top:1.15rem;width:12px;height:12px;border-radius:50%;background:#fff;border:2px solid #C9C7C1}
 .tl-it.is-now::before{background:var(--brand);border-color:var(--brand)}
@@ -229,12 +229,46 @@ body{font-family:"Pretendard Variable",Pretendard,"Noto Sans KR",system-ui,sans-
 .tl-d{font-weight:800;font-size:.85rem;margin-right:.2rem}
 .tl-meta .tag{margin-left:0}
 .tag.dir-up{background:#fde8ec;color:#c0283f}.tag.dir-dn{background:#e7f1fb;color:#1f5fae}.tag.dir-nt{background:#efefef;color:#555}
-.tag.st-on{background:#e8f6ef;color:#1a7f4f}.tag.st-plan{background:#fff4e0;color:#a36a00}.tag.st-off{background:#f1f1f1;color:#888}
+.tag.st-on{background:#e8f6ef;color:#0F7A54}.tag.st-plan{background:#fff4e0;color:#8A5C00}.tag.st-off{background:#f1f1f1;color:#5F5B55}
 .tag.st-now{background:var(--brand);color:#fff}
 .tl-it h4{font-size:1rem;margin:.45rem 0 .3rem;letter-spacing:-.01em}
 .tl-it p{font-size:.88rem;color:#444;line-height:1.65}
 .tl-it .tl-me{margin-top:.4rem;background:#FFF5F8;border-radius:8px;padding:.5rem .7rem;color:#1A1917;font-weight:500}
-.tl-src{display:inline-block;margin-top:.4rem;font-size:.75rem;color:#8E8C86}
+.tl-src{display:inline-block;margin-top:.4rem;font-size:.75rem;color:#6B6963}
 @media(max-width:860px){.tl-sum{grid-template-columns:repeat(2,1fr)}.tl-ctrl{top:88px}}
 .tl-link{display:block;background:#1A1917;color:#fff;border-radius:12px;padding:.85rem 1rem;margin:0 0 1rem;text-decoration:none;font-size:.9rem}.tl-link b{color:#ffb3c9}
 @media(max-width:860px){.tl-sum{grid-template-columns:repeat(4,1fr);gap:.35rem}.tl-sum div{padding:.5rem .2rem}.tl-sum b{font-size:1.1rem}.tl-sum span{font-size:.66rem}.tl-ctrl{position:static}}
+
+/* ===== 수정 지시서 반영 (V1·T1·T2·T3·T5·T6·A2·A5) ===== */
+:root{--mute:#6B6963}
+.muted{color:#6B6963}
+.u{color:#6B6963}
+.form small{color:#6B6963}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip{position:absolute;left:12px;top:-60px;z-index:100;background:#1A1917;color:#fff;padding:12px 16px;border-radius:8px;font-weight:700;text-decoration:none}
+.skip:focus{top:12px}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+/* T5 탭 묶음 */
+.tabs{align-items:center}
+.tab-grp{font-size:.7rem;font-weight:700;color:#6B6963;letter-spacing:.04em;white-space:nowrap;padding:0 .1rem 0 .2rem}
+.tab-sep{width:1px;height:18px;background:var(--line);margin:0 .5rem;flex:none}
+.tab{min-height:44px;white-space:nowrap}
+/* A2 터치 영역 */
+.sns a{min-height:44px;display:inline-flex;align-items:center}
+.foot .links a{display:inline-flex;min-height:44px;align-items:center;margin-right:12px}
+/* T1 착한언니에게 보내기 */
+.send-k{display:flex;width:100%;justify-content:center;align-items:center;gap:6px;margin:.9rem 0 1rem;min-height:48px;border:0;border-radius:10px;background:#FEE500;color:#191919;font:inherit;font-weight:700;font-size:.95rem;cursor:pointer}
+/* T2 공유 바 주 버튼: 먹색 (노랑은 카톡 상담 버튼에만) */
+.sb-btns button.sb-main{background:#1A1917;border-color:#1A1917;color:#fff}
+.sb-btns button{min-height:44px}
+/* T3 표 */
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.more-rows{display:block;width:100%;margin:.5rem 0 0;min-height:44px;border:1px solid var(--line);background:#fff;border-radius:10px;font:inherit;font-weight:600;cursor:pointer}
+/* T4 서비스 지역 블록 */
+.homeblock{border:1px solid var(--line);border-radius:12px;padding:.9rem 1rem;margin:0 0 1rem;background:#FAF8F5}
+.homeblock h3{margin:0 0 .4rem!important;font-size:.98rem}
+.homeblock ul{list-style:none}.homeblock li{display:flex;gap:.4rem;align-items:baseline;padding:.35rem 0;border-bottom:1px solid var(--line);font-size:.9rem;flex-wrap:wrap}
+.homeblock li:last-child{border-bottom:0}.homeblock li .r{margin-left:auto;font-weight:700}
+.homeblock a{color:var(--brand);font-weight:700}
+/* T6 단위 환산 */
+.conv{display:block;font-size:.8rem;color:#55524C;margin-top:.25rem;min-height:1em}
