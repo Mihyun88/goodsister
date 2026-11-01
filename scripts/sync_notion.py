@@ -17,6 +17,17 @@ ROOTS = [  # (탭 키, 페이지 ID)
 ]
 OUT = Path(__file__).resolve().parent.parent / "tools" / "guide"
 IMG = OUT / "img"
+SAFE_SCHEMES = ("http://", "https://", "mailto:", "tel:")
+
+
+def safe_link(u):
+    """SEC-2·SEC-3: 허용된 스킴만 링크로, 카카오 채널은 https 로."""
+    u = (u or "").strip()
+    if u.lower().startswith("http://pf.kakao.com"):
+        u = "https://" + u[len("http://"):]
+    return u if u.lower().startswith(SAFE_SCHEMES) else None
+
+
 HIDDEN = set()  # 루트에 연결됐지만 비공개라 못 읽은 페이지
 UA = {"user-agent": "Mozilla/5.0 (goodsister-site-sync)"}
 UUID = re.compile(r"([0-9a-f]{8})-?([0-9a-f]{4})-?([0-9a-f]{4})-?([0-9a-f]{4})-?([0-9a-f]{12})")
@@ -118,7 +129,7 @@ class Renderer:
                 elif k == "c": s = f"<code>{s}</code>"
                 elif k == "h": s = f'<span class="c-{a[1]}">{s}</span>'
                 elif k == "a":
-                    href, internal = self.link_for(a[1]) if re.search(r"notion\.(so|site|com)", a[1]) else (a[1], False)
+                    href, internal = self.link_for(a[1]) if re.search(r"notion\.(so|site|com)", a[1]) else (safe_link(a[1]), False)
                     s = s if href is None else f'<a href="{html.escape(href)}"{"" if internal else " target=_blank rel=noopener"}>{s}</a>'
             out.append(s)
         return "".join(out)
@@ -194,11 +205,12 @@ class Renderer:
             src = (p.get("source") or [[""]])[0][0] or f.get("display_source", "")
             if not src:
                 return ""
-            ext = (re.search(r"\.(png|jpe?g|gif|webp|svg)$", src.split("?")[0].lower()) or [None, "png"])[1].replace("jpeg", "jpg")
+            ext = "svg" if src.split("?")[0].lower().endswith(".svg") else "webp"  # S-5: 사진은 WebP 로 변환
             name = hashlib.sha1(src.split("?")[0].encode()).hexdigest()[:16] + "." + ext
             self.images.append((bid, src, b.get("space_id", ""), name))
             cap = self.rich(p.get("caption"))
-            return f'<figure><img loading="lazy" src="guide/img/{name}" alt="">{f"<figcaption>{cap}</figcaption>" if cap else ""}</figure>'
+            alt = html.escape("".join(x[0] for x in (p.get("caption") or [])).strip())  # A8: 캡션을 대체텍스트로
+            return f'<figure><img loading="lazy" src="guide/img/{name}" alt="{alt}">{f"<figcaption>{cap}</figcaption>" if cap else ""}</figure>'
         if t == "page":
             href, internal = self.link_for(bid)
             if href is None:
@@ -213,7 +225,9 @@ class Renderer:
             name = self.pages.get(tid, {}).get("title") or self.page_title(tid) or "노션 페이지"
             return f'<a class="pagelink" href="{href}"{"" if internal else " target=_blank rel=noopener"}>📄 {html.escape(name)}</a>'
         if t == "bookmark":
-            link = (p.get("link") or [[""]])[0][0]
+            link = safe_link((p.get("link") or [[""]])[0][0])
+            if not link:
+                return f"<p>{title}</p>" if title else ""
             return f'<a class="pagelink" href="{html.escape(link)}" target=_blank rel=noopener>🔗 {title or html.escape(link)}</a>'
         if t in ("collection_view", "collection_view_page"):
             return (f'<div class="callout c-gray_background"><span class="ci">🗂️</span><div class="cb"><p><b>{title or "노션 표"}</b> — '
@@ -300,6 +314,15 @@ def main():
              f"{SITE}/image/{urllib.parse.quote(src, safe='')}?table=block&id={bid}&spaceId={space}&width=1200&cache=v2")
         try:
             data = urllib.request.urlopen(urllib.request.Request(u, headers=UA), timeout=60).read()
+            if name.endswith(".webp"):
+                from io import BytesIO
+                from PIL import Image
+                im = Image.open(BytesIO(data))
+                if im.mode not in ("RGB", "RGBA"):
+                    im = im.convert("RGBA" if "transparency" in im.info or im.mode in ("P", "LA") else "RGB")
+                if im.width > 1200:
+                    im = im.resize((1200, round(im.height * 1200 / im.width)), Image.LANCZOS)
+                buf = BytesIO(); im.save(buf, "WEBP", quality=80); data = buf.getvalue()
             path.write_bytes(data)
             print(f"  이미지 {name} {len(data)//1024}KB", flush=True)
         except Exception as e:
