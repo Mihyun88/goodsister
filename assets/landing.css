@@ -164,6 +164,8 @@ section{padding:88px 0}
 @media(max-width:860px){
   .about{grid-template-columns:1fr;gap:26px}
   .pcard{order:-1;min-height:0;max-height:120px;flex-direction:row;align-items:center;padding:18px 20px}
+  .pcard{justify-content:center}
+  .about .hello{text-align:center}
   .pcard p{display:none}
   .promise{grid-template-columns:1fr;gap:10px;margin-top:28px}
   .pr{padding:18px}
