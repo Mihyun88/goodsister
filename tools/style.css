@@ -203,3 +203,10 @@ body{font-family:"Pretendard Variable",Pretendard,"Noto Sans KR",system-ui,sans-
 .seg input:focus-visible+span{outline:2px solid var(--brand)}
 .seg-hint{font-size:.78rem;color:#8E8C86;margin:-.1rem 0 .7rem;line-height:1.5}
 [hidden]{display:none!important}
+@media(max-width:860px){
+  #o-cost table.mk tr:first-child{display:none}
+  #o-cost table.mk tr{display:grid;grid-template-columns:1fr auto;border-bottom:1px solid var(--line)}
+  #o-cost table.mk td{border:0;white-space:normal}
+  #o-cost table.mk td:nth-child(3){grid-column:1/-1;padding-top:0;font-size:.76rem}
+  #o-cost table.mk td:nth-child(3):empty{display:none}
+}

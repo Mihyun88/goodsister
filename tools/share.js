@@ -4,7 +4,7 @@
   const $ = (s, el = document) => el.querySelector(s);
   const T = s => (s || "").replace(/\s+/g, " ").trim();
   const KAKAO = "http://pf.kakao.com/_xcxoBxnX";
-  const FORMS = { budget: "f-budget", rent: "f-rent", check: "f-check" };
+  const FORMS = { budget: "f-budget", rent: "f-rent", check: "f-check", cost: "f-cost" };
 
   // ---------- 입력값 ↔ 링크 ----------
   function params(key) {
@@ -32,6 +32,7 @@
       if (el.type === "checkbox") el.checked = v === "1"; else el.value = v;
     }
     if (key === "budget" && window.GS_syncLoan) window.GS_syncLoan();
+    if (key === "cost" && window.GS_syncCost) window.GS_syncCost();
     if (key === "budget" && q.get("gu")) {
       const set = new Set(q.get("gu").split(","));
       document.querySelectorAll("#gu-chips .chip").forEach(c => c.classList.toggle("on", set.has(c.textContent)));
@@ -80,6 +81,15 @@ ${top.length ? `\n🏢 추천 단지 (최근 6개월 중위가)\n${top.join("\n"
 \n📝 조건: ${dest} · 보증금 ${Number(v("dep")).toLocaleString()}만 · 월세 ${v("mon")}만 이하 · ${f.elements.size.selectedOptions[0].text.split(" (")[0]} · 편도 ${v("max")}분
 \n✅ ${verdict}
 ${top.length ? `\n🗺️ 동네 비교\n${top.join("\n")}` : ""}${tail("rent")}`;
+    }
+    if (key === "cost") {
+      const verdict = T($("#o-cost .verdict")?.textContent);
+      const blocks = [...document.querySelectorAll("#o-cost h3")].map(h => {
+        const t = h.nextElementSibling; if (!t || t.tagName !== "TABLE") return "";
+        const lines = [...t.querySelectorAll("tr")].slice(1).map(tr => { const td = tr.querySelectorAll("td"); return td.length >= 2 ? `· ${T(td[0].textContent)}: ${T(td[1].textContent)}${td[2] && T(td[2].textContent) && !/소계/.test(td[0].textContent) ? ` (${T(td[2].textContent)})` : ""}` : ""; }).filter(Boolean);
+        return `\n${T(h.textContent)}\n${lines.join("\n")}`;
+      }).join("\n");
+      return `${head("부대비용 계산")}\n\n🧮 ${verdict}\n${blocks}${tail("cost")}`;
     }
     if (key === "check") {
       const verdict = T($("#o-check .verdict")?.textContent);
