@@ -274,6 +274,24 @@ footer{background:#141312}
 .wm-big small{color:#948E86;font-size:.85rem}
 .partner .card b{font-size:1.1rem;color:#F4F1EC}.partner .card > span{color:#948E86;font-size:.8rem}
 @media(max-width:820px){.partner .card{aspect-ratio:auto;gap:28px;padding:26px}}
+
+/* ===== v5: 무채색 + 핑크는 로고·첫 화면만 ===== */
+.btn-k,.nav .btn-k,.big-cta .btn-k,.quiz .btn-k{background:var(--ink);color:#fff}
+.big-cta .btn-k{background:#fff;color:var(--ink)}
+.mbar .btn-k{background:var(--ink);color:#fff}
+.up,.dn,.live b .up{color:var(--ink)!important}
+.eyebrow i,.brandbg .eyebrow i{color:var(--ink)}
+.worry .n,.pr .n{color:var(--mute)}
+.dark .pr .n{color:#8E8880}
+.worry .sol small,.w2 .sol small,.w3 .sol small,.w4 .sol small{color:var(--mute)}
+.partner li::before{background:var(--ink)}
+.wm-big svg{color:#F4F1EC}
+.ribbon span::after{color:#6E6962}
+.motto em{color:#F4F1EC;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
+.tips a .i{font-size:.78rem;font-weight:700;color:var(--mute);width:28px;font-variant-numeric:tabular-nums}
+.tips a:hover{color:var(--ink)}
+.quiz .res .list a:hover{border-color:var(--ink);color:var(--ink)}
+.opt:hover{border-color:var(--ink)}
 </style>
 </head>
 <body>
@@ -282,7 +300,7 @@ footer{background:#141312}
   <a class="logo" href="./" aria-label="착한언니복덕방 홈"><svg viewBox="0 0 40 30" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22 L20 6 L37 22"/><path d="M28 12 V5 H32 V15"/></svg>착한언니복덕방</a>
   <nav class="menu">
     <a href="#worry">이런 고민</a><a href="#about">착한언니</a><a href="#tools">AI 도구</a><a href="#tips">꿀팁</a><a href="#contact">상담</a>
-    <a class="btn btn-k btn-sm" href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">💬 카톡 상담</a>
+    <a class="btn btn-k btn-sm" href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">카톡 상담</a>
   </nav>
   <button class="burger" aria-label="메뉴" onclick="document.getElementById('drawer').classList.toggle('open')"><span></span><span></span><span></span></button>
 </div></header>
@@ -398,8 +416,8 @@ footer{background:#141312}
   <div class="sec-head rv"><div class="eyebrow"><i>05</i>Tips</div><h2>현장에서 매일 받는 질문,<br>꿀팁으로 정리했어요</h2></div>
   <div class="tips fold" id="tiplist"></div>
   <div class="sns">
-    <a class="btn btn-line btn-sm" href="https://blog.naver.com/ellarang" target="_blank" rel="noopener">📝 네이버 블로그 이웃추가</a>
-    <a class="btn btn-line btn-sm" href="https://www.instagram.com/goodsister4080/" target="_blank" rel="noopener">📸 인스타그램 @goodsister4080</a>
+    <a class="btn btn-line btn-sm" href="https://blog.naver.com/ellarang" target="_blank" rel="noopener">네이버 블로그 이웃추가</a>
+    <a class="btn btn-line btn-sm" href="https://www.instagram.com/goodsister4080/" target="_blank" rel="noopener">인스타그램 @goodsister4080</a>
   </div>
 </div></section>
 
@@ -413,9 +431,9 @@ footer{background:#141312}
   </div>
   <div class="big-cta rv">
     <div><h3>지금 바로 물어보세요</h3><p><span class="nw">이대·신촌 오피스텔</span> · <span class="nw">마포·서대문 아파트</span> · <span class="nw">첫 자취</span> · <span class="nw">첫 집</span></p></div>
-    <a class="btn btn-k" href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">💬 카카오톡 채널로 상담하기</a>
+    <a class="btn btn-k" href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">카카오톡 채널로 상담하기</a>
   </div>
-  <p class="contact-meta">📞 <a href="tel:023644080" style="text-decoration:underline">02-364-4080</a> · ✉️ ellarang@naver.com</p>
+  <p class="contact-meta">전화 <a href="tel:023644080" style="text-decoration:underline">02-364-4080</a> · ellarang@naver.com</p>
 </div></section>
 
 <footer><div class="wrap">
@@ -429,8 +447,8 @@ footer{background:#141312}
 </div></footer>
 
 <div class="mbar">
-  <a class="btn btn-line" href="tel:023644080">📞 전화</a>
-  <a class="btn btn-k" href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">💬 카카오톡 상담</a>
+  <a class="btn btn-line" href="tel:023644080">전화</a>
+  <a class="btn btn-k" href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">카카오톡 상담</a>
 </div>
 
 <script src="tools/data/market.js"></script>
@@ -494,7 +512,7 @@ footer{background:#141312}
     return `<div class="res"><div class="step">진단 결과</div><div class="bar"><i style="width:100%"></i></div>
       <h3>나는 '${typeTxt}' 타입</h3><p>${tip}</p>
       <div class="list">${list.map(([h, t]) => `<a href="${h}">${esc(t)}<span>→</span></a>`).join("")}</div>
-      <a class="btn btn-k" style="width:100%" href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">💬 이 결과로 착한언니에게 상담받기</a>
+      <a class="btn btn-k" style="width:100%" href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">이 결과로 착한언니에게 상담받기</a>
       <div style="text-align:center"><button class="again" type="button">다시 하기</button></div></div>`;
   }
   const box = $("quizbox"); let ans = [];
@@ -510,8 +528,8 @@ footer{background:#141312}
 
   // 꿀팁 목차 (노션에서 자동 반영)
   if (window.GS_TOC) {
-    const item = (p, k) => `<a href="tools/#${p.h}" class="${k >= 3 ? "x" : ""}"><span class="i">${p.i}</span>${esc(p.t.trim().replace(/\s*\|.*$/, ""))}</a>`;
-    $("tiplist").innerHTML = `<h3>🏠 첫 자취방 가이드</h3>${T.jachwi.map(item).join("")}<h3>🏡 내 집 마련 · 계약 꿀팁</h3>${T.tips.map(item).join("")}
+    const item = (p, k) => `<a href="tools/#${p.h}" class="${k >= 3 ? "x" : ""}"><span class="i">${String(k + 1).padStart(2, "0")}</span>${esc(p.t.trim().replace(/\s*\|.*$/, ""))}</a>`;
+    $("tiplist").innerHTML = `<h3>첫 자취방 가이드</h3>${T.jachwi.map(item).join("")}<h3>내 집 마련 · 계약 꿀팁</h3>${T.tips.map(item).join("")}
       <button class="btn btn-line more" type="button">꿀팁 전체 보기</button>`;
     $("tiplist").querySelector(".more").onclick = () => $("tiplist").classList.remove("fold");
   }
