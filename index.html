@@ -221,6 +221,59 @@ footer .disc{margin-top:16px;color:#6E6C66;font-size:.74rem}
   .steps{gap:10px}.st{padding:18px 18px;display:grid;grid-template-columns:auto 1fr;column-gap:14px;align-items:start}
   .st .n{grid-row:span 2}.st b{margin:2px 0 4px}
 }
+
+/* ===== v4: 절제된 톤 (웜 뉴트럴 + 먹색 + 포인트 핑크) ===== */
+:root{--bg:#FAF8F5;--sand:#F1ECE5;--ink:#1C1A19;--sub:#5F5A53;--mute:#948E86;--line:#E4DED6}
+body{background:var(--bg)}
+.nav{background:rgba(250,248,245,.92)}
+.pinkbg,.beige,.gray{background:var(--sand)}
+#worry{background:#fff}
+#quiz{background:var(--sand)}
+#tools{background:#fff}
+.brandbg{background:var(--sand);color:var(--ink)}
+.brandbg .sec-head h2{color:var(--ink)}.brandbg .sec-head p,.brandbg .eyebrow{color:var(--mute)}.brandbg .eyebrow i{color:var(--brand)}
+.brandbg .st{box-shadow:none;border:1px solid var(--line)}.brandbg .st .n{background:var(--ink)}
+.brandbg .big-cta,.big-cta{background:var(--ink)}
+.big-cta h3{color:#fff}
+.brandbg .contact-meta,.brandbg .contact-meta a{color:var(--sub)}
+.dark{background:var(--ink)}
+footer{background:#141312}
+/* 카드: 컬러 줄·그림자 제거, 가는 선 */
+.worry,.tool,.st,.live div,.quiz{border:1px solid var(--line)!important;box-shadow:none!important}
+.worry::before{display:none}
+.worry:hover,.tool:hover{border-color:var(--ink)!important;transform:translateY(-2px)}
+.worry .n,.pr .n{color:var(--brand);font-size:1rem;font-weight:700;letter-spacing:.06em}
+.wic,.tool .ic{width:42px;height:42px;border-radius:50%;background:var(--sand)!important;color:var(--ink);display:grid;place-items:center}
+.wic svg,.tool .ic svg{width:22px;height:22px}
+.worry .sol,.w2 .sol,.w3 .sol,.w4 .sol{border-top:1px solid var(--line);border-color:var(--line)}
+.worry .sol small,.w2 .sol small,.w3 .sol small,.w4 .sol small{color:var(--brand)}
+.worry .go,.w2 .go,.w3 .go,.w4 .go,.tool .go{color:var(--ink);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
+/* 대표 도구: 먹색 카드 */
+.tool.feat{background:var(--ink)!important;color:#F4F1EC;border-color:var(--ink)!important}
+.tool.feat p{color:#BDB7AE}.tool.feat .ic{background:rgba(255,255,255,.08)!important;color:#fff}.tool.feat .go{color:#fff}
+/* 동네 리본: 먹색 바탕, 차분하게 */
+.ribbon{background:var(--ink);color:#E9E4DC;font-weight:600;font-size:clamp(.95rem,2.2vw,1.15rem);padding:16px 0;letter-spacing:.02em}
+.ribbon span::after{content:"·";color:var(--brand);opacity:1;font-size:1.2em;top:-.05em;right:-6px}
+.ribbon .track{animation-duration:60s}
+/* 소개 카드 */
+.partner .card{background:var(--ink)}
+/* 꿀팁 라벨 */
+.tips h3{background:transparent;color:var(--mute);padding:0;border-radius:0;font-weight:600;letter-spacing:.02em}
+/* 퀴즈 */
+#quiz .quiz{border:1px solid var(--line)!important}
+.opt{background:#fff}
+.quiz .bar i{background:var(--ink)}
+/* 히어로 곡선 톤 다운 */
+.hero-chart path[stroke]{stroke:#D64270;opacity:.75}
+.live b .up{color:#C2334F}
+
+.partner .card{justify-content:space-between}
+.wm-big{display:flex;flex-direction:column;align-items:flex-start;gap:6px;color:#F4F1EC}
+.wm-big svg{width:54px;height:40px;color:var(--brand)}
+.partner .card .wm-big span{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800;letter-spacing:-.03em;opacity:1;color:#F4F1EC}
+.wm-big small{color:#948E86;font-size:.85rem}
+.partner .card b{font-size:1.1rem;color:#F4F1EC}.partner .card > span{color:#948E86;font-size:.8rem}
+@media(max-width:820px){.partner .card{aspect-ratio:auto;gap:28px;padding:26px}}
 </style>
 </head>
 <body>
@@ -262,19 +315,19 @@ footer .disc{margin-top:16px;color:#6E6C66;font-size:.74rem}
 <section id="worry" class="pinkbg"><div class="wrap">
   <div class="sec-head rv"><h2>잠깐, 혹시 지금<br>이런 고민 하고 있나요?</h2></div>
   <div class="worries">
-    <a class="worry rv w1" href="tools/#budget"><span class="wtop"><span class="n">01</span><span class="wic c1">💰</span></span><q>현금 3억 있는데,<br>서울 아파트 살 수 있을까요?</q>
+    <a class="worry rv w1" href="tools/#budget"><span class="wtop"><span class="n">01</span><span class="wic c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18"/><path d="M16 14.5h2"/><path d="M6 6l9-3 1 3"/></svg></span></span><q>현금 3억 있는데,<br>서울 아파트 살 수 있을까요?</q>
       <p>대출 규제는 계속 바뀌고, 내 돈으로 어디까지 되는지 감이 안 와요.</p>
       <div class="sol"><small>착한언니 해결</small><p>LTV·DSR·취득세까지 계산해<br class="mo"> 지금·3년·5년 후 살 수 있는 단지를 보여드려요.</p></div>
       <span class="go">예산 계산하기 →</span></a>
-    <a class="worry rv w2" href="tools/#rent"><span class="wtop"><span class="n">02</span><span class="wic c2">🎒</span></span><q>첫 자취인데,<br>어느 동네가 안전하고 싸요?</q>
+    <a class="worry rv w2" href="tools/#rent"><span class="wtop"><span class="n">02</span><span class="wic c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l2 2M15 8l2 2"/></svg></span></span><q>첫 자취인데,<br>어느 동네가 안전하고 싸요?</q>
       <p>학교·회사 근처는 비싸고, 조금 멀어지면 밤길이 걱정돼요.</p>
       <div class="sol"><small>착한언니 해결</small><p>통근 시간과 실제 월세 신고가로 동네를 비교하고,<br class="mo"> 밤길 기준까지 알려드려요.</p></div>
       <span class="go">동네 찾기 →</span></a>
-    <a class="worry rv w3" href="tools/#check"><span class="wtop"><span class="n">03</span><span class="wic c3">⚖️</span></span><q>이 가격에 사도<br>괜찮은 걸까요?</q>
+    <a class="worry rv w3" href="tools/#check"><span class="wtop"><span class="n">03</span><span class="wic c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 7a4 4 0 006 0L5 7zM19 7l-3 7a4 4 0 006 0l-3-7z"/></svg></span></span><q>이 가격에 사도<br>괜찮은 걸까요?</q>
       <p>호가만 보면 다 비싸 보이고, 신고가인지 아닌지 헷갈려요.</p>
       <div class="sol"><small>착한언니 해결</small><p>최근 같은 면적 거래, 유사 단지, 거래량과 비교해<br class="mo"> 적정가를 판단해드려요.</p></div>
       <span class="go">가격 검토하기 →</span></a>
-    <a class="worry rv w4" href="tools/#g-3cdf792194f3"><span class="wtop"><span class="n">04</span><span class="wic c4">🛡️</span></span><q>전세 계약,<br>보증금 괜찮을까요?</q>
+    <a class="worry rv w4" href="tools/#g-3cdf792194f3"><span class="wtop"><span class="n">04</span><span class="wic c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg></span></span><q>전세 계약,<br>보증금 괜찮을까요?</q>
       <p>등기부등본은 봐도 모르겠고, 무슨 특약을 넣어야 할지 막막해요.</p>
       <div class="sol"><small>착한언니 해결</small><p>등기부 위험 신호, 보증보험 가능 여부,<br class="mo"> 꼭 넣을 특약까지 챙겨드려요.</p></div>
       <span class="go">특약 가이드 보기 →</span></a>
@@ -293,7 +346,7 @@ footer .disc{margin-top:16px;color:#6E6C66;font-size:.74rem}
   <div class="sec-head rv"><div class="eyebrow"><i>02</i>Your partner</div><h2>서울에서 부동산 12년,<br>동네를 가장 잘 아는 착한언니</h2></div>
   <div class="partner">
     <div class="rv">
-      <p class="hello">🏡 안녕하세요, 착한언니복덕방이에요.<br>
+      <p class="hello">안녕하세요, 착한언니복덕방이에요.<br>
         <b>12년 동안 이대·신촌에서<br class="mo"> 수많은 계약을 함께했어요.</b><br><br class="mo">
         "이 동네 안전해요?"보다<br class="mo"> <b>"역에서 이 집까지 밤에 어떤 길로 가요?"</b>를<br class="mo"> 같이 묻는 부동산이에요.<br>
         물어보지 않으면 놓치기 쉬운 것까지<br class="mo"> 먼저 챙겨드려요.</p>
@@ -306,7 +359,7 @@ footer .disc{margin-top:16px;color:#6E6C66;font-size:.74rem}
         <li>국토부 실거래가·부동산원 통계로 만든 <b>AI 부동산 도구</b> 운영</li>
       </ul>
     </div>
-    <div class="card rv"><img src="tools/img/logo.png" alt=""><b>착한언니복덕방</b><span>신촌자이엘라부동산 · 이대·신촌</span></div>
+    <div class="card rv"><div class="wm-big"><svg viewBox="0 0 40 30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22 L20 6 L37 22"/><path d="M28 12 V5 H32 V15"/></svg><span>착한언니복덕방</span><small>@goodsister4080</small></div><b>12년, 이대·신촌의 동네 부동산</b><span>신촌자이엘라부동산 · 중개사무소 등록번호 11410-2019-00062</span></div>
   </div>
 </div></section>
 
@@ -315,12 +368,12 @@ footer .disc{margin-top:16px;color:#6E6C66;font-size:.74rem}
 <section id="tools" class="beige"><div class="wrap">
   <div class="sec-head rv"><div class="eyebrow"><i>03</i>AI tools</div><h2>상담 전에, 숫자로 먼저<br>확인해보세요</h2><p>국토교통부 실거래가와 한국부동산원 통계를 매주·매달 자동으로 업데이트해요.</p></div>
   <div class="tools">
-    <a class="tool rv feat" href="tools/#budget"><span class="ic">💰</span><h3>내 예산으로 서울 어디까지?</h3><p>현금·소득으로 지금부터 5년 후까지<br>살 수 있는 단지</p><span class="go">계산하기 →</span></a>
-    <a class="tool rv" href="tools/#rent"><span class="ic">🎓</span><h3>첫 자취 동네 추천기</h3><p>통근 시간과 실제 월세로<br>동네 비교</p><span class="go">동네 찾기 →</span></a>
-    <a class="tool rv" href="tools/#check"><span class="ic">⚖️</span><h3>이 아파트, 비싸게 사는 걸까?</h3><p>최근 거래 · 유사 단지 ·<br>거래량과 비교</p><span class="go">가격 검토 →</span></a>
-    <a class="tool rv" href="tools/#cost"><span class="ic">🧮</span><h3>부대비용 계산기</h3><p>취득세 · 등기비용 · 중개보수 ·<br>전세보증보험까지 한 번에</p><span class="go">계산하기 →</span></a>
-    <a class="tool rv" href="tools/#market"><span class="ic">📊</span><h3>이번 주 서울 시황</h3><p>구별 변동률 · 수급지수 ·<br>거래 많은 단지 TOP</p><span class="go">시황 보기 →</span></a>
-    <a class="tool rv" href="tools/#news"><span class="ic">🗞️</span><h3>정책 뉴스 · 세금 타임라인</h3><p>지금 적용 중인 규제와<br>정부별 세금 변화를 쉬운 말로</p><span class="go">뉴스 보기 →</span></a>
+    <a class="tool rv feat" href="tools/#budget"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18"/><path d="M16 14.5h2"/><path d="M6 6l9-3 1 3"/></svg></span><h3>내 예산으로 서울 어디까지?</h3><p>현금·소득으로 지금부터 5년 후까지<br>살 수 있는 단지</p><span class="go">계산하기 →</span></a>
+    <a class="tool rv" href="tools/#rent"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 1114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><h3>첫 자취 동네 추천기</h3><p>통근 시간과 실제 월세로<br>동네 비교</p><span class="go">동네 찾기 →</span></a>
+    <a class="tool rv" href="tools/#check"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 7a4 4 0 006 0L5 7zM19 7l-3 7a4 4 0 006 0l-3-7z"/></svg></span><h3>이 아파트, 비싸게 사는 걸까?</h3><p>최근 거래 · 유사 단지 ·<br>거래량과 비교</p><span class="go">가격 검토 →</span></a>
+    <a class="tool rv" href="tools/#cost"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11v6M8 15h2M12 15h2"/></svg></span><h3>부대비용 계산기</h3><p>취득세 · 등기비용 · 중개보수 ·<br>전세보증보험까지 한 번에</p><span class="go">계산하기 →</span></a>
+    <a class="tool rv" href="tools/#market"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4M4 20h16"/><path d="M7 15l4-4 3 3 5-6"/></svg></span><h3>이번 주 서울 시황</h3><p>구별 변동률 · 수급지수 ·<br>거래 많은 단지 TOP</p><span class="go">시황 보기 →</span></a>
+    <a class="tool rv" href="tools/#news"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg></span><h3>정책 뉴스 · 세금 타임라인</h3><p>지금 적용 중인 규제와<br>정부별 세금 변화를 쉬운 말로</p><span class="go">뉴스 보기 →</span></a>
   </div>
   <p class="swipe">← 옆으로 넘겨보세요 →</p>
   <div class="live" id="live"></div>
