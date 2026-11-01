@@ -81,14 +81,16 @@
       const price = v("price") * 10000; if (!price) { out.innerHTML = `<p class="muted">매매가를 입력해 주세요.</p>`; return; }
       const o = { kind, area: +form.area.value, homes: +form.homes.value, adj: form.adj.checked };
       const t = acqTax(price, o);
-      const first = form.first.checked && kind !== "offi" && price <= 120000 && o.homes <= 1 ? Math.min(t.tax, 200) : 0;
+      const RL = { first: [200, "생애최초 감면"], small: [300, "생애최초 감면(소형주택)"], birth: [500, "출산·양육 감면"] }[form.relief.value];
+      const reliefOk = RL && kind !== "offi" && price <= 120000 && o.homes <= 1;
+      const first = reliefOk ? Math.min(t.tax, RL[0]) : 0;
       const pub = (v("pub") || v("price") * 0.69) * 10000, br = bondRate(pub, kind), bond = pub * br, bondCost = bond * v("disc") / 100;
       const st = stamp(price, kind) / 10000, reg = 1.5, law = v("law");
       const fee = brokerFee("sale", price, kind), feeV = form.vat.checked ? fee.fee * 1.1 : fee.fee;
       const taxSum = t.tax - first + t.edu + t.rural, regSum = bondCost + st + reg + law, total = taxSum + regSum + feeV;
       const R = [
         ["취득세", t.tax, `${pct(t.rate)}${t.heavy ? " (다주택 중과)" : ""}`],
-        first ? ["생애최초 감면", -first, "최대 200만 원"] : null,
+        first ? [RL[1], -first, `취득세 100% 감면, 한도 ${RL[0]}만 원`] : null,
         ["지방교육세", t.edu, t.heavy ? "0.4%" : "취득세의 10%"],
         ["농어촌특별세", t.rural, t.rural ? (o.area > 85 ? "전용 85㎡ 초과" : "") : "전용 85㎡ 이하 비과세"],
       ].filter(Boolean);
@@ -114,8 +116,10 @@
           ${tr(["중개보수 상한", fee.fee, `${won(price)} × ${pct(fee.rate)}${fee.cap ? ` (한도 ${won(fee.cap)})` : ""}`])}
           ${form.vat.checked ? tr(["부가세 10%", fee.fee * 0.1, "일반과세자 사무소인 경우"]) : ""}</table>
         <div class="check"><b>착한언니 체크포인트</b><br>
-          ${t.note ? `· ${t.note}<br>` : ""}
-          · 취득세는 <b>잔금일(또는 등기일) 기준 주택 수</b>로 정해져요. 일시적 2주택(기존 집을 기한 안에 처분)은 1주택 세율이 적용될 수 있어요.<br>
+          ${t.note ? `· ${t.note} (주거용 오피스텔 생애최초 감면은 2026.8 지방세 개편안으로 추진 중, 아직 미확정)<br>` : ""}
+          ${RL && !reliefOk ? `· 선택한 감면은 <b>12억 이하 주택·1주택(무주택에서 첫 집)</b>일 때만 적용돼요. 이번 조건에서는 빠졌어요.<br>` : ""}
+          ${reliefOk ? `· 감면은 2028.12.31까지 취득분에 적용돼요. 실거주·처분 제한을 어기면 추징돼요. 생애최초와 출산 감면은 겹쳐 받지 못해요.${form.relief.value === "small" ? " 소형주택 300만 원 한도는 아파트 제외 등 요건이 있으니 위택스에서 확인하세요." : ""}<br>` : ""}
+          · 취득세는 <b>잔금일(또는 등기일) 기준 주택 수</b>로 정해져요. 일시적 2주택(기존 집을 기한 안에 처분)은 1주택 세율이 적용될 수 있어요. 서울→서울(조정지역 간) 이동은 2026.10.1부터 양도세 비과세 처분기한이 <b>2년</b>으로 줄었어요.<br>
           · 중개보수는 <b>법정 상한</b>이에요. 실제 금액은 이 안에서 협의해요.<br>
           · 국민주택채권 할인율은 매일 바뀌어요(보통 수~십 %대). 공시가격을 모르면 매매가의 약 69%로 추정했어요.<br>
           · 대출을 받으면 근저당 설정 비용(대부분 은행 부담)·인지세 일부가 추가될 수 있어요.<br>
@@ -127,8 +131,13 @@
       // 전세보증보험 (HUG 기준 근사)
       const hp = v("hprice") * 10000, senior = v("senior"), cap = hp * 0.9, limitDep = 70000;
       const okPrice = hp ? dep + senior <= cap : null, okDep = dep <= limitDep;
-      const apt = form.ins_apt.checked, [lo, hi] = apt ? [0.00115, 0.00154] : [0.00139, 0.00211];
-      const years = v("years") || 2, dc = form.ins_dc.checked ? 0.4 : 0;
+      // HUG 보증료율 (2025.3.31 신청분~): 부채비율((보증금+선순위)÷주택가격) 3구간 × 보증금 4구간. 구간별 범위로 안내
+      const apt = form.ins_apt.checked, ratio = hp ? (dep + senior) / hp : null;
+      const band = ratio == null ? 1 : ratio <= 0.7 ? 0 : ratio <= 0.8 ? 1 : 2;
+      const RATE = apt ? [[0.00097, 0.00113], [0.00117, 0.00138], [0.00137, 0.00164]] : [[0.00111, 0.00132], [0.00142, 0.00172], [0.00172, 0.00211]];
+      const [lo, hi] = RATE[band], bandTxt = ["부채비율 70% 이하", "부채비율 70~80%", "부채비율 80% 초과"][band];
+      const years = v("years") || 2, dc = +form.ins_dc.value || 0;
+      const ok80 = hp ? dep + senior <= hp * 0.8 : null;
       const premLo = dep * lo * years * (1 - dc), premHi = dep * hi * years * (1 - dc);
       const can = okPrice === null ? null : okPrice && okDep;
       out.innerHTML = `
@@ -143,11 +152,14 @@
           <tr><td>보증금 한도 (수도권 7억 이하)</td><td class="r">${won(dep)}</td><td>${okDep ? "✅ 충족" : "❌ 초과"}</td></tr>
           <tr><td>주택가격 × 90%</td><td class="r">${hp ? won(cap) : "-"}</td><td class="muted">${hp ? "" : "주택가격을 입력하세요"}</td></tr>
           <tr><td>보증금 + 선순위채권(근저당 등)</td><td class="r">${won(dep + senior)}</td><td>${okPrice === null ? "-" : okPrice ? "✅ 90% 이내" : `❌ ${won(dep + senior - cap)} 초과`}</td></tr>
-          <tr><td>예상 보증료 (${years}년${dc ? ", 청년·신혼 등 할인 가정" : ""})</td><td class="r">${won(premLo)} ~ ${won(premHi)}</td><td class="muted">연 ${pct(lo)}~${pct(hi)} (${apt ? "아파트" : "아파트 외"})</td></tr></table>
+          <tr><td>부채비율 (보증금+선순위 ÷ 주택가격)</td><td class="r">${ratio == null ? "-" : pct(ratio)}</td><td class="muted">${ratio == null ? "주택가격 입력 시 계산" : bandTxt}</td></tr>
+          <tr><td>예상 보증료 (${years}년${dc ? `, ${dc * 100}% 감면` : ""})</td><td class="r">${won(premLo)} ~ ${won(premHi)}</td><td class="muted">연 ${pct(lo)}~${pct(hi)} (${apt ? "아파트" : "비아파트"}, ${bandTxt})</td></tr>
+          <tr><td>만약 기준이 80%로 바뀌면</td><td class="r">${hp ? won(hp * 0.8) : "-"}</td><td>${ok80 === null ? "-" : ok80 ? "✅ 그래도 가능" : "⚠️ 가입이 어려워져요"}</td></tr></table>
         <div class="check"><b>착한언니 체크포인트</b><br>
           · <b>주택가격</b>은 아파트는 KB·부동산원 시세, 빌라·오피스텔 등은 보통 <b>공시가격 × 140%</b>로 봐요. 그래서 공시가격 기준으로는 <b>공시가격 × 126%</b>까지가 보증금 한도가 돼요.<br>
           · 선순위채권에는 근저당 <b>채권최고액</b>, 다가구라면 먼저 들어온 세입자 보증금도 포함돼요.<br>
-          · 보증료율은 보증금 규모·부채비율·주택 유형에 따라 달라져서 범위로 보여드려요. 실제 금액은 <b>HUG 안심전세 앱</b>이나 은행에서 확인하세요.<br>
+          · 보증료율은 2025.3.31 신청분부터 <b>부채비율 3구간 × 보증금 4구간</b>으로 달라져요. 같은 구간 안에서도 보증금 규모에 따라 차이가 있어 범위로 보여드려요. 실제 금액은 <b>HUG 안심전세 앱</b>이나 은행에서 확인하세요.<br>
+          · HUG는 가입 기준을 <b>90% → 80%</b>로 낮추는 방안을 추진 중이에요(2026.10 국정감사, 시행 시점 미정).<br>
           · 가입 요건·요율은 정부 정책에 따라 자주 바뀌어요. 계약 전에 꼭 최신 기준을 확인하세요.<br>
           · 중개보수는 법정 상한이며, 실제 금액은 이 안에서 협의해요.</div>`;
     }

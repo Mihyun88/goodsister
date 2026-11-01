@@ -9,6 +9,7 @@
     const items = N.items.filter(i => cur === "전체" || i.tag === cur).sort((a, b) => b.date.localeCompare(a.date));
     el.innerHTML = `
       <p class="hook" style="margin-top:0">“집 사기 전에 꼭 알아야 할 부동산 정책, 한 번에 정리했어요.”</p>
+      <a class="tl-link" href="#timeline">📜 문재인·윤석열·이재명 정부 부동산 세금 변화, <b>세금 타임라인</b>으로 한눈에 보기 →</a>
       <h3>📌 지금 서울에 적용 중인 핵심 규칙</h3>
       <div class="rules">${N.rules.map(r => `<div class="rule"><b>${esc(r.t)}</b><p>${esc(r.d)}</p><a href="${esc(r.url)}" target="_blank" rel="noopener">출처: ${esc(r.src)} ↗</a></div>`).join("")}</div>
       <h3>🗞️ 최근 정책 뉴스</h3>

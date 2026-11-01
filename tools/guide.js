@@ -1,7 +1,7 @@
 /* 노션 가이드 보기 + 주소(#) 이동. 데이터: guide/pages.js (scripts/sync_notion.py 로 생성) */
 (() => {
   const G = window.GS_GUIDE;
-  const TABS = ["budget", "rent", "check", "cost", "market", "news", "jachwi", "tips"];
+  const TABS = ["budget", "rent", "check", "cost", "market", "news", "timeline", "jachwi", "tips"];
   const rootOf = {}; // pageId -> 탭 키
   if (G) for (const [k, ids] of Object.entries(G.roots)) ids.forEach(id => { if (!rootOf[id]) rootOf[id] = k; });
 
