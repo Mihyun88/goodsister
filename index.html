@@ -2,542 +2,214 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<script>document.documentElement.classList.add('js')</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo='; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <title>착한언니복덕방 | 감이 아니라 데이터로, 같이 고르는 집</title>
 <meta name="description" content="무사고 12년 공인중개사 착한언니복덕방. 이대·신촌 오피스텔 월세·전세·매매, 마포·서대문 아파트, 첫 자취·첫 집 상담. 국토부 실거래가로 만든 AI 부동산 도구를 무료로 써보세요.">
+<link rel="canonical" href="https://mihyun88.github.io/goodsister/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="착한언니복덕방">
+<meta property="og:url" content="https://mihyun88.github.io/goodsister/">
 <meta property="og:title" content="착한언니복덕방 — 감이 아니라 데이터로, 같이 고르는 집">
 <meta property="og:description" content="이대·신촌 오피스텔·마포 서대문 아파트, 첫 자취·첫 집 상담. AI 부동산 도구 무료 제공.">
-<meta property="og:image" content="tools/img/banner.png">
-<meta name="theme-color" content="#FAFAF8">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
-<style>
-:root{--bg:#FAFAF8;--ink:#1A1917;--sub:#5C5A55;--mute:#8E8C86;--line:#E8E6E1;--brand:#D64270;--brand-soft:#FCEEF3;--kakao:#FEE500;--dark:#1A1917}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:70px}
-body{font-family:"Pretendard Variable",Pretendard,"Noto Sans KR",system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased;word-break:keep-all}
-a{color:inherit;text-decoration:none}
-.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
-.hl{color:var(--brand);font-weight:700}
-h1,h2,h3,.motto,.sec-head p,q{text-wrap:balance}
-p,li{text-wrap:pretty}
-br.mo{display:none}
-.nw{white-space:nowrap}
-.worry p,.tool p,.pr p,.st p,.tips a,.live-note,.quiz h3{text-wrap:balance}
-.partner li b{white-space:nowrap}
-@media(max-width:820px){br.mo{display:inline}br.pc{display:none}}
-/* ---------- nav ---------- */
-.nav{position:sticky;top:0;z-index:30;background:rgba(250,250,248,.92);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid transparent;transition:border-color .2s}
-.nav.scrolled{border-color:var(--line)}
-.nav .wrap{display:flex;align-items:center;height:64px;gap:20px}
-.logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:1.15rem;letter-spacing:-.02em;color:var(--brand)}
-.logo svg{width:28px;height:22px}
-.menu{display:flex;gap:26px;margin-left:auto;align-items:center;font-size:.93rem;font-weight:500;color:var(--sub)}
-.menu a:hover{color:var(--ink)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;font-weight:700;font-size:.95rem;padding:14px 22px;transition:transform .15s,box-shadow .15s;white-space:nowrap}
-.btn:active{transform:scale(.98)}
-.btn-dark{background:var(--ink);color:#fff}.btn-dark:hover{box-shadow:0 6px 18px rgba(0,0,0,.18)}
-.btn-line{background:#fff;color:var(--ink);border:1px solid var(--line)}.btn-line:hover{border-color:var(--ink)}
-.btn-k{background:var(--kakao);color:#191919}
-.btn-sm{padding:9px 14px;font-size:.85rem;border-radius:9px}
-.burger{display:none;margin-left:auto;width:40px;height:40px;border:0;background:none;cursor:pointer}
-.burger span{display:block;width:22px;height:2px;background:var(--ink);margin:5px auto;border-radius:2px}
-.drawer{display:none}
-@media(max-width:820px){
-  .menu{display:none}.burger{display:block;margin:0 -8px 0 auto}
-  .nav .wrap{gap:6px}
-  .drawer.open{display:flex;flex-direction:column;position:fixed;inset:64px 0 auto 0;text-align:left;background:var(--bg);border-bottom:1px solid var(--line);padding:8px 20px 20px;z-index:29;box-shadow:0 12px 24px rgba(0,0,0,.06)}
-  .drawer a{padding:14px 2px;border-bottom:1px solid var(--line);font-weight:600}
-}
-/* ---------- hero ---------- */
-.hero{position:relative;overflow:hidden;padding:56px 0 0}
-.hero h1{font-size:clamp(2.1rem,6.2vw,3.6rem);font-weight:800;line-height:1.22;letter-spacing:-.035em}
-.hero .lead{font-size:clamp(1rem,2.2vw,1.12rem);color:var(--sub);margin:22px 0 30px;max-width:560px}
-.hero .ctas{display:flex;gap:10px;flex-wrap:wrap}
-.stats{display:flex;gap:36px;margin:44px 0 0;flex-wrap:wrap;position:relative;z-index:2}
-.stat b{display:block;font-size:clamp(1.5rem,3.6vw,2rem);font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
-.stat span{font-size:.82rem;color:var(--mute)}
-.hero-chart{position:relative;margin-top:-40px;height:260px;pointer-events:none}
-.hero-chart svg{position:absolute;inset:0;width:100%;height:100%}
-.hero-chart .cap{position:absolute;right:20px;bottom:14px;font-size:.72rem;color:var(--mute)}
-@media(max-width:820px){.hero{padding-top:36px}.hero .ctas .btn{flex:1 1 100%}.stats{display:grid;grid-template-columns:1fr 1fr;gap:22px 16px;text-align:center;margin-top:36px}.hero-chart{margin-top:0;height:180px}}
-/* ---------- sections ---------- */
-section{padding:96px 0}
-.sec-head{text-align:center;margin-bottom:48px}
-.eyebrow{font-size:.78rem;font-weight:700;letter-spacing:.16em;color:var(--mute);text-transform:uppercase}
-.eyebrow i{font-style:normal;color:var(--brand);margin-right:8px}
-.sec-head h2{font-size:clamp(1.6rem,4.4vw,2.4rem);font-weight:800;letter-spacing:-.03em;line-height:1.3;margin-top:10px}
-.sec-head p{color:var(--sub);margin-top:14px}
-.gray{background:#F1F0EC}
-.dark{background:var(--dark);color:#F0EFEC}.dark .sec-head p,.dark .eyebrow{color:#A9A79F}
-@media(max-width:820px){section{padding:72px 0}.sec-head{margin-bottom:34px}}
-/* worries */
-.worries{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.worry{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px 24px;display:flex;flex-direction:column;transition:border-color .2s,box-shadow .2s}
-.worry:hover{border-color:#f0b7c9;box-shadow:0 10px 30px rgba(214,66,112,.08)}
-.worry .n{font-size:1.6rem;font-weight:800}
-.worry q{display:block;font-weight:700;font-size:1.02rem;margin:14px 0 10px;quotes:"“" "”"}
-.worry p{font-size:.9rem;color:var(--sub)}
-.worry .sol{margin-top:18px;padding-top:16px;border-top:2px solid var(--brand);width:100%}
-.worry .sol small{color:var(--brand);font-weight:700;font-size:.76rem}
-.worry .sol p{color:var(--ink);font-weight:500;margin-top:4px}
-.worry .go{margin-top:auto;padding-top:18px;font-weight:700;font-size:.88rem;color:var(--brand)}
-@media(max-width:980px){.worries{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.worries{grid-template-columns:1fr}}
-/* quiz */
-.quiz{max-width:560px;margin:0 auto;background:#fff;border:1px solid var(--line);border-radius:20px;padding:30px 26px;box-shadow:0 8px 30px rgba(0,0,0,.04)}
-.quiz .step{font-size:.78rem;color:var(--mute);font-weight:600}
-.quiz .bar{height:4px;background:var(--line);border-radius:4px;margin:10px 0 22px;overflow:hidden}.quiz .bar i{display:block;height:100%;background:var(--brand);transition:width .3s}
-.quiz h3{font-size:1.25rem;font-weight:800;letter-spacing:-.02em;margin-bottom:18px}
-.opts{display:grid;gap:10px}
-.opt{display:block;width:100%;text-align:left;font:inherit;font-weight:600;background:var(--bg);border:1.5px solid var(--line);border-radius:12px;padding:15px 16px;cursor:pointer;color:var(--ink)}
-.opt:hover{border-color:var(--ink)}
-.opt small{display:block;font-weight:400;color:var(--mute);font-size:.82rem;margin-top:2px}
-.quiz .res h3{margin-bottom:6px}.quiz .res p{color:var(--sub);font-size:.93rem;margin-bottom:18px}
-.quiz .res .list{display:grid;gap:8px;margin-bottom:18px}
-.quiz .res .list a{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);border-radius:12px;padding:13px 15px;font-weight:600;font-size:.93rem;background:var(--bg)}
-.quiz .res .list a:hover{border-color:var(--brand);color:var(--brand)}
-.quiz .again{background:none;border:0;color:var(--mute);font:inherit;font-size:.85rem;cursor:pointer;margin-top:12px;text-decoration:underline}
-.quiz .meta{text-align:center;font-size:.78rem;color:var(--mute);margin-top:14px}
-/* partner */
-.partner{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
-.partner .hello{font-size:1.1rem;line-height:1.8}
-.partner ul{list-style:none;margin-top:26px}
-.partner li{padding:14px 0 14px 22px;border-bottom:1px solid var(--line);position:relative;font-size:.95rem;color:var(--sub)}
-.partner li::before{content:"";position:absolute;left:4px;top:23px;width:7px;height:7px;border-radius:50%;background:var(--brand)}
-.partner li b{color:var(--ink)}
-.partner .card{background:var(--brand);border-radius:24px;aspect-ratio:4/5;display:flex;flex-direction:column;justify-content:flex-end;padding:30px;color:#fff;position:relative;overflow:hidden}
-.partner .card img{width:78%;position:absolute;top:18%;left:11%}
-.partner .card b{font-size:1.25rem}.partner .card span{opacity:.9;font-size:.9rem}
-@media(max-width:820px){.partner .hello{font-size:1.02rem}.partner{grid-template-columns:1fr;gap:32px}.partner .card{order:-1;aspect-ratio:16/10}.partner .card img{width:60%;top:12%;left:20%}}
-/* tools */
-.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.tool{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px 20px;display:flex;flex-direction:column;min-height:220px;transition:transform .15s,border-color .15s}
-.tool:hover{transform:translateY(-3px);border-color:var(--ink)}
-.tool .ic{width:46px;height:46px;border-radius:12px;background:var(--brand-soft);display:grid;place-items:center;font-size:1.4rem}
-.tool h3{font-size:1.02rem;font-weight:800;margin:16px 0 6px;letter-spacing:-.01em}
-.tool p{font-size:.86rem;color:var(--sub)}
-.tool .go{margin-top:auto;padding-top:14px;font-size:.85rem;font-weight:700}
-@media(max-width:980px){.tools{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -20px;padding:4px 20px 14px;scrollbar-width:none}.tools::-webkit-scrollbar{display:none}.tool{flex:0 0 72%;scroll-snap-align:start;min-height:210px}}
-.swipe{display:none;text-align:center;font-size:.78rem;color:var(--mute);margin-top:4px}@media(max-width:980px){.swipe{display:block}}
-.live{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:28px}
-.live div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px}
-.live small{font-size:.76rem;color:var(--mute)}.live b{display:block;font-size:1.35rem;font-weight:800;margin-top:2px;font-variant-numeric:tabular-nums}
-.up{color:#d0284a}.dn{color:#2a78d6}
-.live-note{font-size:.76rem;color:var(--mute);margin-top:10px;text-align:right}
-@media(max-width:820px){.live{grid-template-columns:1fr 1fr}.live-note{text-align:left}}
-/* promise (dark) */
-.promise{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.pr{border:1px solid #34332F;border-radius:18px;padding:26px 24px}
-.pr .n{color:var(--brand);font-weight:800;font-size:1.4rem}
-.pr h3{font-size:1.08rem;margin:10px 0 6px}.pr p{font-size:.9rem;color:#A9A79F}
-.motto{text-align:center;margin-top:46px;font-size:clamp(1.2rem,3vw,1.6rem);font-weight:800;letter-spacing:-.02em}
-.motto em{font-style:normal;color:var(--brand)}
-@media(max-width:820px){.promise{grid-template-columns:1fr}}
-/* tips */
-.tips{display:grid;grid-template-columns:1fr 1fr;gap:10px 28px}
-.tips h3{grid-column:1/-1;font-size:.95rem;margin:16px 0 4px;color:var(--sub)}
-.tips a{display:flex;align-items:center;gap:12px;padding:15px 4px;border-bottom:1px solid var(--line);font-weight:600;font-size:.95rem}
-.tips a .i{font-size:1.15rem;width:24px;text-align:center}
-.tips a::after{content:"›";margin-left:auto;color:var(--mute);font-size:1.3rem}
-.tips a:hover{color:var(--brand)}
-.tips .more{display:none}
-@media(max-width:820px){.tips{grid-template-columns:1fr}.tips.fold a.x{display:none}.tips.fold .more{display:block;grid-column:1/-1;margin-top:10px}}
-.sns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:36px}
-/* contact */
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.st{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px 22px}
-.st .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font-weight:800;font-size:.9rem}
-.st b{display:block;margin:14px 0 6px;font-size:1.02rem}.st p{font-size:.9rem;color:var(--sub)}
-.big-cta{margin-top:28px;background:var(--brand);color:#fff;border-radius:22px;padding:36px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
-.big-cta h3{font-size:1.4rem;font-weight:800;letter-spacing:-.02em}.big-cta p{opacity:.9;font-size:.95rem;margin-top:4px}
-.contact-meta{text-align:center;color:var(--sub);font-size:.9rem;margin-top:18px}
-@media(max-width:820px){.steps{grid-template-columns:1fr}.big-cta{padding:28px 22px}.big-cta .btn{width:100%}}
-/* footer */
-footer{background:#121211;color:#9C9A93;padding:44px 0 120px;font-size:.8rem;line-height:1.9}
-footer b{color:#fff;font-size:.95rem}
-footer a{text-decoration:underline}
-footer .disc{margin-top:16px;color:#6E6C66;font-size:.74rem}
-/* mobile sticky bar */
-.mbar{display:none}
-@media(max-width:820px){.mbar{display:flex;gap:8px;position:fixed;left:0;right:0;bottom:0;z-index:40;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(250,250,248,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line)}
-  .mbar .btn{flex:1;padding:13px 10px}.mbar .btn-line{flex:0 0 32%}}
-/* reveal */
-.rv{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}.rv.in{opacity:1;transform:none}
-@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
-
-/* ===== v3: 색 리듬 · 모바일 길이 줄이기 ===== */
-.pinkbg{background:#FCEEF3}
-.beige{background:#F3EEE6}
-.brandbg{background:var(--brand);color:#fff}
-.brandbg .sec-head h2{color:#fff}.brandbg .sec-head p,.brandbg .eyebrow{color:rgba(255,255,255,.85)}.brandbg .eyebrow i{color:#FEE500}
-.brandbg .st{border:0;box-shadow:0 10px 30px rgba(120,0,40,.18)}
-.brandbg .st .n{background:var(--brand)}
-.brandbg .big-cta{background:#1A1917}
-.brandbg .contact-meta,.brandbg .contact-meta a{color:#fff}
-/* 고민 카드 */
-.worry{border:0;box-shadow:0 6px 24px rgba(214,66,112,.08);position:relative;overflow:hidden}
-.worry::before{content:"";position:absolute;inset:0 0 auto 0;height:5px}
-.w1::before{background:#D64270}.w2::before{background:#2a78d6}.w3::before{background:#1baf7a}.w4::before{background:#eda100}
-.wtop{display:flex;align-items:center;justify-content:space-between}
-.wic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:1.35rem}
-.wic.c1{background:#FCE4EC}.wic.c2{background:#E3EEFB}.wic.c3{background:#E1F5EC}.wic.c4{background:#FFF3D6}
-.w2 .sol{border-color:#2a78d6}.w2 .sol small,.w2 .go{color:#2a78d6}
-.w3 .sol{border-color:#1baf7a}.w3 .sol small,.w3 .go{color:#13895f}
-.w4 .sol{border-color:#eda100}.w4 .sol small,.w4 .go{color:#b07700}
-@media(max-width:980px){
-  .worries{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -20px;padding:6px 20px 16px;gap:12px;scrollbar-width:none}
-  .worries::-webkit-scrollbar{display:none}
-  .worry{flex:0 0 82%;scroll-snap-align:start}
-  #worry .swipe{display:block}
-}
-/* 퀴즈 카드 강조 */
-#quiz .quiz{border:2px solid #f2c4d3;box-shadow:0 14px 40px rgba(214,66,112,.10)}
-/* 동네 리본 */
-.ribbon{background:var(--brand);color:#fff;overflow:hidden;padding:18px 0;font-weight:800;font-size:clamp(1.05rem,2.6vw,1.4rem);letter-spacing:-.01em;white-space:nowrap}
-.ribbon .track{display:inline-flex;gap:0;animation:flow 38s linear infinite}
-.ribbon span{padding:0 22px;position:relative}
-.ribbon span::after{content:"✦";position:absolute;right:-8px;opacity:.55;font-size:.8em;top:.15em}
-@keyframes flow{to{transform:translateX(-50%)}}
-@media(prefers-reduced-motion:reduce){.ribbon .track{animation:none}}
-/* 도구 카드 */
-.tool{border:0;box-shadow:0 4px 18px rgba(0,0,0,.05)}
-.tool:nth-child(2) .ic{background:#E3EEFB}.tool:nth-child(3) .ic{background:#E1F5EC}.tool:nth-child(4) .ic{background:#FFF3D6}.tool:nth-child(5) .ic{background:#EEE9FB}.tool:nth-child(6) .ic{background:#E6F4F7}
-.tool.feat{background:var(--brand);color:#fff}
-.tool.feat p{color:rgba(255,255,255,.88)}.tool.feat .ic{background:rgba(255,255,255,.2)}.tool.feat .go{color:#FEE500}
-.tool.feat:hover{border-color:transparent;box-shadow:0 14px 30px rgba(214,66,112,.3)}
-.live div{border:0;box-shadow:0 4px 18px rgba(0,0,0,.05)}
-/* 꿀팁: 두 묶음을 색 블록으로 */
-.tips h3{display:inline-block;background:#FCEEF3;color:var(--brand);border-radius:99px;padding:6px 14px;font-size:.88rem;justify-self:start}
-/* 약속 섹션 카드 살짝 강조 */
-.pr{background:rgba(255,255,255,.03)}
-
-.brandbg .st{color:var(--ink)}
-@media(max-width:820px){
-  .promise{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 -20px;padding:4px 20px 14px;gap:12px;scrollbar-width:none}
-  .promise::-webkit-scrollbar{display:none}
-  .pr{flex:0 0 78%;scroll-snap-align:start}
-  .dark .swipe{display:block;color:#8E8C86}
-  .steps{gap:10px}.st{padding:18px 18px;display:grid;grid-template-columns:auto 1fr;column-gap:14px;align-items:start}
-  .st .n{grid-row:span 2}.st b{margin:2px 0 4px}
-}
-
-/* ===== v4: 절제된 톤 (웜 뉴트럴 + 먹색 + 포인트 핑크) ===== */
-:root{--bg:#FAF8F5;--sand:#F1ECE5;--ink:#1C1A19;--sub:#5F5A53;--mute:#948E86;--line:#E4DED6}
-body{background:var(--bg)}
-.nav{background:rgba(250,248,245,.92)}
-.pinkbg,.beige,.gray{background:var(--sand)}
-#worry{background:#fff}
-#quiz{background:var(--sand)}
-#tools{background:#fff}
-.brandbg{background:var(--sand);color:var(--ink)}
-.brandbg .sec-head h2{color:var(--ink)}.brandbg .sec-head p,.brandbg .eyebrow{color:var(--mute)}.brandbg .eyebrow i{color:var(--brand)}
-.brandbg .st{box-shadow:none;border:1px solid var(--line)}.brandbg .st .n{background:var(--ink)}
-.brandbg .big-cta,.big-cta{background:var(--ink)}
-.big-cta h3{color:#fff}
-.brandbg .contact-meta,.brandbg .contact-meta a{color:var(--sub)}
-.dark{background:var(--ink)}
-footer{background:#141312}
-/* 카드: 컬러 줄·그림자 제거, 가는 선 */
-.worry,.tool,.st,.live div,.quiz{border:1px solid var(--line)!important;box-shadow:none!important}
-.worry::before{display:none}
-.worry:hover,.tool:hover{border-color:var(--ink)!important;transform:translateY(-2px)}
-.worry .n,.pr .n{color:var(--brand);font-size:1rem;font-weight:700;letter-spacing:.06em}
-.wic,.tool .ic{width:42px;height:42px;border-radius:50%;background:var(--sand)!important;color:var(--ink);display:grid;place-items:center}
-.wic svg,.tool .ic svg{width:22px;height:22px}
-.worry .sol,.w2 .sol,.w3 .sol,.w4 .sol{border-top:1px solid var(--line);border-color:var(--line)}
-.worry .sol small,.w2 .sol small,.w3 .sol small,.w4 .sol small{color:var(--brand)}
-.worry .go,.w2 .go,.w3 .go,.w4 .go,.tool .go{color:var(--ink);text-decoration:underline;text-underline-offset:4px;text-decoration-thickness:1px}
-/* 대표 도구: 먹색 카드 */
-.tool.feat{background:var(--ink)!important;color:#F4F1EC;border-color:var(--ink)!important}
-.tool.feat p{color:#BDB7AE}.tool.feat .ic{background:rgba(255,255,255,.08)!important;color:#fff}.tool.feat .go{color:#fff}
-/* 동네 리본: 먹색 바탕, 차분하게 */
-.ribbon{background:var(--ink);color:#E9E4DC;font-weight:600;font-size:clamp(.95rem,2.2vw,1.15rem);padding:16px 0;letter-spacing:.02em}
-.ribbon span::after{content:"·";color:var(--brand);opacity:1;font-size:1.2em;top:-.05em;right:-6px}
-.ribbon .track{animation-duration:60s}
-/* 소개 카드 */
-.partner .card{background:var(--ink)}
-/* 꿀팁 라벨 */
-.tips h3{background:transparent;color:var(--mute);padding:0;border-radius:0;font-weight:600;letter-spacing:.02em}
-/* 퀴즈 */
-#quiz .quiz{border:1px solid var(--line)!important}
-.opt{background:#fff}
-.quiz .bar i{background:var(--ink)}
-/* 히어로 곡선 톤 다운 */
-.hero-chart path[stroke]{stroke:#D64270;opacity:.75}
-.live b .up{color:#C2334F}
-
-.partner .card{justify-content:space-between}
-.wm-big{display:flex;flex-direction:column;align-items:flex-start;gap:6px;color:#F4F1EC}
-.wm-big svg{width:54px;height:40px;color:var(--brand)}
-.partner .card .wm-big span{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800;letter-spacing:-.03em;opacity:1;color:#F4F1EC}
-.wm-big small{color:#948E86;font-size:.85rem}
-.partner .card b{font-size:1.1rem;color:#F4F1EC}.partner .card > span{color:#948E86;font-size:.8rem}
-@media(max-width:820px){.partner .card{aspect-ratio:auto;gap:28px;padding:26px}}
-
-/* ===== v5: 무채색 + 핑크는 로고·첫 화면만 ===== */
-.btn-k,.nav .btn-k,.big-cta .btn-k,.quiz .btn-k{background:var(--ink);color:#fff}
-.big-cta .btn-k{background:#fff;color:var(--ink)}
-.mbar .btn-k{background:var(--ink);color:#fff}
-.up,.dn,.live b .up{color:var(--ink)!important}
-.eyebrow i,.brandbg .eyebrow i{color:var(--ink)}
-.worry .n,.pr .n{color:var(--mute)}
-.dark .pr .n{color:#8E8880}
-.worry .sol small,.w2 .sol small,.w3 .sol small,.w4 .sol small{color:var(--mute)}
-.partner li::before{background:var(--ink)}
-.wm-big svg{color:#F4F1EC}
-.ribbon span::after{color:#6E6962}
-.motto em{color:#F4F1EC;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:1px}
-.tips a .i{font-size:.78rem;font-weight:700;color:var(--mute);width:28px;font-variant-numeric:tabular-nums}
-.tips a:hover{color:var(--ink)}
-.quiz .res .list a:hover{border-color:var(--ink);color:var(--ink)}
-.opt:hover{border-color:var(--ink)}
-</style>
+<!-- [사람 확인 필요] 1200×630 공유 이미지로 교체 (현재 1200×240 배너) -->
+<meta property="og:image" content="https://mihyun88.github.io/goodsister/tools/img/banner.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#FAF8F5">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" integrity="sha384-GIdEBaqGN9mNkDkMkzMHW8EKUqtpPIe/sLj1X7DIrnc9uPtLROJgmuDlh+3rBw0j" crossorigin="anonymous">
+<link rel="stylesheet" href="assets/landing.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"RealEstateAgent","name":"착한언니복덕방 (신촌자이엘라부동산)","url":"https://mihyun88.github.io/goodsister/","telephone":"+82-2-364-4080","email":"ellarang@naver.com","image":"https://mihyun88.github.io/goodsister/tools/img/banner.png","address":{"@type":"PostalAddress","streetAddress":"대현동 104-36 신촌자이엘라 B101호","addressLocality":"서대문구","addressRegion":"서울특별시","addressCountry":"KR"},"areaServed":["서대문구","마포구"],"sameAs":["https://blog.naver.com/ellarang","https://www.instagram.com/goodsister4080/","https://pf.kakao.com/_xcxoBxnX"]}
+</script>
 </head>
 <body>
+<a class="skip" href="#main">본문 바로가기</a>
 
 <header class="nav" id="nav"><div class="wrap">
-  <a class="logo" href="./" aria-label="착한언니복덕방 홈"><svg viewBox="0 0 40 30" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22 L20 6 L37 22"/><path d="M28 12 V5 H32 V15"/></svg>착한언니복덕방</a>
-  <nav class="menu">
-    <a href="#worry">이런 고민</a><a href="#about">착한언니</a><a href="#tools">AI 도구</a><a href="#tips">꿀팁</a><a href="#contact">상담</a>
-    <a class="btn btn-k btn-sm" href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">카톡 상담</a>
+  <a class="logo" href="./" aria-label="착한언니복덕방 홈"><svg viewBox="0 0 40 30" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 22 L20 6 L37 22"/><path d="M28 12 V5 H32 V15"/></svg>착한언니복덕방</a>
+  <nav class="menu" aria-label="주 메뉴">
+    <a href="#worry">고민</a><a href="#quiz">30초 진단</a><a href="#about">착한언니</a><a href="#tools">AI 도구</a><a href="#tips">꿀팁</a><a href="#contact">상담</a>
+    <a class="btn btn-k btn-sm" href="https://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener" data-track="nav_kakao">카톡 상담</a>
   </nav>
-  <button class="burger" aria-label="메뉴" onclick="document.getElementById('drawer').classList.toggle('open')"><span></span><span></span><span></span></button>
+  <button class="burger" id="burger" type="button" aria-label="메뉴 열기" aria-expanded="false" aria-controls="drawer">
+    <svg class="i-m" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    <svg class="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
 </div></header>
-<div class="drawer" id="drawer" onclick="this.classList.remove('open')">
-  <a href="#worry">이런 고민 있으세요?</a><a href="#quiz">30초 진단</a><a href="#about">착한언니 소개</a><a href="#tools">AI 부동산 도구</a><a href="#tips">부동산 꿀팁</a><a href="#contact">상담 방법</a>
-</div>
+<nav class="drawer" id="drawer" aria-label="모바일 메뉴">
+  <a href="#worry">고민</a><a href="#quiz">30초 진단</a><a href="#about">착한언니</a><a href="#tools">AI 도구</a><a href="#tips">꿀팁</a><a href="#contact">상담</a>
+  <a class="btn btn-k" href="https://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener" data-track="drawer_kakao">카카오톡으로 상담하기</a>
+</nav>
 
-<!-- HERO -->
+<main id="main">
+<!-- 히어로 -->
 <div class="hero">
-  <div class="wrap">
-    <h1>감이 아니라 데이터로,<br>같이 고르는 집</h1>
-    <p class="lead"><span class="hl">첫 자취방, 첫 집 마련</span>을 고민하는 분에게<br class="mo">
-      실거래가 · 대출 한도 · 동네 · 계약 안전까지<br class="mo"> 흩어진 기준을 하나로 모아<br class="mo">
-      내 상황에 맞는 집을 같이 찾아드려요.</p>
-    <div class="ctas">
-      <a class="btn btn-dark" href="#quiz">나에게 맞는 첫 걸음 찾기 →</a>
-      <a class="btn btn-line" href="tools/#budget">내 예산으로 서울 어디까지?</a>
+  <div class="wrap hero-grid">
+    <div>
+      <h1>감이 아니라 데이터로,<br>같이 고르는 집</h1>
+      <p class="lead"><span class="hl">첫 자취방, 첫 집 마련</span>을 고민하는 분에게 실거래가 · 대출 한도 · 동네 · 계약 안전까지 흩어진 기준을 하나로 모아 내 상황에 맞는 집을 같이 찾아드려요.</p>
+      <div class="ctas"><a class="btn btn-dark" href="#quiz" data-track="hero_quiz">나에게 맞는 첫 걸음 찾기 →</a></div>
+      <a class="more-link" href="tools/#budget">예산부터 계산해보고 싶다면 →</a>
+      <div class="stats">
+        <div class="stat"><b>12년</b><span>서울 부동산 경력</span></div>
+        <!-- [사람 확인 필요] '무사고'·'매주'는 결과형 수치(누적 계약, 카톡 평균 응답 시간 등)로 교체할 자리 -->
+        <div class="stat"><b>무사고</b><span>공인중개사</span></div>
+        <div class="stat"><b id="s-deals">6만+건</b><span>분석한 서울 실거래</span></div>
+        <div class="stat"><b>매주</b><span>시황 자동 업데이트</span></div>
+      </div>
     </div>
-    <div class="stats" id="stats">
-      <div class="stat"><b>12년</b><span>서울 부동산 경력</span></div>
-      <div class="stat"><b>무사고</b><span>공인중개사</span></div>
-      <div class="stat"><b id="s-deals">6만+건</b><span>분석한 서울 실거래</span></div>
-      <div class="stat"><b>매주</b><span>시황 자동 업데이트</span></div>
-    </div>
+    <!-- 오른쪽 슬롯: 대표 사진이 준비되면 사진으로 교체 가능 -->
+    <aside class="hero-side" aria-labelledby="side-h">
+      <div class="side-card">
+        <h2 id="side-h">이번 주 서대문·마포 시황</h2>
+        <dl id="side-live">
+          <div><dt>서대문구 매매가</dt><dd>-</dd></div>
+          <div><dt>마포구 매매가</dt><dd>-</dd></div>
+          <div><dt>서울 매매가</dt><dd>-</dd></div>
+        </dl>
+        <p class="note" id="side-note">한국부동산원 주간 아파트가격동향</p>
+        <a href="tools/#market">시황 자세히 보기 →</a>
+      </div>
+    </aside>
   </div>
   <div class="hero-chart" id="hero-chart" aria-hidden="true"></div>
 </div>
 
-<!-- WORRIES -->
-<section id="worry" class="pinkbg"><div class="wrap">
-  <div class="sec-head rv"><h2>잠깐, 혹시 지금<br>이런 고민 하고 있나요?</h2></div>
-  <div class="worries">
-    <a class="worry rv w1" href="tools/#budget"><span class="wtop"><span class="n">01</span><span class="wic c1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18"/><path d="M16 14.5h2"/><path d="M6 6l9-3 1 3"/></svg></span></span><q>현금 3억 있는데,<br>서울 아파트 살 수 있을까요?</q>
+<!-- 고민 -->
+<section id="worry"><div class="wrap">
+  <div class="sec-head rv"><div class="eyebrow">고민</div><h2>잠깐, 혹시 지금<br>이런 고민 하고 있나요?</h2></div>
+  <div class="worries rv">
+    <a class="worry" href="tools/#budget"><span class="wtop"><span class="n">01</span><span class="wic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18"/><path d="M16 14.5h2"/><path d="M6 6l9-3 1 3"/></svg></span></span><q>현금 3억 있는데, 서울 아파트 살 수 있을까요?</q>
       <p>대출 규제는 계속 바뀌고, 내 돈으로 어디까지 되는지 감이 안 와요.</p>
-      <div class="sol"><small>착한언니 해결</small><p>LTV·DSR·취득세까지 계산해<br class="mo"> 지금·3년·5년 후 살 수 있는 단지를 보여드려요.</p></div>
+      <div class="sol"><small>착한언니 해결</small><p>LTV·DSR·취득세까지 계산해 지금·3년·5년 후 살 수 있는 단지를 보여드려요.</p></div>
       <span class="go">예산 계산하기 →</span></a>
-    <a class="worry rv w2" href="tools/#rent"><span class="wtop"><span class="n">02</span><span class="wic c2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l2 2M15 8l2 2"/></svg></span></span><q>첫 자취인데,<br>어느 동네가 안전하고 싸요?</q>
+    <a class="worry" href="tools/#rent"><span class="wtop"><span class="n">02</span><span class="wic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l2 2M15 8l2 2"/></svg></span></span><q>첫 자취인데, 어느 동네가 안전하고 싸요?</q>
       <p>학교·회사 근처는 비싸고, 조금 멀어지면 밤길이 걱정돼요.</p>
-      <div class="sol"><small>착한언니 해결</small><p>통근 시간과 실제 월세 신고가로 동네를 비교하고,<br class="mo"> 밤길 기준까지 알려드려요.</p></div>
+      <div class="sol"><small>착한언니 해결</small><p>통근 시간과 실제 월세 신고가로 동네를 비교하고, 밤길 기준까지 알려드려요.</p></div>
       <span class="go">동네 찾기 →</span></a>
-    <a class="worry rv w3" href="tools/#check"><span class="wtop"><span class="n">03</span><span class="wic c3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 7a4 4 0 006 0L5 7zM19 7l-3 7a4 4 0 006 0l-3-7z"/></svg></span></span><q>이 가격에 사도<br>괜찮은 걸까요?</q>
+    <a class="worry" href="tools/#check"><span class="wtop"><span class="n">03</span><span class="wic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 7a4 4 0 006 0L5 7zM19 7l-3 7a4 4 0 006 0l-3-7z"/></svg></span></span><q>이 가격에 사도 괜찮은 걸까요?</q>
       <p>호가만 보면 다 비싸 보이고, 신고가인지 아닌지 헷갈려요.</p>
-      <div class="sol"><small>착한언니 해결</small><p>최근 같은 면적 거래, 유사 단지, 거래량과 비교해<br class="mo"> 적정가를 판단해드려요.</p></div>
+      <div class="sol"><small>착한언니 해결</small><p>최근 같은 면적 거래, 유사 단지, 거래량과 비교해 적정가를 판단해드려요.</p></div>
       <span class="go">가격 검토하기 →</span></a>
-    <a class="worry rv w4" href="tools/#g-3cdf792194f3"><span class="wtop"><span class="n">04</span><span class="wic c4"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg></span></span><q>전세 계약,<br>보증금 괜찮을까요?</q>
+    <a class="worry" href="tools/#g-3cdf792194f3"><span class="wtop"><span class="n">04</span><span class="wic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg></span></span><q>전세 계약, 보증금 괜찮을까요?</q>
       <p>등기부등본은 봐도 모르겠고, 무슨 특약을 넣어야 할지 막막해요.</p>
-      <div class="sol"><small>착한언니 해결</small><p>등기부 위험 신호, 보증보험 가능 여부,<br class="mo"> 꼭 넣을 특약까지 챙겨드려요.</p></div>
+      <div class="sol"><small>착한언니 해결</small><p>등기부 위험 신호, 보증보험 가능 여부, 꼭 넣을 특약까지 챙겨드려요.</p></div>
       <span class="go">특약 가이드 보기 →</span></a>
   </div>
-  <p class="swipe">← 옆으로 넘겨보세요 →</p>
 </div></section>
 
-<!-- QUIZ -->
+<!-- 30초 진단 -->
 <section id="quiz" class="beige"><div class="wrap">
-  <div class="sec-head rv"><div class="eyebrow"><i>01</i>Self-check</div><h2>나에게 맞는 첫 걸음<br>30초 진단</h2><p>부동산 지식 없어도 괜찮아요. 지금 상황에 가까운 답을 고르세요.</p></div>
-  <div class="quiz rv" id="quizbox"></div>
+  <div class="sec-head rv"><div class="eyebrow">진단</div><h2>나에게 맞는 첫 걸음<br>30초 진단</h2><p>부동산 지식 없어도 괜찮아요. 지금 상황에 가까운 답을 고르세요.</p></div>
+  <div class="quiz rv" id="quizbox" aria-live="polite">
+    <noscript><p>진단은 자바스크립트가 필요해요. 바로 <a href="https://pf.kakao.com/_xcxoBxnX">카카오톡으로 상담</a>하실 수 있어요.</p></noscript>
+  </div>
 </div></section>
 
-<!-- PARTNER -->
-<section id="about"><div class="wrap">
-  <div class="sec-head rv"><div class="eyebrow"><i>02</i>Your partner</div><h2>서울에서 부동산 12년,<br>동네를 가장 잘 아는 착한언니</h2></div>
-  <div class="partner">
-    <div class="rv">
-      <p class="hello">안녕하세요, 착한언니복덕방이에요.<br>
-        <b>12년 동안 이대·신촌에서<br class="mo"> 수많은 계약을 함께했어요.</b><br><br class="mo">
-        "이 동네 안전해요?"보다<br class="mo"> <b>"역에서 이 집까지 밤에 어떤 길로 가요?"</b>를<br class="mo"> 같이 묻는 부동산이에요.<br>
-        물어보지 않으면 놓치기 쉬운 것까지<br class="mo"> 먼저 챙겨드려요.</p>
+<!-- 착한언니가 다른 점 (소개 + 약속) -->
+<section id="about" class="dark"><div class="wrap">
+  <div class="sec-head rv"><div class="eyebrow">소개</div><h2>서울에서 부동산 12년,<br>계약 전에 이것까지 챙겨요</h2></div>
+  <div class="about rv">
+    <div>
+      <p class="hello">안녕하세요, 착한언니복덕방이에요. <b>12년 동안 이대·신촌에서 수많은 계약을 함께했어요.</b> "이 동네 안전해요?"보다 <b>"역에서 이 집까지 밤에 어떤 길로 가요?"</b>를 같이 묻는 부동산이에요. 물어보지 않으면 놓치기 쉬운 것까지 먼저 챙겨드려요.</p>
       <ul>
         <li><b>서울 부동산 12년</b> · 무사고 공인중개사</li>
         <li><b>이대·신촌 오피스텔</b> 월세·전세·매매 전문</li>
         <li><b>마포·서대문 아파트</b> 매매 · 토지거래허가 절차 안내</li>
         <li><b>첫 자취·사회초년생</b> 전월세 안전 계약</li>
         <li><b>첫 집 마련·신혼부부</b> 대출·혜택 계산 상담</li>
-        <li>국토부 실거래가·부동산원 통계로 만든 <b>AI 부동산 도구</b> 운영</li>
       </ul>
     </div>
-    <div class="card rv"><div class="wm-big"><svg viewBox="0 0 40 30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22 L20 6 L37 22"/><path d="M28 12 V5 H32 V15"/></svg><span>착한언니복덕방</span><small>@goodsister4080</small></div><b>12년, 이대·신촌의 동네 부동산</b><span>신촌자이엘라부동산 · 중개사무소 등록번호 11410-2019-00062</span></div>
+    <!-- 대표 사진 슬롯 [사람 확인 필요]: 사진을 tools/img/owner.jpg 로 올린 뒤 data-photo="tools/img/owner.jpg" 로 바꾸면 사진이 표시됨 -->
+    <div class="pcard" id="pcard" data-photo="">
+      <div class="wm"><svg viewBox="0 0 40 30" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 22 L20 6 L37 22"/><path d="M28 12 V5 H32 V15"/></svg><span>착한언니복덕방</span></div>
+      <p><b>12년, 이대·신촌의 동네 부동산</b>신촌자이엘라부동산 · 중개사무소 등록번호 11410-2019-00062</p>
+    </div>
   </div>
+  <div class="promise rv">
+    <div class="pr"><span class="n">01</span><h3>등기부등본, 잔금날 아침에 한 번 더</h3><p>계약할 때 깨끗했던 등기부가 잔금날까지 깨끗하다는 보장은 없어요.</p></div>
+    <div class="pr"><span class="n">02</span><h3>전입신고 · 보증보험 가능 여부</h3><p>대출·보증보험이 안 되는 집은 보러 가기 전에 먼저 걸러요.</p></div>
+    <div class="pr"><span class="n">03</span><h3>내 상황에 맞는 특약</h3><p>수리 약속, 보증금 반환, 근저당 말소 등 꼭 필요한 특약을 넣어요.</p></div>
+    <div class="pr"><span class="n">04</span><h3>밤길까지 생각한 동네 추천</h3><p>낮 2시의 골목이 아니라 밤 11시에 걷는 길을 기준으로 봐요.</p></div>
+  </div>
+  <p class="motto rv">살 때만 좋은 집보다, <em>팔 때까지 생각한 집</em>을 함께 고민합니다.</p>
 </div></section>
 
 <div class="ribbon" aria-hidden="true"><div class="track"><span>이대</span><span>신촌</span><span>아현</span><span>대흥</span><span>공덕</span><span>마포</span><span>서대문</span><span>합정</span><span>망원</span><span>연희</span><span>북아현</span><span>충정로</span><span>이대</span><span>신촌</span><span>아현</span><span>대흥</span><span>공덕</span><span>마포</span><span>서대문</span><span>합정</span><span>망원</span><span>연희</span><span>북아현</span><span>충정로</span></div></div>
-<!-- TOOLS -->
-<section id="tools" class="beige"><div class="wrap">
-  <div class="sec-head rv"><div class="eyebrow"><i>03</i>AI tools</div><h2>상담 전에, 숫자로 먼저<br>확인해보세요</h2><p>국토교통부 실거래가와 한국부동산원 통계를 매주·매달 자동으로 업데이트해요.</p></div>
-  <div class="tools">
-    <a class="tool rv feat" href="tools/#budget"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18"/><path d="M16 14.5h2"/><path d="M6 6l9-3 1 3"/></svg></span><h3>내 예산으로 서울 어디까지?</h3><p>현금·소득으로 지금부터 5년 후까지<br>살 수 있는 단지</p><span class="go">계산하기 →</span></a>
-    <a class="tool rv" href="tools/#rent"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 1114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><h3>첫 자취 동네 추천기</h3><p>통근 시간과 실제 월세로<br>동네 비교</p><span class="go">동네 찾기 →</span></a>
-    <a class="tool rv" href="tools/#check"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 7a4 4 0 006 0L5 7zM19 7l-3 7a4 4 0 006 0l-3-7z"/></svg></span><h3>이 아파트, 비싸게 사는 걸까?</h3><p>최근 거래 · 유사 단지 ·<br>거래량과 비교</p><span class="go">가격 검토 →</span></a>
-    <a class="tool rv" href="tools/#cost"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11v6M8 15h2M12 15h2"/></svg></span><h3>부대비용 계산기</h3><p>취득세 · 등기비용 · 중개보수 ·<br>전세보증보험까지 한 번에</p><span class="go">계산하기 →</span></a>
-    <a class="tool rv" href="tools/#market"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4M4 20h16"/><path d="M7 15l4-4 3 3 5-6"/></svg></span><h3>이번 주 서울 시황</h3><p>구별 변동률 · 수급지수 ·<br>거래 많은 단지 TOP</p><span class="go">시황 보기 →</span></a>
-    <a class="tool rv" href="tools/#news"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg></span><h3>정책 뉴스 · 세금 타임라인</h3><p>지금 적용 중인 규제와<br>정부별 세금 변화를 쉬운 말로</p><span class="go">뉴스 보기 →</span></a>
+
+<!-- 후기: [사람 확인 필요] 실제 후기를 받으면 hidden 제거 후 .review 카드 채우기 (후기 문구 생성 금지) -->
+<section id="reviews" class="beige" hidden><div class="wrap">
+  <div class="sec-head"><div class="eyebrow">후기</div><h2>착한언니와 계약한 분들 이야기</h2></div>
+  <div class="reviews"></div>
+</div></section>
+
+<!-- 상담 -->
+<section id="contact" class="beige"><div class="wrap">
+  <div class="sec-head rv"><div class="eyebrow">상담</div><h2>상담은 카카오톡으로<br>편하게 물어보세요</h2><p>전화가 부담스러워도 괜찮아요. 아래 3단계면 충분해요.</p></div>
+  <div class="steps rv">
+    <a class="st" href="https://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener" data-track="contact_step1"><span class="n">1</span><b>카카오톡 채널 추가</b><p>'착한언니복덕방' 채널을 추가해요.</p><span class="go">채널 열기 →</span></a>
+    <div class="st"><span class="n">2</span><b>조건 보내기</b><p>예산(보증금·월세 또는 현금·소득), 출퇴근지, 입주 희망일, 꼭 필요한 조건 2가지</p><button class="btn btn-line btn-sm copy" type="button" id="copy-form">조건 양식 복사</button></div>
+    <div class="st"><span class="n">3</span><b>맞춤 매물·숫자 받기</b><p>조건에 맞는 매물과 실거래 시세, 대출·비용 계산을 같이 보내드려요.</p></div>
   </div>
-  <p class="swipe">← 옆으로 넘겨보세요 →</p>
+  <div class="big-cta rv">
+    <div><h3>지금 바로 물어보세요</h3><p><span class="nw">이대·신촌 오피스텔</span> · <span class="nw">마포·서대문 아파트</span> · <span class="nw">첫 자취</span> · <span class="nw">첫 집</span></p></div>
+    <a class="btn btn-k" href="https://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener" data-track="contact_kakao">카카오톡 채널로 상담하기</a>
+  </div>
+  <p class="contact-meta"><a href="tel:023644080" data-track="contact_tel">전화 02-364-4080</a><a href="mailto:ellarang@naver.com">메일 ellarang@naver.com</a></p>
+</div></section>
+
+<!-- 도구 모음 -->
+<section id="tools"><div class="wrap">
+  <div class="sec-head rv"><div class="eyebrow">도구</div><h2>상담 전에, 숫자로 먼저 확인해보세요</h2><p>국토교통부 실거래가와 한국부동산원 통계를 매주·매달 자동으로 업데이트해요.</p></div>
+  <div class="toollist rv">
+    <a href="tools/#budget"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2.5"/><path d="M3 10h18"/><path d="M16 14.5h2"/><path d="M6 6l9-3 1 3"/></svg></span><span><b>내 예산으로 서울 어디까지?</b><small>현금·소득으로 지금부터 5년 후까지 살 수 있는 단지</small></span><span class="arr" aria-hidden="true">›</span></a>
+    <a href="tools/#rent"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 1114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><span><b>첫 자취 동네 추천기</b><small>통근 시간과 실제 월세로 동네 비교</small></span><span class="arr" aria-hidden="true">›</span></a>
+    <a href="tools/#check"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M7 21h10M5 7h14"/><path d="M5 7l-3 7a4 4 0 006 0L5 7zM19 7l-3 7a4 4 0 006 0l-3-7z"/></svg></span><span><b>이 아파트, 비싸게 사는 걸까?</b><small>최근 거래·유사 단지·거래량과 비교</small></span><span class="arr" aria-hidden="true">›</span></a>
+    <a href="tools/#cost"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11v6M8 15h2M12 15h2"/></svg></span><span><b>부대비용 계산기</b><small>취득세·등기비용·중개보수·전세보증보험</small></span><span class="arr" aria-hidden="true">›</span></a>
+    <a href="tools/#market"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V4M4 20h16"/><path d="M7 15l4-4 3 3 5-6"/></svg></span><span><b>이번 주 서울 시황</b><small>구별 변동률·수급지수·거래 많은 단지</small></span><span class="arr" aria-hidden="true">›</span></a>
+    <a href="tools/#news"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5M10 13h6M10 17h6"/></svg></span><span><b>정책 뉴스 · 세금 타임라인</b><small>지금 적용 중인 규제와 정부별 세금 변화</small></span><span class="arr" aria-hidden="true">›</span></a>
+  </div>
   <div class="live" id="live"></div>
   <p class="live-note" id="live-note"></p>
 </div></section>
 
-<!-- PROMISE -->
-<section class="dark"><div class="wrap">
-  <div class="sec-head rv"><div class="eyebrow"><i>04</i>Our promise</div><h2>계약 전,<br>착한언니가 꼭 확인해드려요</h2><p>1천 원으로 보증금을 지키는 일,<br>고객의 소중한 권리를 지키기 위한<br class="mo"> 가장 기본적인 원칙입니다.</p></div>
-  <div class="promise">
-    <div class="pr rv"><span class="n">01</span><h3>등기부등본, 잔금날 아침에 한 번 더</h3><p>계약할 때 깨끗했던 등기부가<br class="mo"> 잔금날까지 깨끗하다는 보장은 없어요.</p></div>
-    <div class="pr rv"><span class="n">02</span><h3>전입신고 · 보증보험 가능 여부</h3><p>대출·보증보험이 안 되는 집은<br class="mo"> 보러 가기 전에 먼저 걸러요.</p></div>
-    <div class="pr rv"><span class="n">03</span><h3>내 상황에 맞는 특약</h3><p>수리 약속, 보증금 반환, 근저당 말소 등<br class="mo"> 꼭 필요한 특약을 넣어요.</p></div>
-    <div class="pr rv"><span class="n">04</span><h3>밤길까지 생각한 동네 추천</h3><p>낮 2시의 골목이 아니라<br class="mo"> 밤 11시에 걷는 길을 기준으로 봐요.</p></div>
-  </div>
-  <p class="swipe">← 옆으로 넘겨보세요 →</p>
-  <p class="motto rv">살 때만 좋은 집보다,<br><em>팔 때까지 생각한 집</em>을 함께 고민합니다.</p>
-</div></section>
-
-<!-- TIPS -->
-<section id="tips"><div class="wrap">
-  <div class="sec-head rv"><div class="eyebrow"><i>05</i>Tips</div><h2>현장에서 매일 받는 질문,<br>꿀팁으로 정리했어요</h2></div>
+<!-- 꿀팁 -->
+<section id="tips" class="beige"><div class="wrap">
+  <div class="sec-head rv"><div class="eyebrow">꿀팁</div><h2>현장에서 매일 받는 질문,<br>꿀팁으로 정리했어요</h2></div>
   <div class="tips fold" id="tiplist"></div>
   <div class="sns">
     <a class="btn btn-line btn-sm" href="https://blog.naver.com/ellarang" target="_blank" rel="noopener">네이버 블로그 이웃추가</a>
     <a class="btn btn-line btn-sm" href="https://www.instagram.com/goodsister4080/" target="_blank" rel="noopener">인스타그램 @goodsister4080</a>
   </div>
 </div></section>
-
-<!-- CONTACT -->
-<section id="contact" class="brandbg"><div class="wrap">
-  <div class="sec-head rv"><div class="eyebrow"><i>06</i>Contact</div><h2>상담은 카카오톡으로<br>편하게 물어보세요</h2><p>전화가 부담스러워도 괜찮아요. 아래 3단계면 충분해요.</p></div>
-  <div class="steps">
-    <div class="st rv"><span class="n">1</span><b>카카오톡 채널 추가</b><p>'착한언니복덕방' 채널을 추가해요.</p></div>
-    <div class="st rv"><span class="n">2</span><b>조건 보내기</b><p>예산(보증금·월세 또는 현금·소득), 출퇴근지, 입주 희망일, 꼭 필요한 조건 2가지</p></div>
-    <div class="st rv"><span class="n">3</span><b>맞춤 매물·숫자 받기</b><p>조건에 맞는 매물과 실거래 시세, 대출·비용 계산을 같이 보내드려요.</p></div>
-  </div>
-  <div class="big-cta rv">
-    <div><h3>지금 바로 물어보세요</h3><p><span class="nw">이대·신촌 오피스텔</span> · <span class="nw">마포·서대문 아파트</span> · <span class="nw">첫 자취</span> · <span class="nw">첫 집</span></p></div>
-    <a class="btn btn-k" href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">카카오톡 채널로 상담하기</a>
-  </div>
-  <p class="contact-meta">전화 <a href="tel:023644080" style="text-decoration:underline">02-364-4080</a> · ellarang@naver.com</p>
-</div></section>
+</main>
 
 <footer><div class="wrap">
   <b>착한언니복덕방</b> · 신촌자이엘라부동산<br>
   대표 신수경 · 중개사무소 등록번호 11410-2019-00062<br>
   서울시 서대문구 대현동 104-36 신촌자이엘라 B101호<br>
   전화 02-364-4080 · 메일 ellarang@naver.com<br>
-  사업자등록번호 204-29-31241 (<a href="https://www.ftc.go.kr/www/biz/bizCommList.do?key=5375" target="_blank" rel="noopener">사업자정보 조회</a>) · 통신판매업 신고면제<br>
-  <a href="https://blog.naver.com/ellarang" target="_blank" rel="noopener">블로그</a> · <a href="https://www.instagram.com/goodsister4080/" target="_blank" rel="noopener">인스타그램</a> · <a href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">카카오톡 채널</a>
+  사업자등록번호 204-29-31241 · 통신판매업 신고면제
+  <div class="links">
+    <a href="https://www.ftc.go.kr/www/biz/bizCommList.do?key=5375" target="_blank" rel="noopener">사업자정보 조회</a>
+    <a href="https://blog.naver.com/ellarang" target="_blank" rel="noopener">블로그</a>
+    <a href="https://www.instagram.com/goodsister4080/" target="_blank" rel="noopener">인스타그램</a>
+    <a href="https://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">카카오톡 채널</a>
+  </div>
   <p class="disc">AI 부동산 도구의 결과는 국토교통부 실거래가·한국부동산원 공개 자료를 바탕으로 한 참고 정보이며, 투자·대출 판단의 근거가 될 수 없습니다. 실제 계약 전에는 공인중개사와 함께 확인하세요.</p>
 </div></footer>
 
 <div class="mbar">
-  <a class="btn btn-line" href="tel:023644080">전화</a>
-  <a class="btn btn-k" href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">카카오톡 상담</a>
+  <a class="btn btn-line" href="tel:023644080" data-track="mbar_tel">전화</a>
+  <a class="btn btn-k" href="https://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener" data-track="mbar_kakao">카카오톡 상담</a>
 </div>
 
 <script src="tools/data/market.js"></script>
 <script src="tools/data/summary.js"></script>
 <script src="tools/guide/toc.js"></script>
-<script>
-(() => {
-  const $ = id => document.getElementById(id);
-  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  // nav 그림자
-  addEventListener("scroll", () => $("nav").classList.toggle("scrolled", scrollY > 8), { passive: true });
-
-  // 실거래 건수
-  const S = window.GS_SUMMARY;
-  if (S) $("s-deals").textContent = (Math.floor(S.deals / 1000) * 1000).toLocaleString() + "+건";
-
-  // 히어로 곡선 = 실제 서울 매매가격지수 (부동산원)
-  const M = window.GS_MARKET;
-  if (M && M.series.sale["서울"]) {
-    const v = M.series.sale["서울"].filter(x => x != null), lo = Math.min(...v), hi = Math.max(...v);
-    const W = 1000, H = 260, pts = v.map((y, i) => [i / (v.length - 1) * W, H - 12 - (y - lo) / (hi - lo || 1) * (H - 40)]);
-    const d = pts.map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + "," + p[1].toFixed(1)).join("");
-    const last = pts[pts.length - 1];
-    $("hero-chart").innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
-      <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D64270" stop-opacity=".16"/><stop offset="1" stop-color="#D64270" stop-opacity="0"/></linearGradient></defs>
-      <path d="${d}L${W},${H}L0,${H}Z" fill="url(#g)"/><path d="${d}" fill="none" stroke="#D64270" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
-      <circle cx="${last[0] - 6}" cy="${last[1]}" r="6" fill="#D64270"/></svg>
-      <span class="cap">서울 아파트 매매가격지수 ${M.dates[0].slice(2).replace(/-/g, ".")} ~ ${M.dates[M.dates.length - 1].slice(2).replace(/-/g, ".")} · 한국부동산원</span>`;
-    // 이번 주 시황 카드
-    const n = M.weeks.length - 1, R = M.series;
-    const ch = a => a && a[n] != null && a[n - 1] ? (a[n] / a[n - 1] - 1) * 100 : null;
-    const f = x => x == null ? "-" : `<span class="${x > 0 ? "up" : x < 0 ? "dn" : ""}">${x > 0 ? "▲" : x < 0 ? "▼" : ""}${Math.abs(x).toFixed(2)}%</span>`;
-    const gu = Object.keys(R.sale).filter(g => g.endsWith("구")).map(g => [g, ch(R.sale[g])]).filter(x => x[1] != null).sort((a, b) => b[1] - a[1]);
-    $("live").innerHTML = `<div><small>서울 매매가 · 이번 주</small><b>${f(ch(R.sale["서울"]))}</b></div>
-      <div><small>서울 전세가 · 이번 주</small><b>${f(ch(R.jeonse["서울"]))}</b></div>
-      <div><small>가장 많이 오른 구</small><b>${gu[0] ? gu[0][0] : "-"}</b></div>
-      <div><small>서울 매매수급지수</small><b>${R.sale_sd["서울"] ? R.sale_sd["서울"][n].toFixed(1) : "-"}</b></div>`;
-    $("live-note").innerHTML = `한국부동산원 주간 아파트가격동향 <span class="nw">${M.dates[n]} 기준</span> · <span class="nw">매주 자동 업데이트</span>`;
-  }
-
-  // 30초 진단
-  const Q = [
-    { q: "지금 어떤 집을 찾고 있나요?", o: [["first", "첫 자취방 · 원룸/오피스텔", "학교·회사 근처 월세·전세"], ["home", "첫 내 집 마련", "생애최초·신혼부부"], ["move", "갈아타기 · 매매", "지금 집 팔고 더 좋은 곳으로"], ["learn", "아직은 공부 중", "시장 흐름부터 알고 싶어요"]] },
-    { q: "가장 걱정되는 건 뭔가요?", o: [["money", "예산 · 대출 한도", "얼마까지 가능한지 모르겠어요"], ["area", "동네 · 출퇴근 · 안전", "어디에 살아야 할지"], ["price", "가격이 적당한지", "비싸게 사는 건 아닐까"], ["safe", "계약 · 보증금 안전", "사기·특약이 걱정돼요"]] },
-    { q: "언제쯤 움직일 계획인가요?", o: [["now", "3개월 안에", "바로 집을 보러 다닐 예정"], ["soon", "6개월~1년 안에", "미리 준비하고 싶어요"], ["later", "1년 이후", "천천히 계획 중이에요"]] },
-  ];
-  const T = window.GS_TOC || {}, find = re => [...(T.jachwi || []), ...(T.tips || [])].find(p => re.test(p.t));
-  const g = (re, label) => { const p = find(re); return p ? [`tools/#${p.h}`, `${p.i} ${label || p.t.trim().replace(/\s*\|.*$/, "")}`] : null; };
-  function result(a) {
-    const [kind, worry, when] = a, L = [];
-    const typeTxt = { first: "안전한 첫 자취러", home: "현실적인 첫 집 준비생", move: "전략적인 갈아타기", learn: "차근차근 공부파" }[kind];
-    if (kind === "first") { L.push(["tools/#rent", "🎓 첫 자취 동네 추천기"]); L.push(g(/동네 고르기/)); L.push(g(worry === "safe" ? /등기부등본/ : /방 보기/)); L.push(g(/여자 혼자/)); }
-    if (kind === "home") { L.push(["tools/#budget", "💰 내 예산으로 서울 어디까지?"]); L.push(g(/첫 집, 내 현금/)); L.push(g(/대출 완전정복/)); L.push(g(worry === "price" ? /사야할|알아보기 시작/ : /진짜 드는 돈/)); }
-    if (kind === "move") { L.push(["tools/#check", "⚖️ 이 아파트, 비싸게 사는 걸까?"]); L.push(g(/갈아타기/)); L.push(["tools/#market", "📊 이번 주 서울 시황"]); L.push(g(/토지거래허가/)); }
-    if (kind === "learn") { L.push(["tools/#market", "📊 이번 주 서울 시황"]); L.push(["tools/#news", "🗞️ 부동산 정책 뉴스"]); L.push(g(/알아보기 시작/)); L.push(["tools/#budget", "💰 내 예산으로 서울 어디까지?"]); }
-    if (worry === "safe" && kind !== "first") L.splice(1, 0, g(/보증금 사수|등기부등본/));
-    if (worry === "money" && kind === "first") L.splice(1, 0, g(/전화하기/));
-    const list = [...new Map(L.filter(Boolean).map(x => [x[0], x])).values()].slice(0, 4);
-    const tip = when === "now" ? "3개월 안에 움직이신다면 지금 바로 카톡으로 조건을 보내주세요. 나오자마자 나가는 매물이 많아요."
-      : when === "soon" ? "지금부터 예산과 동네 기준을 세워두면, 매물이 나왔을 때 빠르게 결정할 수 있어요." : "매주 바뀌는 시황과 정책만 챙겨도 기준이 생겨요. 블로그 이웃추가로 소식을 받아보세요.";
-    return `<div class="res"><div class="step">진단 결과</div><div class="bar"><i style="width:100%"></i></div>
-      <h3>나는 '${typeTxt}' 타입</h3><p>${tip}</p>
-      <div class="list">${list.map(([h, t]) => `<a href="${h}">${esc(t)}<span>→</span></a>`).join("")}</div>
-      <a class="btn btn-k" style="width:100%" href="http://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">이 결과로 착한언니에게 상담받기</a>
-      <div style="text-align:center"><button class="again" type="button">다시 하기</button></div></div>`;
-  }
-  const box = $("quizbox"); let ans = [];
-  function render() {
-    if (ans.length === Q.length) { box.innerHTML = result(ans); box.querySelector(".again").onclick = () => { ans = []; render(); }; return; }
-    const i = ans.length, q = Q[i];
-    box.innerHTML = `<div class="step">질문 ${i + 1} / ${Q.length}</div><div class="bar"><i style="width:${i / Q.length * 100}%"></i></div>
-      <h3>${q.q}</h3><div class="opts">${q.o.map(([v, t, s]) => `<button type="button" class="opt" data-v="${v}">${t}<small>${s}</small></button>`).join("")}</div>
-      <p class="meta">30초 소요 · 개인정보를 받지 않아요</p>`;
-    box.querySelectorAll(".opt").forEach(b => b.onclick = () => { ans.push(b.dataset.v); render(); });
-  }
-  render();
-
-  // 꿀팁 목차 (노션에서 자동 반영)
-  if (window.GS_TOC) {
-    const item = (p, k) => `<a href="tools/#${p.h}" class="${k >= 3 ? "x" : ""}"><span class="i">${String(k + 1).padStart(2, "0")}</span>${esc(p.t.trim().replace(/\s*\|.*$/, ""))}</a>`;
-    $("tiplist").innerHTML = `<h3>첫 자취방 가이드</h3>${T.jachwi.map(item).join("")}<h3>내 집 마련 · 계약 꿀팁</h3>${T.tips.map(item).join("")}
-      <button class="btn btn-line more" type="button">꿀팁 전체 보기</button>`;
-    $("tiplist").querySelector(".more").onclick = () => $("tiplist").classList.remove("fold");
-  }
-
-  // 스크롤 등장 효과
-  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
-  document.querySelectorAll(".rv").forEach(el => io.observe(el));
-})();
-</script>
+<script src="assets/landing.js"></script>
 </body>
 </html>
