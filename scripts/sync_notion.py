@@ -29,6 +29,13 @@ def safe_link(u):
 
 
 HIDDEN = set()  # 루트에 연결됐지만 비공개라 못 읽은 페이지
+# 노션에는 두되 사이트에는 안 보일 페이지 (링크도 일반 글자로 바뀜)
+EXCLUDE = {
+    "40bf7921-6746-8179-a6e2-eba1d4a11404": "사진 보관함 (내부용)",
+    "38b86496-d542-8008-82c0-cadfe7dbfcd0": "집 살 때 진짜 드는 돈 (구버전, 잔금 자료로 통합)",
+}
+# 숨긴 페이지의 예전 주소(#g-...)로 들어오면 대신 열 페이지
+ALIAS = {"38b86496-d542-8008-82c0-cadfe7dbfcd0": "40cf7921-6746-8133-817e-ed7b51e53137"}
 UA = {"user-agent": "Mozilla/5.0 (goodsister-site-sync)"}
 UUID = re.compile(r"([0-9a-f]{8})-?([0-9a-f]{4})-?([0-9a-f]{4})-?([0-9a-f]{4})-?([0-9a-f]{12})")
 
@@ -285,6 +292,9 @@ def main():
                 except Exception as e:
                     print(f"  ! {k} 읽기 실패(비공개일 수 있음): {e}", file=sys.stderr)
     for pid, blocks in loaded.items():
+        if pid in EXCLUDE:
+            print(f"  - {pid}: 사이트에서 숨김 ({EXCLUDE[pid]})", flush=True)
+            continue
         b = blocks.get(pid)
         if not b or not b.get("content"):
             if pid not in dict(ROOTS).values():
@@ -334,6 +344,9 @@ def main():
             "pages": {k: {kk: vv for kk, vv in v.items()} for k, v in pages.items() if "html" in v}}
     # 짧은 ID(#g-xxxxxxxxyyyy)로도 찾을 수 있게
     data["short"] = {f"{k[:8]}{k[-4:]}": k for k in data["pages"]}
+    for old, new in ALIAS.items():
+        if new in data["pages"]:
+            data["short"][f"{old[:8]}{old[-4:]}"] = new
     body = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
     (OUT / "pages.js").write_text(f"window.GS_GUIDE={body};\n", encoding="utf-8")
     # 랜딩페이지용 가벼운 목차 (제목·아이콘·링크만)
