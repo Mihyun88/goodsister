@@ -111,7 +111,7 @@ class Renderer:
         if t and t in HIDDEN:
             return None, False
         if t:
-            return f"https://www.notion.so/{t.replace('-', '')}", False
+            return f"{SITE}/{t.replace('-', '')}", False  # 웹 게시 주소 (복제 버튼이 보이는 곳)
         return target, not target.startswith("http")
 
     def rich(self, prop):
