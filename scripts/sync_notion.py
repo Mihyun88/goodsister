@@ -17,7 +17,8 @@ ROOTS = [  # (탭 키, 페이지 ID)
 ]
 OUT = Path(__file__).resolve().parent.parent / "tools" / "guide"
 IMG = OUT / "img"
-SAFE_SCHEMES = ("http://", "https://", "mailto:", "tel:")
+SAFE_SCHEMES = ("http://", "https://", "tel:")  # mailto 제외: 사이트에 이메일 주소를 공개하지 않음
+EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}")
 
 
 def safe_link(u):
@@ -347,6 +348,9 @@ def main():
     for old, new in ALIAS.items():
         if new in data["pages"]:
             data["short"][f"{old[:8]}{old[-4:]}"] = new
+    # 노션 본문에 이메일 주소가 있어도 사이트에는 내보내지 않음 (스팸 수집 방지)
+    for v in data["pages"].values():
+        v["html"] = EMAIL_RE.sub("(카카오톡 채널로 문의)", v["html"])
     body = json.dumps(data, ensure_ascii=False, separators=(",", ":"))
     (OUT / "pages.js").write_text(f"window.GS_GUIDE={body};\n", encoding="utf-8")
     # 랜딩페이지용 가벼운 목차 (제목·아이콘·링크만)
