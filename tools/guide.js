@@ -1,6 +1,7 @@
 /* 노션 가이드 보기 + 주소(#) 이동. 데이터: guide/pages.js (scripts/sync_notion.py 로 생성) */
 (() => {
   const G = window.GS_GUIDE;
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); // SEC-5
   const TABS = ["budget", "rent", "check", "cost", "market", "news", "timeline", "jachwi", "tips"];
   const rootOf = {}; // pageId -> 탭 키
   if (G) for (const [k, ids] of Object.entries(G.roots)) ids.forEach(id => { if (!rootOf[id]) rootOf[id] = k; });
@@ -15,10 +16,10 @@
     if (!G) { el.innerHTML = `<p class="muted">가이드 데이터가 없습니다. <code>python3 scripts/sync_notion.py</code> 를 실행해 주세요.</p>`; return; }
     const rootId = G.roots[key][0], id = pageId && G.pages[pageId] ? pageId : rootId, pg = G.pages[id], root = G.pages[rootId];
     el.innerHTML = `
-      ${id !== rootId ? `<div class="crumb"><a href="#${key}">← ${root.icon} ${root.title}</a></div>` : ""}
-      <h1>${pg.icon} ${pg.title}</h1>
+      ${id !== rootId ? `<div class="crumb"><a href="#${esc(key)}">← ${esc(root.icon)} ${esc(root.title)}</a></div>` : ""}
+      <h1>${esc(pg.icon)} ${esc(pg.title)}</h1>
       ${pg.html}
-      <p class="synced">노션 원본 동기화: ${G.synced}</p>`;
+      <p class="synced">노션 원본 동기화: ${esc(G.synced)}</p>`;
     // 노션의 체크박스는 보기용: 클릭해도 저장되지 않음
     el.querySelectorAll('input[type=checkbox]').forEach(c => c.addEventListener("click", e => e.stopPropagation()));
   }
@@ -43,7 +44,7 @@
 
   // 도구 결과 아래에 관련 가이드 링크 붙이기
   const find = re => G && Object.entries(G.pages).find(([, p]) => re.test(p.title));
-  const link = re => { const f = find(re); return f ? `<a href="#g-${f[0].slice(0, 8)}${f[0].slice(-4)}">${f[1].icon} ${f[1].title.replace(/\s*\|.*$/, "")}</a>` : ""; };
+  const link = re => { const f = find(re); return f ? `<a href="#g-${esc(f[0].slice(0, 8) + f[0].slice(-4))}">${esc(f[1].icon)} ${esc(f[1].title.replace(/\s*\|.*$/, ""))}</a>` : ""; };
   const related = {
     "o-budget": [/첫 집, 내 현금/, /대출용어/, /사야할 집/, /토지거래허가/, /잔금일 체크/],
     "o-rent": [/동네 고르기/, /부동산 전화/, /방 보기/, /등기부등본/, /여자 혼자/, /보증금 사수/],

@@ -32,7 +32,7 @@
     const sdNote = (v, j) => v == null ? "" : v >= 100 ? (j ? "전세 구하려는 사람이 더 많음" : "사려는 사람이 더 많음") : (j ? "전세 매물이 더 많음" : "팔려는 사람이 더 많음");
     const rows = GU.filter(g => S.sale[g]).map(g => ({ g, w: chg(S.sale[g]), m: chg(S.sale[g], 4), h: chg(S.sale[g], last), jw: chg(S.jeonse[g]), jm: chg(S.jeonse[g], 4) }));
     rows.sort((a, b) => b.w - a.w);
-    const top3 = rows.slice(0, 3).map(r => `<b>${r.g}</b>(${pct(r.w)})`).join(" · ");
+    const top3 = rows.slice(0, 3).map(r => `<b>${esc(r.g)}</b>(${pct(r.w)})`).join(" · ");
     const zones = ["도심권", "동북권", "서북권", "서남권", "동남권"];
     el.innerHTML = `
       <div class="kpis">
@@ -41,17 +41,17 @@
         <div class="kpi"><div class="l">서울 매매수급지수</div><div class="v">${sdTxt(sd(S.sale_sd["서울"]))}</div><div class="l">${sdNote(sd(S.sale_sd["서울"]))}</div></div>
         <div class="kpi"><div class="l">서울 전세수급지수</div><div class="v">${sdTxt(sd(S.jeonse_sd["서울"]))}</div><div class="l">${sdNote(sd(S.jeonse_sd["서울"]), 1)}</div></div>
       </div>
-      <p class="lim">${M.dates[last]} 기준 · 이번 주 매매가가 가장 많이 오른 구: ${top3}</p>
-      <h3>서울 아파트 가격지수 추이 (${M.dates[0]} ~ ${M.dates[last]})</h3>
+      <p class="lim">${esc(M.dates[last])} 기준 · 이번 주 매매가가 가장 많이 오른 구: ${top3}</p>
+      <h3>서울 아파트 가격지수 추이 (${esc(M.dates[0])} ~ ${esc(M.dates[last])})</h3>
       <div class="legend"><span><i style="background:#2a78d6"></i>매매가격지수</span><span><i style="background:#eb6834"></i>전세가격지수</span></div>
       <div class="chart" id="mk-line"></div>
       <h3>구별 주간 변동률 <span class="muted" style="font-size:.8rem;font-weight:400">빨강 상승 · 파랑 하락</span></h3>
       <div class="tblwrap"><table class="mk"><tr><th>구</th><th class="r">매매 이번 주</th><th class="r">매매 4주</th><th class="r">매매 ${n - 1}주</th><th class="r">전세 이번 주</th><th class="r">전세 4주</th></tr>
-      ${rows.map(r => `<tr><td>${r.g}</td><td class="r" style="${div(r.w, .3)}">${pct(r.w)}</td><td class="r" style="${div(r.m, 1)}">${pct(r.m)}</td><td class="r" style="${div(r.h, 6)}">${pct(r.h, 1)}</td>
+      ${rows.map(r => `<tr><td>${esc(r.g)}</td><td class="r" style="${div(r.w, .3)}">${pct(r.w)}</td><td class="r" style="${div(r.m, 1)}">${pct(r.m)}</td><td class="r" style="${div(r.h, 6)}">${pct(r.h, 1)}</td>
         <td class="r" style="${div(r.jw, .3)}">${pct(r.jw)}</td><td class="r" style="${div(r.jm, 1)}">${pct(r.jm)}</td></tr>`).join("")}</table></div>
       <h3>권역별 수급지수 <span class="muted" style="font-size:.8rem;font-weight:400">100보다 크면 사려는(구하려는) 사람이 더 많아요</span></h3>
       <div class="tblwrap"><table class="mk"><tr><th>권역</th><th class="r">매매수급</th><th class="r">4주 전</th><th class="r">전세수급</th><th class="r">4주 전</th></tr>
-      ${zones.filter(z => S.sale_sd[z]).map(z => `<tr><td>${z}</td><td class="r"><b>${sdTxt(sd(S.sale_sd[z]))}</b></td><td class="r muted">${sdTxt(S.sale_sd[z][last - 4])}</td>
+      ${zones.filter(z => S.sale_sd[z]).map(z => `<tr><td>${esc(z)}</td><td class="r"><b>${sdTxt(sd(S.sale_sd[z]))}</b></td><td class="r muted">${sdTxt(S.sale_sd[z][last - 4])}</td>
         <td class="r"><b>${sdTxt(sd(S.jeonse_sd[z]))}</b></td><td class="r muted">${sdTxt(S.jeonse_sd[z][last - 4])}</td></tr>`).join("")}</table></div>
       <p class="muted" style="font-size:.78rem;margin-top:.5rem">도심권 종로·중구·용산 / 동북권 성동·광진·동대문·중랑·성북·강북·도봉·노원 / 서북권 은평·서대문·마포 / 서남권 양천·강서·구로·금천·영등포·동작·관악 / 동남권 서초·강남·송파·강동</p>`;
     lineChart($("#mk-line"), M.dates, [{ name: "매매", color: "#2a78d6", v: seoulSale }, { name: "전세", color: "#eb6834", v: seoulJ }]);
@@ -133,7 +133,7 @@
     $("#mk-gutable").innerHTML = `
       <p class="lim">${m === "r3" ? "최근 3개월" : ym(m)} 서울 아파트 매매 <b>${tot.toLocaleString()}건</b>${prevM ? ` · 전월 대비 ${pct(ptot ? (tot / ptot - 1) * 100 : null, 1)}` : ""}${lagged.has(m) || m === "r3" ? ` <span class="tag">최근 달은 신고 진행 중이라 더 늘어나요</span>` : ""}</p>
       <div class="tblwrap"><table class="mk"><tr><th>구</th><th class="r">거래량</th>${prevM ? `<th class="r">전월 대비</th>` : ""}<th class="r">평당 중위가</th><th class="r">최고가 갱신</th><th>거래 1위 단지</th></tr>
-      ${rows.map(r => `<tr class="click" data-g="${r.g}"><td>${r.g}</td><td class="r"><b>${r.n}</b></td>${prevM ? `<td class="r">${pct(r.pn ? (r.n / r.pn - 1) * 100 : null, 0)}</td>` : ""}
+      ${rows.map(r => `<tr class="click" data-g="${esc(r.g)}"><td>${esc(r.g)}</td><td class="r"><b>${r.n}</b></td>${prevM ? `<td class="r">${pct(r.pn ? (r.n / r.pn - 1) * 100 : null, 0)}</td>` : ""}
         <td class="r">${r.ppm ? eok(r.ppm * 3.3058) : "-"}</td><td class="r">${r.nh || "-"}</td><td>${r.top ? `${esc(r.top[0])} <span class="muted">${r.top[1]}건</span>` : "-"}</td></tr>`).join("")}</table></div>`;
     $("#mk-gutable").querySelectorAll("tr.click").forEach(tr => tr.onclick = () => { gsel.value = tr.dataset.g; monthly(); $("#mk-top").scrollIntoView({ behavior: "smooth", block: "start" }); });
     // TOP 단지

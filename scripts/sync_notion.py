@@ -189,7 +189,7 @@ class Renderer:
             icon = f.get("page_icon", "")
             icon = icon if icon and not icon.startswith("http") else "💡"
             body = (f"<p>{title}</p>" if title else "") + kids
-            return f'<div class="callout c-{color or "gray_background"}"><span class="ci">{icon}</span><div class="cb">{body}</div></div>'
+            return f'<div class="callout c-{color or "gray_background"}"><span class="ci">{html.escape(icon)}</span><div class="cb">{body}</div></div>'
         if t == "divider":
             return "<hr>"
         if t == "column_list":
@@ -223,7 +223,7 @@ class Renderer:
             if href is None:
                 return ""
             icon = f.get("page_icon", "📄")
-            return f'<a class="pagelink" href="{href}"{"" if internal else " target=_blank rel=noopener"}>{icon if not icon.startswith("http") else "📄"} {title}</a>'
+            return f'<a class="pagelink" href="{href}"{"" if internal else " target=_blank rel=noopener"}>{html.escape(icon) if not icon.startswith("http") else "📄"} {title}</a>'
         if t == "alias":
             tid = f.get("alias_pointer", {}).get("id", "")
             href, internal = self.link_for(tid)
