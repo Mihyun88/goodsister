@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" href="../favicon.svg">
+<title>착한언니복덕방 링크</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="착한언니복덕방 · 카톡 상담, 잔금 D-day 체크리스트, 무료 부동산 계산기, 블로그를 한 곳에서">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: 복덕방 간판 같은 핑크 바탕 위에, 검은 테두리 + 진한 그림자 '스티커 카드'를 한 줄로 쌓는 링크 페이지.
+   기존 배너(핑크 + 흰 글씨 + 진한 그림자)를 그대로 이어받아 한 가지 룩으로 고정. */
+:root{
+  --pink:#D0416E;
+  --pink-deep:#B32F5B;
+  --ink:#231C1E;
+  --white:#FFFFFF;
+  --cream:#FFF8EC;
+  --butter:#FFE58A;
+  --mint:#BDEBD3;
+  --sky:#C9E2FF;
+  --peach:#FFD3C2;
+  --kakao:#FEE500;
+  --sub:#6A5F62;
+  --shadow:3px 3px 0 var(--ink);
+  --f-display:"Jua","Apple SD Gothic Neo",sans-serif;
+  --f-body:"IBM Plex Sans KR","Pretendard Variable","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{background:var(--pink)}
+body{margin:0;background:var(--pink);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;
+  word-break:keep-all;overflow-wrap:anywhere;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  background-image:radial-gradient(rgba(255,255,255,.13) 1.4px,transparent 1.5px);background-size:18px 18px}
+a{color:inherit;text-decoration:none}
+a:focus-visible{outline:3px solid var(--white);outline-offset:3px}
+.wrap{max-width:440px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));
+  padding-block:30px 44px;display:flex;flex-direction:column;gap:30px;overflow-x:clip}
+
+.stk{background:var(--white);border:2.5px solid var(--ink);border-radius:18px;box-shadow:var(--shadow);transition:transform .12s ease,box-shadow .12s ease}
+a.stk:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+a.stk:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+
+/* 간판 */
+.sign{text-align:center;color:var(--white);display:flex;flex-direction:column;align-items:center}
+.roof{width:150px;height:52px;margin-bottom:2px}
+.name{font-family:var(--f-display);font-weight:400;font-size:44px;line-height:1.1;margin:0;letter-spacing:-.01em;
+  text-shadow:3px 3px 0 var(--ink);-webkit-text-stroke:1px var(--ink);paint-order:stroke fill}
+.handle{font-size:14px;font-weight:500;margin-top:6px;opacity:.95}
+.bubble{margin-top:18px;position:relative;background:var(--white);color:var(--ink);border:2.5px solid var(--ink);border-radius:999px;
+  padding:9px 20px;font-family:var(--f-display);font-size:19px;box-shadow:var(--shadow)}
+.bubble::after{content:"";position:absolute;left:50%;bottom:-11px;width:16px;height:16px;background:var(--white);
+  border-right:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);transform:translateX(-50%) rotate(45deg)}
+.bubble em{font-style:normal;color:var(--pink-deep)}
+.team{margin-top:22px;display:flex;align-items:center;gap:10px}
+.faces{display:flex}
+.faces span{width:38px;height:38px;border-radius:50%;border:2.5px solid var(--ink);display:grid;place-items:center;
+  font-family:var(--f-display);font-size:14px;margin-left:-9px;color:var(--ink)}
+.faces span:first-child{margin-left:0}
+.team p{margin:0;font-size:13.5px;text-align:left;line-height:1.4;font-weight:500}
+.team p b{font-weight:700}
+
+/* 섹션 제목 */
+.sec{display:flex;flex-direction:column;gap:14px}
+.sec h2{margin:0;color:var(--white);font-family:var(--f-display);font-weight:400;font-size:23px;text-shadow:2px 2px 0 var(--ink);
+  display:flex;align-items:center;gap:10px}
+.sec h2::after{content:"";flex:1;height:2.5px;background:var(--ink);opacity:.35;border-radius:2px}
+.sec h2 small{font-family:var(--f-body);font-size:12.5px;text-shadow:none;font-weight:500;opacity:.9}
+
+/* 카톡 */
+.kakao{display:flex;align-items:center;gap:14px;background:var(--kakao);padding:15px 16px}
+.kakao .ic{width:48px;height:48px;flex:none;border-radius:14px;background:var(--ink);display:grid;place-items:center}
+.kakao strong{display:block;font-family:var(--f-display);font-weight:400;font-size:20px;line-height:1.2}
+.kakao small{display:block;font-size:13px;color:#4A4200;margin-top:2px}
+.kakao .arr{margin-left:auto;width:30px;height:30px;flex:none;border-radius:50%;background:var(--ink);color:var(--kakao);display:grid;place-items:center;font-weight:700}
+
+/* 잔금 메모장 */
+.pad{display:block;background:var(--cream);overflow:hidden;position:relative}
+.pad::before{content:"";position:absolute;top:-6px;left:50%;width:90px;height:22px;transform:translateX(-50%) rotate(-2deg);
+  background:rgba(255,229,138,.9);border:1.5px solid rgba(35,28,30,.25)}
+.pad-head{padding:26px 20px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.chip{font-size:12px;font-weight:700;background:var(--pink);color:var(--white);border:2px solid var(--ink);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.stamp{font-family:var(--f-display);font-size:15px;color:var(--pink-deep);border:2.5px solid var(--pink-deep);border-radius:10px;padding:2px 8px;transform:rotate(6deg)}
+.pad h3{font-family:var(--f-display);font-weight:400;font-size:28px;line-height:1.22;margin:12px 20px 6px;text-wrap:balance}
+.pad h3 mark{background:linear-gradient(transparent 58%,var(--butter) 58%);color:inherit}
+.pad p{margin:0 20px;font-size:14px;color:var(--sub)}
+.lines{margin:14px 0 0;padding:4px 20px 6px;
+  background-image:repeating-linear-gradient(transparent 0 37px,rgba(208,65,110,.22) 37px 38px)}
+.lines div{display:grid;grid-template-columns:50px 20px 1fr;align-items:center;gap:8px;height:38px;font-size:14px}
+.lines .d{font-family:var(--f-display);color:var(--pink-deep);font-size:16px}
+.ck{width:18px;height:18px;border:2px solid var(--ink);border-radius:5px;background:var(--white);position:relative}
+.ck.on{background:var(--pink)}
+.ck.on::after{content:"";position:absolute;left:4px;top:0;width:5px;height:9px;border:solid var(--white);border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.pad .more{display:block;text-align:center;font-family:var(--f-display);font-size:18px;background:var(--ink);color:var(--white);padding:12px;margin-top:8px}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.duo a{padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.duo a:nth-child(1){background:var(--sky)}
+.duo a:nth-child(2){background:var(--mint)}
+.duo .k{font-size:12px;font-weight:700;color:var(--sub)}
+.duo b{font-family:var(--f-display);font-weight:400;font-size:17px;line-height:1.25}
+
+/* 고민 타일 */
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{padding:14px 14px 12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.tile:nth-child(1){background:var(--butter)}
+.tile:nth-child(2){background:var(--peach)}
+.tile:nth-child(3){background:var(--sky)}
+.tile:nth-child(4){background:var(--mint)}
+.tile .q{font-size:13px;font-weight:500;background:var(--white);border:2px solid var(--ink);border-radius:10px 10px 10px 2px;padding:4px 9px;align-self:flex-start}
+.tile .a{font-family:var(--f-display);font-size:19px;line-height:1.25}
+.tile .go{font-size:12.5px;font-weight:700;margin-top:auto}
+
+/* 목록 */
+.list{display:flex;flex-direction:column;gap:12px}
+.row{display:grid;grid-template-columns:54px 1fr auto;gap:13px;align-items:center;padding:10px 14px 10px 10px}
+.th{width:54px;height:54px;border-radius:12px;border:2px solid var(--ink);display:grid;place-items:center;background:var(--peach)}
+.th svg{width:28px;height:28px}
+.th.b{background:var(--butter)}.th.s{background:var(--sky)}.th.m{background:var(--mint)}.th.k{background:var(--ink);color:var(--white)}.th.n{background:#03C75A;color:var(--white)}
+.row .t{min-width:0}
+.row strong{display:block;font-size:15.5px;line-height:1.35}
+.row small{display:block;font-size:13px;color:var(--sub);line-height:1.4}
+.pill{font-size:11.5px;font-weight:700;border:2px solid var(--ink);border-radius:999px;padding:2px 8px;white-space:nowrap;background:var(--white)}
+.pill.hot{background:var(--pink);color:var(--white)}
+
+/* 동네 리본 */
+.ribbon{margin-inline:-24px;background:var(--ink);color:var(--white);transform:rotate(-2deg);overflow:hidden;padding-block:10px}
+.ribbon .track{display:flex;gap:18px;width:max-content;font-family:var(--f-display);font-size:18px;animation:roll 28s linear infinite}
+.ribbon .track span::after{content:"⌂";margin-left:18px;color:var(--butter)}
+@keyframes roll{to{transform:translateX(-50%)}}
+
+/* 사무실 */
+.office{padding:14px 16px;display:grid;gap:3px;background:var(--cream)}
+.office .lbl{font-family:var(--f-display);font-size:18px}
+.office .addr{font-size:13px;color:var(--sub)}
+.office .tel{font-family:var(--f-display);font-size:22px;color:var(--pink-deep);font-variant-numeric:tabular-nums;user-select:all}
+footer{text-align:center;color:var(--white);font-size:12.5px;line-height:1.8}
+footer a{text-decoration:underline;text-underline-offset:3px;font-weight:500}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+</head>
+<body>
+<main class="wrap">
+
+  <header class="sign">
+    <svg class="roof" viewBox="0 0 150 52" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <g stroke="#231C1E" stroke-width="9" transform="translate(3 3)"><path d="M22 48 L75 8 L128 48"/><path d="M104 30 V6 H114 V38"/></g>
+      <g stroke="#FFFFFF" stroke-width="6"><path d="M22 48 L75 8 L128 48"/><path d="M104 30 V6 H114 V38"/></g></g></svg>
+    <h1 class="name">착한언니복덕방</h1>
+    <div class="handle">@goodsister4080 · 이대·신촌·마포 12년</div>
+    <div class="bubble">첫 집, <em>감 말고 데이터</em>로 골라요</div>
+    <div class="team">
+      <div class="faces" aria-hidden="true">
+        <span style="background:var(--butter)">혜선</span><span style="background:var(--mint)">수진</span><span style="background:var(--sky)">수경</span><span style="background:var(--peach)">미현</span>
+      </div>
+      <p><b>공인중개사 4명</b>이 직접 답해요<br>무사고 · 첫 문의부터 잔금날까지</p>
+    </div>
+  </header>
+
+  <a class="stk kakao" href="https://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">
+    <span class="ic" aria-hidden="true"><svg width="28" height="26" viewBox="0 0 26 24"><path fill="#FEE500" d="M13 1C6.4 1 1 5.2 1 10.4c0 3.3 2.2 6.2 5.6 7.9l-1.2 4.4c-.1.4.3.7.7.5l5.2-3.4c.6.1 1.1.1 1.7.1 6.6 0 12-4.2 12-9.5S19.6 1 13 1z"/></svg></span>
+    <span><strong>1:1 상담은 카톡으로!</strong><small>예산·출퇴근지·입주일만 보내주세요</small></span>
+    <span class="arr" aria-hidden="true">→</span>
+  </a>
+
+  <section class="sec" aria-labelledby="h-jg">
+    <h2 id="h-jg">잔금 앞두고 있다면</h2>
+    <a class="stk pad" href="https://mihyun88.github.io/goodsister/guide/jangeum/" target="_blank" rel="noopener">
+      <div class="pad-head"><span class="chip">무료 자료 · 저장 필수</span><span class="stamp" aria-hidden="true">D-30</span></div>
+      <h3>집 살 때 <mark>진짜 드는 돈</mark> + 잔금 30일 체크리스트</h3>
+      <p>집값 외에 5~10%는 따로 잡아두세요. 취득세부터 잔금날 아침 시간표까지.</p>
+      <div class="lines" aria-hidden="true">
+        <div><span class="d">D-30</span><span class="ck on"></span><span>대출 은행 2곳 이상 상담·신청</span></div>
+        <div><span class="d">D-14</span><span class="ck on"></span><span>대출 실행 <b>시간</b>까지 확인</span></div>
+        <div><span class="d">D-7</span><span class="ck"></span><span>고액 이체 되는 계좌인지 확인</span></div>
+        <div><span class="d">D-day</span><span class="ck"></span><span>송금 전 등기부등본 다시 발급</span></div>
+      </div>
+      <span class="more">잔금 노트 자세히 보기 →</span>
+    </a>
+    <div class="duo">
+      <a class="stk" href="https://mihyun88.github.io/Archive/tools/jangeum.html" target="_blank" rel="noopener"><span class="k">계산기</span><b>잔금일 넣고 일정 자동 계산</b></a>
+      <a class="stk" href="https://app.notion.com/p/414f7921674681d7bbe5f4e36f7f79dd" target="_blank" rel="noopener"><span class="k">노션 템플릿</span><b>잔금 노트 바로 복제하기</b></a>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-q">
+    <h2 id="h-q">이런 고민 있죠?</h2>
+    <div class="tiles">
+      <a class="stk tile" href="https://mihyun88.github.io/goodsister/tools/#rent" target="_blank" rel="noopener"><span class="q">첫 자취인데…</span><span class="a">안전하고 싼 동네 찾기</span><span class="go">동네 추천기 →</span></a>
+      <a class="stk tile" href="https://mihyun88.github.io/goodsister/tools/#budget" target="_blank" rel="noopener"><span class="q">현금 3억이면?</span><span class="a">서울 어디까지 살 수 있나</span><span class="go">예산 계산기 →</span></a>
+      <a class="stk tile" href="https://mihyun88.github.io/goodsister/tools/#check" target="_blank" rel="noopener"><span class="q">이 가격 맞아?</span><span class="a">비싸게 사는 건지 확인</span><span class="go">가격 검토 →</span></a>
+      <a class="stk tile" href="https://mihyun88.github.io/goodsister/tools/#cost" target="_blank" rel="noopener"><span class="q">계약 전에!</span><span class="a">취득세·중개보수 계산</span><span class="go">부대비용 계산기 →</span></a>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-free">
+    <h2 id="h-free">무료 자료 <small>릴스 댓글로 받던 그 자료</small></h2>
+    <div class="list">
+      <a class="stk row" href="https://app.notion.com/p/400f7921674681089bb8c81fc301e654" target="_blank" rel="noopener">
+        <span class="th b" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="#231C1E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="9" width="24" height="16" rx="3"/><circle cx="16" cy="17" r="3.5"/><path d="M8 13 V21 M24 13 V21"/></svg></span>
+        <span class="t"><strong>첫 집, 내 현금으로 어디까지?</strong><small>현금·소득으로 살 수 있는 범위 정리</small></span>
+        <span class="pill">첫 집</span>
+      </a>
+      <a class="stk row" href="https://app.notion.com/p/40bf7921674681a0b49ecac37b37c82e" target="_blank" rel="noopener">
+        <span class="th" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="#231C1E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="6" width="22" height="21" rx="3"/><path d="M5 12 H27 M11 3 V8 M21 3 V8 M10 18 H13 M15 18 H18 M20 18 H22 M10 22 H13 M15 22 H18"/></svg></span>
+        <span class="t"><strong>11월 수도권 청약 17곳 일정표</strong><small>단지별로 넣을지 말지 판단까지</small></span>
+        <span class="pill hot">NEW</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-links">
+    <h2 id="h-links">착한언니 바로가기</h2>
+    <div class="list">
+      <a class="stk row" href="https://mihyun88.github.io/goodsister/" target="_blank" rel="noopener">
+        <span class="th k" aria-hidden="true"><svg viewBox="0 0 64 64"><g fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 40 L32 18 L54 40"/><path d="M43 27 V12 H49 V33"/><path d="M18 33 V52 H46 V33"/></g></svg></span>
+        <span class="t"><strong>홈페이지</strong><small>30초 고민 진단 · 중개사 소개 · 후기</small></span>
+        <span class="pill">메인</span>
+      </a>
+      <a class="stk row" href="https://mihyun88.github.io/goodsister/tools/#market" target="_blank" rel="noopener">
+        <span class="th s" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="#231C1E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 24 L12 15 L18 20 L28 8"/><path d="M21 8 H28 V15"/></svg></span>
+        <span class="t"><strong>이번 주 서대문·마포 시황</strong><small>한국부동산원 통계로 매주 업데이트</small></span>
+        <span class="pill">매주</span>
+      </a>
+      <a class="stk row" href="https://mihyun88.github.io/goodsister/tools/#news" target="_blank" rel="noopener">
+        <span class="th m" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="#231C1E" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6 H22 L26 10 V27 H6 Z"/><path d="M10 14 H22 M10 19 H22 M10 24 H17"/></svg></span>
+        <span class="t"><strong>정책 뉴스 · 세금 타임라인</strong><small>지금 적용 중인 대출 규제와 세금 변화</small></span>
+        <span></span>
+      </a>
+      <a class="stk row" href="https://blog.naver.com/ellarang" target="_blank" rel="noopener">
+        <span class="th n" aria-hidden="true"><svg viewBox="0 0 32 32"><path fill="currentColor" d="M8 7 H13.5 L18.6 15.6 V7 H24 V25 H18.5 L13.4 16.4 V25 H8 Z"/></svg></span>
+        <span class="t"><strong>네이버 블로그</strong><small>현장에서 매일 받는 질문을 글로</small></span>
+        <span class="pill">이웃추가</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="ribbon" aria-label="중개 지역: 이대, 신촌, 아현, 대흥, 공덕, 마포, 합정, 망원, 연희, 북아현">
+    <div class="track" aria-hidden="true">
+      <span>이대</span><span>신촌</span><span>아현</span><span>대흥</span><span>공덕</span><span>마포</span><span>합정</span><span>망원</span><span>연희</span><span>북아현</span>
+      <span>이대</span><span>신촌</span><span>아현</span><span>대흥</span><span>공덕</span><span>마포</span><span>합정</span><span>망원</span><span>연희</span><span>북아현</span>
+    </div>
+  </div>
+
+  <section class="sec" aria-labelledby="h-office">
+    <h2 id="h-office">사무실로 놀러 오세요</h2>
+    <div class="list">
+      <div class="stk office"><span class="lbl">이대·신촌점</span><span class="addr">신촌자이엘라부동산 · 서대문구 대현동 104-36 B101호</span><span class="tel">02-364-4080</span></div>
+      <div class="stk office"><span class="lbl">마포점</span><span class="addr">마포그랑자이(착한언니)부동산 · 마포구 대흥로 175 상가4동 102호</span><span class="tel">02-707-3434</span></div>
+    </div>
+  </section>
+
+  <footer>
+    착한언니복덕방 · ellarang@naver.com<br>
+    <a href="https://www.instagram.com/goodsister4080/" target="_blank" rel="noopener">인스타그램</a> ·
+    <a href="https://blog.naver.com/ellarang" target="_blank" rel="noopener">블로그</a> ·
+    <a href="https://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">카카오톡 채널</a>
+  </footer>
+</main>
+</body>
+</html>

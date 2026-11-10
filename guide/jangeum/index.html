@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" href="../../favicon.svg">
+<title>착한언니 잔금 노트</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="12년 차 공인중개사 4명이 만든 잔금 노트. 잔금일과 매매가만 넣으면 30일 일정, 취득세, 집값 외에 드는 돈이 자동으로 계산돼요.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=IBM+Plex+Sans+KR:wght@400;500;700&display=swap">
+<style>
+/* Layout: 한 줄로 읽어 내려가는 상세페이지(공감 → 문제 → 공개 → 사용법 → 기능 01~05 → 만든 사람 → 받기).
+   링크 페이지와 같은 핑크 + 검은 테두리 스티커 룩. 흰 구간과 핑크 구간을 번갈아 써서 장면을 나눔. */
+:root{
+  --pink:#D0416E; --pink-deep:#B32F5B; --pink-soft:#FBE3EA;
+  --ink:#231C1E; --sub:#6A5F62; --line:#E9E1DC;
+  --white:#FFFFFF; --cream:#FFF8EC; --gray:#F4F1EE;
+  --butter:#FFE58A; --mint:#BDEBD3; --sky:#C9E2FF; --peach:#FFD3C2; --kakao:#FEE500;
+  --shadow:3px 3px 0 var(--ink);
+  --f-display:"Jua","Apple SD Gothic Neo",sans-serif;
+  --f-body:"IBM Plex Sans KR","Pretendard Variable","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-ui:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{background:var(--white)}
+body{margin:0;background:var(--white);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;
+  word-break:keep-all;overflow-wrap:anywhere;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+a:focus-visible{outline:3px solid var(--pink);outline-offset:3px}
+img{display:block;max-width:100%}
+.in{max-width:520px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+.band{padding-block:56px}
+.band.pink{background:var(--pink);color:var(--white);background-image:radial-gradient(rgba(255,255,255,.13) 1.4px,transparent 1.5px);background-size:18px 18px}
+.band.gray{background:var(--gray)}
+.band.cream{background:var(--cream)}
+.center{text-align:center}
+.disp{font-family:var(--f-display);font-weight:400;line-height:1.25;margin:0;text-wrap:balance}
+.stk{border:2.5px solid var(--ink);border-radius:18px;box-shadow:var(--shadow);background:var(--white)}
+mark{background:linear-gradient(transparent 60%,var(--butter) 60%);color:inherit;padding:0 2px}
+.pink mark{background:linear-gradient(transparent 60%,rgba(35,28,30,.35) 60%)}
+
+/* 상단 바 */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--white);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--white)}
+.top .in{display:flex;align-items:center;gap:10px;height:54px}
+.top a.back{width:34px;height:34px;border:1.5px solid var(--line);border-radius:10px;display:grid;place-items:center;font-size:18px}
+.top b{font-family:var(--f-display);font-weight:400;font-size:19px;flex:1;text-align:center;margin-right:44px}
+.post-title{padding-block:18px 20px;border-bottom:1px solid var(--line)}
+.post-title h1{font-size:17px;font-weight:700;margin:0;line-height:1.45}
+.post-title small{color:var(--sub);font-size:13px}
+
+/* 1. 공감 */
+.hero{padding-block:44px 24px}
+.hero .lead{font-size:15px;color:var(--sub);margin:0 0 10px}
+.hero h2{font-size:34px}
+.hero h2 em{font-style:normal;color:var(--pink)}
+.chat{display:flex;flex-direction:column;gap:14px;margin-top:30px}
+.q{display:flex;align-items:flex-end;gap:10px;max-width:92%}
+.q.r{align-self:flex-end;flex-direction:row-reverse}
+.q .who{width:40px;height:40px;flex:none;border-radius:12px;border:2.5px solid var(--ink);display:grid;place-items:center;font-size:20px;background:var(--white)}
+.q p{margin:0;background:var(--sky);border:2.5px solid var(--ink);border-radius:20px 20px 20px 6px;padding:10px 16px;font-family:var(--f-display);font-size:18px;line-height:1.35}
+.q.r p{border-radius:20px 20px 6px 20px;background:var(--peach)}
+.q:nth-child(3) p{background:var(--mint)}
+.q:nth-child(4) p{background:var(--butter)}
+
+/* 2. 문제 */
+.sigh{font-size:56px;line-height:1;margin-bottom:12px}
+.problem h3{font-size:26px}
+.problem p{margin:14px 0 0;font-size:16px;color:var(--sub)}
+.problem .big{margin-top:26px;font-family:var(--f-display);font-size:24px;color:var(--ink)}
+
+/* 3. 공개 */
+.reveal .pre{font-family:var(--f-display);font-size:22px;margin:0}
+.reveal .name{font-family:var(--f-display);font-size:58px;line-height:1.1;margin:10px 0 4px;color:var(--white);text-shadow:4px 4px 0 var(--ink);-webkit-text-stroke:1.5px var(--ink);paint-order:stroke fill;display:flex;justify-content:center;align-items:center;gap:10px}
+.reveal .name i{font-style:normal;font-size:34px;-webkit-text-stroke:0;text-shadow:none}
+.reveal .sub{font-size:15px;opacity:.95;margin:6px 0 0}
+.photo{margin-top:26px;position:relative;border:2.5px solid var(--ink);border-radius:22px;overflow:hidden;box-shadow:5px 5px 0 var(--ink);background:var(--white)}
+.photo img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover}
+.photo .say{position:absolute;left:14px;top:14px;background:var(--white);color:var(--ink);border:2.5px solid var(--ink);border-radius:999px;padding:6px 14px;font-family:var(--f-display);font-size:17px;box-shadow:var(--shadow)}
+.free{margin-top:20px;display:inline-flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.free span{background:var(--white);color:var(--ink);border:2px solid var(--ink);border-radius:999px;padding:4px 12px;font-size:13.5px;font-weight:700}
+
+/* 4. 기능 버튼 */
+.feat h3{font-size:26px;margin-bottom:22px}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.chips a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:14px 8px;border:2.5px solid var(--ink);border-radius:999px 999px 999px 999px / 60px 60px 60px 60px;background:var(--white);box-shadow:var(--shadow);font-family:var(--f-display);font-size:18px;line-height:1.2;text-align:center;transition:transform .12s}
+.chips a:hover{transform:translate(-2px,-2px)}
+.chips a small{font-family:var(--f-body);font-size:11.5px;color:var(--sub)}
+.chips a:nth-child(1){background:var(--pink-soft)}.chips a:nth-child(2){background:var(--sky)}.chips a:nth-child(3){background:var(--butter)}
+.chips a:nth-child(4){background:var(--peach)}.chips a:nth-child(5){background:var(--mint)}.chips a:nth-child(6){background:var(--cream)}
+.made{margin-top:40px}
+.made .disp{font-size:24px}
+.made .disp b{color:var(--pink);font-weight:400}
+
+/* 5. 사용 전에 */
+.star{display:inline-grid;place-items:center;width:62px;height:62px;background:var(--butter);border:2.5px solid var(--ink);font-family:var(--f-display);font-size:15px;
+  clip-path:polygon(50% 0,62% 34%,98% 35%,69% 56%,80% 92%,50% 71%,20% 92%,31% 56%,2% 35%,38% 34%)}
+.before h3{font-size:40px;color:var(--pink);margin-top:8px}
+.before .note{margin:12px 0 0;font-size:15px}
+.steps{margin-top:30px;display:flex;flex-direction:column;gap:22px;text-align:left}
+.step{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start}
+.step .n{font-family:var(--f-display);font-size:26px;line-height:1.2}
+.step p{margin:2px 0 0;font-weight:500}
+.step > div{min-width:0}
+.nbar .t{min-width:0}
+.step p b{color:var(--pink-deep)}
+.nbar{margin-top:10px;border:1.5px solid var(--line);border-radius:10px;background:var(--white);display:flex;align-items:center;gap:8px;padding:8px 10px;font-family:var(--f-ui);font-size:12.5px;color:#55534E;overflow:hidden}
+.nbar .t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nbar .dup{position:relative;font-weight:600;color:var(--ink);border:2px solid var(--pink);border-radius:6px;padding:2px 8px;white-space:nowrap}
+.nbar .dup{background:var(--pink-soft)}
+.nbar .here{font-family:var(--f-display);font-size:14px;color:var(--pink);white-space:nowrap}
+
+/* 6. 기능 상세 */
+.sec-h{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;margin-bottom:6px}
+.num{width:52px;height:52px;border:2.5px solid var(--ink);border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-size:22px;background:var(--white);transform:rotate(-6deg)}
+.sec-h h3{font-size:25px}
+.sec-sub{margin:0 0 18px 64px;color:var(--sub);font-size:15px}
+.feature + .feature{margin-top:60px}
+
+/* 노션 모형 */
+.nt{border:2.5px solid var(--ink);border-radius:16px;background:var(--white);box-shadow:5px 5px 0 var(--ink);overflow:hidden;font-family:var(--f-ui);color:#37352F}
+.nt-h{padding:12px 14px 8px;font-weight:700;font-size:15px;display:flex;align-items:center;gap:6px;border-bottom:1px solid #EDECE9}
+.nt-h small{margin-left:auto;font-weight:500;font-size:11.5px;color:#9B9A97;border:1px solid #E3E2DF;border-radius:6px;padding:1px 7px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:12.5px;font-variant-numeric:tabular-nums}
+th{font-weight:500;color:#787774;text-align:left;padding:7px 10px;border-bottom:1px solid #EDECE9;white-space:nowrap;font-size:12px}
+td{padding:8px 10px;border-bottom:1px solid #F1F0EE;white-space:nowrap}
+td.w{white-space:normal;min-width:120px}
+td.r,th.r{text-align:right}
+tr:last-child td{border-bottom:0}
+.tag{display:inline-block;padding:1px 7px;border-radius:4px;font-size:11.5px}
+.t-blue{background:#D3E5EF}.t-purple{background:#E8DEEE}.t-orange{background:#FADEC9}.t-red{background:#FFE2DD}.t-pink{background:#F5E0E9}.t-green{background:#DBEDDB}.t-gray{background:#E3E2E0}
+.st{font-size:12px}
+.done{color:#9B9A97;text-decoration:line-through}
+.sum{display:flex;gap:10px;padding:9px 12px;background:#FBFBFA;border-top:1px solid #EDECE9;font-size:12.5px;color:#787774}
+.sum b{color:#37352F;font-variant-numeric:tabular-nums}
+
+/* 01 한눈에 카드 */
+.glance{padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g{border:1px solid #EDECE9;border-radius:10px;padding:10px 12px}
+.g span{display:block;font-size:11.5px;color:#9B9A97}
+.g b{display:block;font-size:17px;font-variant-numeric:tabular-nums}
+.g.hot{background:#FBE3EA;border-color:#F3C2D1}
+.g.hot b{color:var(--pink-deep);font-size:22px}
+.bar{height:8px;background:#EDECE9;border-radius:99px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--pink)}
+
+/* 03 비용 막대 + 돋보기 */
+.cost-wrap{position:relative}
+.lens{position:absolute;right:-4px;bottom:-62px;width:132px;height:132px;border-radius:50%;border:3px solid var(--ink);background:var(--white);box-shadow:4px 4px 0 var(--ink);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-family:var(--f-display);padding:10px}
+.lens small{font-size:13px;color:var(--sub);font-family:var(--f-body)}
+.lens b{font-weight:400;font-size:24px;color:var(--pink-deep);line-height:1.1}
+.lens span{font-size:14px}
+.stack{display:flex;height:14px;border-radius:99px;overflow:hidden;margin:4px 12px 12px;border:1.5px solid var(--ink)}
+.stack i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;padding:0 12px 12px;font-size:11.5px;color:#787774}
+.legend span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px;background:var(--c)}
+
+/* 04 보드 */
+.board{display:grid;grid-auto-flow:column;grid-auto-columns:170px;gap:10px;padding:12px;overflow-x:auto}
+.col h4{margin:0 0 8px;font-size:12px;font-weight:500}
+.card{border:1px solid #E9E8E5;border-radius:8px;padding:8px 9px;margin-bottom:7px;font-size:12px;line-height:1.4;background:var(--white);box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.card em{display:block;font-style:normal;color:#9B9A97;font-size:11px;margin-top:3px}
+.card .tm{font-weight:700;color:var(--pink-deep);margin-right:4px}
+.pct{display:flex;align-items:center;gap:10px;padding:10px 12px;border-top:1px solid #EDECE9;font-size:12.5px}
+.pct .bar{flex:1;margin:0}
+
+/* 05 하자 */
+.defect{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:12px;align-items:center}
+.ph{aspect-ratio:1;border-radius:10px;background:repeating-linear-gradient(135deg,#F1EEEA 0 8px,#E8E4DF 8px 16px);display:grid;place-items:center;font-size:30px;border:1px solid #E3E0DC}
+.defect dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:12.5px}
+.defect dt{color:#9B9A97}
+.defect dd{margin:0}
+
+/* 착한언니 한마디 */
+.tip{margin-top:30px;display:grid;grid-template-columns:56px 1fr;gap:12px;align-items:start}
+.tip img{width:56px;height:56px;border-radius:50%;border:2.5px solid var(--ink);object-fit:cover}
+.tip .bub{background:var(--white);border:2.5px solid var(--ink);border-radius:4px 18px 18px 18px;padding:10px 14px;box-shadow:var(--shadow)}
+.tip .bub b{display:block;font-size:12.5px;color:var(--pink-deep)}
+.tip .bub p{margin:2px 0 0;font-family:var(--f-display);font-size:18px;line-height:1.35}
+
+/* 7. 만든 사람 */
+.team h3{font-size:28px}
+.team .lead{margin:10px 0 0}
+.agents{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:26px}
+.agent{padding:14px 12px;text-align:center}
+.agent img{width:88px;height:88px;border-radius:50%;margin:0 auto 8px;border:2.5px solid var(--ink);object-fit:cover}
+.agent b{display:block;font-family:var(--f-display);font-weight:400;font-size:19px}
+.agent small{display:block;font-size:12.5px;color:var(--sub)}
+.facts{margin-top:22px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.facts span{border:2px solid var(--ink);border-radius:999px;padding:4px 12px;font-size:13.5px;font-weight:700;background:var(--white)}
+
+/* 8. 받기 */
+.get h3{font-size:32px;color:var(--white);text-shadow:3px 3px 0 var(--ink);-webkit-text-stroke:1px var(--ink);paint-order:stroke fill}
+.get .photo{margin-top:22px}
+.btns{margin-top:26px;display:flex;flex-direction:column;gap:12px}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:16px;border:2.5px solid var(--ink);border-radius:18px;box-shadow:var(--shadow);font-family:var(--f-display);font-size:21px;background:var(--white);color:var(--ink);transition:transform .12s,box-shadow .12s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 var(--ink)}
+.btn.main{background:var(--butter);font-size:24px;padding:18px}
+.btn.kakao{background:var(--kakao)}
+.btn small{font-family:var(--f-body);font-size:13px}
+.fine{margin-top:22px;font-size:12.5px;opacity:.9;line-height:1.7}
+footer{padding-block:26px 40px;text-align:center;font-size:12.5px;color:var(--sub);line-height:1.8}
+footer a{text-decoration:underline;text-underline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="in">
+    <a class="back" href="https://mihyun88.github.io/goodsister/links/" aria-label="링크 페이지로 돌아가기">‹</a>
+    <b>착한언니 자료실</b>
+  </div>
+</header>
+
+<div class="in post-title">
+  <h1>12년 차 공인중개사 4명이 만든 [잔금 노트] 무료 공개</h1>
+  <small>착한언니복덕방</small>
+</div>
+
+<!-- 1. 공감 -->
+<section class="in hero">
+  <p class="lead">드디어 내 집 계약!</p>
+  <h2 class="disp">"근데… 잔금날까지<br><em>뭐부터</em> 해야 하지?"</h2>
+  <div class="chat" aria-label="잔금 앞두고 자주 받는 질문">
+    <div class="q r"><span class="who" aria-hidden="true">🏦</span><p>대출 승인 났는데, 실행 시간은 왜 물어봐요?</p></div>
+    <div class="q"><span class="who" aria-hidden="true">📱</span><p>이체한도 올렸는데 송금이 안 된대요…</p></div>
+    <div class="q r"><span class="who" aria-hidden="true">💬</span><p>매도인 계좌, 문자로 받았는데 괜찮아요?</p></div>
+    <div class="q"><span class="who" aria-hidden="true">🧾</span><p>취득세는 얼마고, 언제까지 내요?</p></div>
+  </div>
+</section>
+
+<!-- 2. 문제 -->
+<section class="band gray center problem">
+  <div class="in">
+    <div class="sigh" aria-hidden="true">😮‍💨</div>
+    <h3 class="disp">은행, 법무사, 관리실에<br>하나씩 따로 물어봐야 하고</h3>
+    <p>검색하면 말은 어렵고, 블로그마다 다르게 써 있고.</p>
+    <p class="big">그러다 잔금 끝나고 알게 돼요.<br><mark>집값 외에 5~10%가 더 든다는 걸.</mark></p>
+  </div>
+</section>
+
+<!-- 3. 공개 -->
+<section class="band pink center reveal">
+  <div class="in">
+    <p class="pre">그래서 착한언니가 만들었어요</p>
+    <p class="name"><i aria-hidden="true">⭐</i>잔금 노트<i aria-hidden="true">⭐</i></p>
+    <p class="sub">잔금일이랑 매매가만 넣으면, 나머지는 알아서 계산돼요</p>
+    <div class="photo">
+      <img src="img/team-wave.jpg" alt="착한언니복덕방 공인중개사 네 명이 손을 흔들며 웃고 있는 사진" width="1200" height="800">
+      <span class="say">같이 챙겨요!</span>
+    </div>
+    <div class="free"><span>무료</span><span>노션 템플릿</span><span>휴대폰에서도 OK</span></div>
+  </div>
+</section>
+
+<!-- 4. 기능 버튼 -->
+<section class="band center feat">
+  <div class="in">
+    <h3 class="disp">잔금 준비에 필요한 게<br>다 들어 있어요!</h3>
+    <nav class="chips" aria-label="잔금 노트 기능">
+      <a href="#f1">잔금 D-day<small>한눈에 보기</small></a>
+      <a href="#f2">30일 타임라인<small>날짜 자동 계산</small></a>
+      <a href="#f3">집값 외에 드는 돈<small>자동 합계</small></a>
+      <a href="#f4">송금 안전 체크<small>사고 막는 5가지</small></a>
+      <a href="#f4">잔금날 아침<small>09:00~11:30 시간표</small></a>
+      <a href="#f5">하자 기록<small>사진으로 남기기</small></a>
+    </nav>
+    <div class="made">
+      <p class="disp">서울 부동산 12년 차 중개사들이<br><b>잔금날 실제로 생긴 일</b>로 만들었어요</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5. 사용 전에 -->
+<section class="band cream center before">
+  <div class="in">
+    <span class="star">중요</span>
+    <h3 class="disp">사용 전에!</h3>
+    <p class="note">링크로 들어가면 보이는 건 모두가 같이 보는 원본이에요.<br><mark>꼭 복제해서 내 노션에서 쓰세요.</mark></p>
+    <div class="steps">
+      <div class="step"><span class="n">01</span><div><p>잔금 노트 링크를 열고, 오른쪽 위 <b>복제</b> 버튼을 눌러요</p>
+        <div class="nbar" aria-hidden="true"><span>🔑</span><span class="t">착한언니 잔금 노트 (복제해서 쓰기)</span><span class="dup">⧉ 복제</span><span class="here">← 여기!</span></div></div></div>
+      <div class="step"><span class="n">02</span><div><p>노션 계정이 없다면 무료로 가입하고, 복제할 <b>내 워크스페이스</b>를 골라요</p></div></div>
+      <div class="step"><span class="n">03</span><div><p>내 노션에 생긴 페이지에서 <b>잔금일 · 매매가 · 생애최초</b>만 바꾸면 끝!</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. 기능 상세 -->
+<section class="band">
+  <div class="in">
+
+    <article class="feature" id="f1">
+      <div class="sec-h"><span class="num">01</span><h3 class="disp">내 잔금 한눈에 보기</h3></div>
+      <p class="sec-sub">D-day, 예상 취득세, 준비 진행률까지 한 장에</p>
+      <div class="nt" role="img" aria-label="노션 화면 예시: 잔금 D-38, 매매가 6억 원, 예상 취득세 460만 원, 집값 외에 드는 돈 1,012만 5천 원(1.7%), 준비 진행률 25%">
+        <div class="nt-h">📝 내 잔금 정보 <small>예시</small></div>
+        <div class="glance">
+          <div class="g hot"><span>잔금 D-day</span><b>D-38</b></div>
+          <div class="g"><span>매매가</span><b>₩600,000,000</b></div>
+          <div class="g"><span>예상 취득세 (생애최초 감면)</span><b>₩4,600,000</b></div>
+          <div class="g"><span>집값 외에 드는 돈</span><b>₩10,125,000</b></div>
+          <div class="g"><span>집값 대비</span><b>1.7%</b></div>
+          <div class="g"><span>준비 진행률</span><b>25%</b><div class="bar"><i style="width:25%"></i></div></div>
+        </div>
+      </div>
+    </article>
+
+    <article class="feature" id="f2">
+      <div class="sec-h"><span class="num">02</span><h3 class="disp">잔금 30일 타임라인</h3></div>
+      <p class="sec-sub">잔금일 하나로 할 일 날짜가 전부 바뀌어요</p>
+      <div class="nt">
+        <div class="nt-h">📅 잔금 타임라인 <small>잔금일 12/18 예시</small></div>
+        <div class="scroll">
+          <table>
+            <thead><tr><th>단계</th><th>할 일</th><th>날짜</th><th>상태</th></tr></thead>
+            <tbody>
+              <tr><td><span class="tag t-blue">D-30</span></td><td class="w done">대출 은행 2곳 이상 상담·신청</td><td>11월 18일</td><td class="st">✅ 완료</td></tr>
+              <tr><td><span class="tag t-blue">D-21</span></td><td class="w">관리사무소 엘리베이터 예약</td><td>11월 27일</td><td class="st">⚪ 17일</td></tr>
+              <tr><td><span class="tag t-purple">D-14</span></td><td class="w">대출 실행 시간 확인</td><td>12월 4일</td><td class="st">⚪ 24일</td></tr>
+              <tr><td><span class="tag t-orange">D-7</span></td><td class="w">고액 이체 되는 계좌인지 확인</td><td>12월 11일</td><td class="st">⚪ 31일</td></tr>
+              <tr><td><span class="tag t-red">D-1</span></td><td class="w">매도인 계좌 명의 확인</td><td>12월 17일</td><td class="st">⚪ 37일</td></tr>
+              <tr><td><span class="tag t-pink">D-day</span></td><td class="w">잔금날 🔑</td><td>12월 18일</td><td class="st">⚪ 38일</td></tr>
+              <tr><td><span class="tag t-green">잔금 후</span></td><td class="w">전입신고</td><td>1월 1일</td><td class="st">⚪</td></tr>
+              <tr><td><span class="tag t-green">잔금 후</span></td><td class="w">취득세 신고·납부 마감</td><td>2월 16일</td><td class="st">⚪</td></tr>
+              <tr><td><span class="tag t-green">잔금 후</span></td><td class="w">생애최초 감면 전입 마감</td><td>3월 18일</td><td class="st">⚪</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </article>
+
+    <article class="feature" id="f3">
+      <div class="sec-h"><span class="num">03</span><h3 class="disp">집값 외에 드는 돈</h3></div>
+      <p class="sec-sub">취득세·중개보수는 자동, 견적은 직접 입력</p>
+      <div class="cost-wrap">
+        <div class="nt">
+          <div class="nt-h">💰 집값 외에 드는 돈 <small>매매가 6억 예시</small></div>
+          <div class="scroll">
+            <table>
+              <thead><tr><th>항목</th><th class="r">금액</th><th>언제 내요</th></tr></thead>
+              <tbody>
+                <tr><td>취득세 + 지방교육세 <span class="tag t-pink">자동</span></td><td class="r">₩4,600,000</td><td>60일 이내</td></tr>
+                <tr><td>중개보수 (상한) <span class="tag t-blue">자동</span></td><td class="r">₩2,400,000</td><td>잔금일</td></tr>
+                <tr><td>법무사비 · 등기비용</td><td class="r">₩1,500,000</td><td>잔금일</td></tr>
+                <tr><td>이사비</td><td class="r">₩1,200,000</td><td>이삿날</td></tr>
+                <tr><td>입주청소</td><td class="r">₩350,000</td><td>입주 전</td></tr>
+                <tr><td>인지세 (매수인 몫)</td><td class="r">₩75,000</td><td>계약·잔금</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="stack" aria-hidden="true">
+            <i style="width:45.4%;background:#E9A3BB"></i><i style="width:23.7%;background:#9CC3DD"></i><i style="width:14.8%;background:#C9B3DA"></i><i style="width:15.3%;background:#A9D6AE"></i><i style="width:.8%;background:#E3E2E0"></i>
+          </div>
+          <div class="legend"><span style="--c:#E9A3BB">세금</span><span style="--c:#9CC3DD">중개보수</span><span style="--c:#C9B3DA">등기·법무사</span><span style="--c:#A9D6AE">이사·입주</span></div>
+          <div class="sum"><span>합계</span><b>₩10,125,000</b></div>
+        </div>
+        <div class="lens" aria-hidden="true"><small>집값 6억이면</small><b>+1,012만</b><span>따로 준비!</span></div>
+      </div>
+    </article>
+
+    <article class="feature" id="f4" style="margin-top:100px">
+      <div class="sec-h"><span class="num">04</span><h3 class="disp">잔금 체크리스트</h3></div>
+      <p class="sec-sub">송금 안전 → 서류 → 아침 시간표 → 잔금 후</p>
+      <div class="nt">
+        <div class="nt-h">✅ 잔금 체크리스트 <small>24개</small></div>
+        <div class="board">
+          <div class="col"><h4><span class="tag t-red">🏦 송금 안전</span></h4>
+            <div class="card">고액 이체 되는 계좌인지 확인<em>이체한도만 올리고 안심하지 말고</em></div>
+            <div class="card">매도인 계좌 명의 확인<em>계좌번호 문자만 믿지 말고</em></div>
+            <div class="card">OTP 배터리 · 인증서 만료일</div>
+          </div>
+          <div class="col"><h4><span class="tag t-pink">⏰ 잔금날 아침</span></h4>
+            <div class="card"><span class="tm">09:00</span>등기부등본 다시 발급<em>가압류 등 새 권리 확인</em></div>
+            <div class="card"><span class="tm">09:30</span>집 마지막 상태 확인</div>
+            <div class="card"><span class="tm">10:00</span>대출 실행 → 잔금 송금</div>
+            <div class="card"><span class="tm">10:30</span>말소 서류 · 법무사 접수증</div>
+          </div>
+          <div class="col"><h4><span class="tag t-purple">📂 매도인 서류</span></h4>
+            <div class="card">등기권리증</div>
+            <div class="card">매도용 인감증명서<em>매수인 인적사항 기재</em></div>
+            <div class="card">선수관리비 영수증</div>
+          </div>
+        </div>
+        <div class="pct"><span>체크 진행률</span><div class="bar"><i style="width:25%"></i></div><b>25%</b></div>
+      </div>
+      <div class="tip">
+        <img src="img/hyesun.jpg" alt="신혜선 대표 공인중개사" width="280" height="280">
+        <div class="bub"><b>신혜선 대표 공인중개사</b><p>잔금날 아침, 송금 전에 등기부등본 꼭 다시 떼세요!</p></div>
+      </div>
+    </article>
+
+    <article class="feature" id="f5">
+      <div class="sec-h"><span class="num">05</span><h3 class="disp">하자 기록</h3></div>
+      <p class="sec-sub">말로만 하지 말고, 사진과 날짜로 남겨요</p>
+      <div class="nt">
+        <div class="nt-h">📸 하자 기록</div>
+        <div class="defect">
+          <div class="ph" aria-hidden="true">📷</div>
+          <dl>
+            <dt>어디</dt><dd>안방 창틀 실리콘 들뜸</dd>
+            <dt>발견한 날</dt><dd>12월 18일 (잔금일)</dd>
+            <dt>상태</dt><dd><span class="tag t-orange">매도인에게 알림</span></dd>
+            <dt>알린 곳</dt><dd>매도인·중개사 단톡방</dd>
+          </dl>
+        </div>
+      </div>
+      <div class="tip">
+        <img src="img/sukyung.jpg" alt="신수경 대표 공인중개사" width="280" height="280">
+        <div class="bub"><b>신수경 대표 공인중개사</b><p>하자는 잔금 전에 사진으로! 그래야 나중에 말이 달라지지 않아요.</p></div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- 7. 만든 사람 -->
+<section class="band gray center team">
+  <div class="in">
+    <h3 class="disp">카톡 너머에 이 사람들이 있어요</h3>
+    <p class="lead">첫 문의부터 잔금날까지, 공인중개사 네 명이 직접 챙겨요.</p>
+    <div class="agents">
+      <div class="stk agent"><img src="img/hyesun.jpg" alt="" width="280" height="280"><b>신혜선</b><small>대표 공인중개사 · 마포점</small></div>
+      <div class="stk agent"><img src="img/sukyung.jpg" alt="" width="280" height="280"><b>신수경</b><small>대표 공인중개사 · 이대·신촌점</small></div>
+      <div class="stk agent"><img src="img/sujin.jpg" alt="" width="280" height="280"><b>신수진</b><small>공인중개사</small></div>
+      <div class="stk agent"><img src="img/mihyun.jpg" alt="" width="280" height="280"><b>윤미현</b><small>공인중개사</small></div>
+    </div>
+    <div class="facts"><span>서울 부동산 12년</span><span>무사고</span><span>이대·신촌·마포</span></div>
+  </div>
+</section>
+
+<!-- 8. 받기 -->
+<section class="band pink center get">
+  <div class="in">
+    <h3 class="disp">잔금날까지,<br>네 명이 같이 챙겨요</h3>
+    <div class="photo">
+      <img src="img/team-cross.jpg" alt="착한언니복덕방 공인중개사 네 명이 팔짱을 끼고 나란히 있는 사진" width="1200" height="800" loading="lazy">
+    </div>
+    <div class="btns">
+      <a class="btn main" href="https://app.notion.com/p/414f7921674681d7bbe5f4e36f7f79dd" target="_blank" rel="noopener">🔑 잔금 노트 무료로 받기</a>
+      <a class="btn" href="https://app.notion.com/p/40cf792167468133817eed7b51e53137" target="_blank" rel="noopener">📖 설명부터 읽을래요 <small>집 살 때 진짜 드는 돈</small></a>
+      <a class="btn kakao" href="https://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">💬 막히면 카톡으로 물어보기</a>
+    </div>
+    <p class="fine">취득세는 1주택 기준 예상값이에요. 다주택·조정대상지역은 세율이 달라요.<br>실제 금액은 은행·법무사·관할 구청과 꼭 확인하세요.</p>
+  </div>
+</section>
+
+<footer class="in">
+  착한언니복덕방 · 신촌자이엘라부동산 & 마포그랑자이(착한언니)부동산<br>
+  이대·신촌점 02-364-4080 · 마포점 02-707-3434<br>
+  <a href="https://www.instagram.com/goodsister4080/" target="_blank" rel="noopener">인스타그램</a> ·
+  <a href="https://blog.naver.com/ellarang" target="_blank" rel="noopener">블로그</a> ·
+  <a href="https://mihyun88.github.io/goodsister/" target="_blank" rel="noopener">홈페이지</a>
+</footer>
+</body>
+</html>
