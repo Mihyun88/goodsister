@@ -1,0 +1,11 @@
+# 사이트에 올리지 않을 파일 (Cloudflare 정적 배포용)
+.git
+.github
+scripts
+preview
+README.md
+wrangler.jsonc
+.assetsignore
+.gitignore
+*.py
+__pycache__
