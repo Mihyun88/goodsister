@@ -21,3 +21,8 @@ python3 scripts/build_data.py --trade-months 12 --rent-months 6
 - 출처: 국토교통부 실거래가 공개시스템 (아파트 매매, 오피스텔·아파트 전월세)
 - 해제된 매매는 제외, 전월세는 전용 60㎡ 이하만 수집합니다.
 - 서울 25개 구 × 12개월 기준 약 1,000회 내외 호출이며, 공공데이터포털 일일 한도를 확인하세요.
+
+## 배포
+- 정식 주소: https://unnizip.kr (Cloudflare Workers 정적 배포, 설정 `wrangler.jsonc`, 제외 목록 `.assetsignore`)
+- 예전 주소: https://mihyun88.github.io/goodsister/ (GitHub Pages)
+- 작업은 `ccr-75ee6780-i259rw` 브랜치에서 하고, `main` 도 같은 커밋으로 맞춰 둡니다 (`git push origin ccr-75ee6780-i259rw:main`).
