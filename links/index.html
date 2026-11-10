@@ -136,7 +136,7 @@ a.stk:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
 .office{padding:14px 16px;display:grid;gap:3px;background:var(--cream)}
 .office .lbl{font-family:var(--f-display);font-size:18px}
 .office .addr{font-size:13px;color:var(--sub)}
-.office .tel{font-family:var(--f-display);font-size:22px;color:var(--pink-deep);font-variant-numeric:tabular-nums;user-select:all}
+.office .tel{text-decoration:none;display:inline-block;padding:4px 0;font-family:var(--f-display);font-size:22px;color:var(--pink-deep);font-variant-numeric:tabular-nums;user-select:all}
 footer{text-align:center;color:var(--white);font-size:12.5px;line-height:1.8}
 footer a{text-decoration:underline;text-underline-offset:3px;font-weight:500}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -249,8 +249,8 @@ footer a{text-decoration:underline;text-underline-offset:3px;font-weight:500}
   <section class="sec" aria-labelledby="h-office">
     <h2 id="h-office">사무실로 놀러 오세요</h2>
     <div class="list">
-      <div class="stk office"><span class="lbl">이대·신촌점</span><span class="addr">신촌자이엘라부동산 · 서대문구 대현동 104-36 B101호</span><span class="tel">02-364-4080</span></div>
-      <div class="stk office"><span class="lbl">마포점</span><span class="addr">마포그랑자이(착한언니)부동산 · 마포구 대흥로 175 상가4동 102호</span><span class="tel">02-707-3434</span></div>
+      <div class="stk office"><span class="lbl">이대·신촌점</span><span class="addr">신촌자이엘라부동산 · 서대문구 대현동 104-36 B101호</span><a class="tel" href="tel:023644080">02-364-4080</a></div>
+      <div class="stk office"><span class="lbl">마포점</span><span class="addr">마포그랑자이(착한언니)부동산 · 마포구 대흥로 175 상가4동 102호</span><a class="tel" href="tel:027073434">02-707-3434</a></div>
     </div>
   </section>
 

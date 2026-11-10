@@ -258,3 +258,4 @@ footer .disc{margin-top:12px;color:#8E8C86;font-size:.76rem}
 }
 @media(max-width:979px){.quiz{max-width:none}}
 footer .biz{display:block;margin:8px 0}
+footer a.tel{color:inherit;text-decoration:underline;text-underline-offset:3px}
