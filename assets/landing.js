@@ -111,7 +111,7 @@
 
   // ---------- 6. 대표 사진 슬롯 (V4) ----------
   safe("photo", () => {
-    const src = $("pcard").dataset.photo; if (!src) return;
+    const pc = $("pcard"); if (!pc) return; const src = pc.dataset.photo; if (!src) return;
     const img = new Image();
     img.onload = () => { img.className = "photo"; img.alt = "착한언니복덕방 신수경 대표 공인중개사"; $("pcard").prepend(img); $("pcard").classList.add("has-photo"); };
     img.src = src;
@@ -182,7 +182,7 @@
     const item = (p, k) => `<a href="tools/#${esc(p.h)}" class="${k >= 3 ? "x" : ""}"><span class="i">${String(k + 1).padStart(2, "0")}</span>${esc(String(p.t).trim().replace(/\s*\|.*$/, ""))}</a>`;
     const el = $("tiplist");
     el.innerHTML = `<h3>첫 자취방 가이드</h3>${(T.jachwi || []).map(item).join("")}<h3>내 집 마련 · 계약 꿀팁</h3>${(T.tips || []).map(item).join("")}
-      <button class="btn btn-line more" type="button">꿀팁 전체 보기</button>`;
+      <button class="btn btn-line more" type="button">글 전체 보기</button>`;
     el.querySelector(".more").addEventListener("click", () => el.classList.remove("fold"));
   });
 })();
