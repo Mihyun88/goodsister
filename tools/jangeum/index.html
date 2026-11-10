@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<script src="../../assets/host.js?v=20261110d"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' data:; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<title>잔금 캘린더 계산기 | 착한언니복덕방</title>
+<meta name="description" content="잔금일만 넣으면 D-30부터 잔금 후 기한까지 할 일 날짜를 자동으로 계산하고, 휴대폰 캘린더에 한 번에 넣을 수 있어요.">
+<link rel="canonical" href="https://unnizip.kr/tools/jangeum/">
+<link rel="icon" href="../../favicon.svg">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{--bg:#FFF9EC;--card:#fff;--tx:#1E2A3A;--sub:#5f6672;--ac:#C2325F;--y:#FFD84D;--line:#EFE6D2}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:Pretendard,-apple-system,sans-serif;background:var(--bg);color:var(--tx);letter-spacing:-.02em}
+.w{max-width:560px;margin:0 auto;padding:24px 16px 48px}
+.top{background:#D3436E;color:#fff;border-radius:18px;padding:22px 20px;text-align:center}
+.top b{font-size:24px;font-weight:900;display:block}.top span{font-size:14px;opacity:.9}
+h1{font-size:26px;font-weight:900;margin:26px 0 6px}h1 em{font-style:normal;color:var(--ac)}
+p.d{color:var(--sub);font-size:15px;line-height:1.5}
+.in{background:var(--card);border-radius:16px;padding:18px;margin-top:18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.in label{font-weight:800;font-size:16px}.in input{flex:1;min-width:160px;font:inherit;font-size:18px;padding:10px 12px;border:2px solid var(--line);border-radius:12px}
+ol{list-style:none;margin-top:20px;position:relative;padding-left:22px}
+ol:before{content:"";position:absolute;left:7px;top:10px;bottom:10px;width:4px;background:var(--line);border-radius:2px}
+li{position:relative;background:var(--card);border-radius:14px;padding:14px 16px;margin-bottom:12px}
+li:before{content:"";position:absolute;left:-22px;top:18px;width:14px;height:14px;border-radius:50%;background:#fff;border:4px solid var(--tx)}
+li.k:before{background:var(--ac);border-color:var(--ac)}
+.dt{font-size:13px;font-weight:800;color:var(--ac)}.dt b{color:var(--tx);font-size:17px;margin-left:6px}
+.t{font-size:17px;font-weight:800;margin-top:4px}.n{font-size:14px;color:var(--sub);margin-top:4px;line-height:1.5}
+button{font:inherit;font-weight:800;font-size:16px;border:0;border-radius:999px;padding:14px 18px;width:100%;margin-top:8px;cursor:pointer}
+.b1{background:var(--tx);color:#fff}.b2{background:var(--y);color:var(--tx)}
+.foot{margin-top:24px;font-size:13px;color:var(--sub);line-height:1.6}
+.foot a{color:var(--tx);font-weight:700}
+.back{display:inline-block;margin-bottom:14px;font-size:14px;font-weight:700;color:var(--sub);text-decoration:none}
+a.b2{display:block;text-align:center;text-decoration:none;font-weight:800;font-size:16px;border-radius:999px;padding:14px 18px;margin-top:8px;background:var(--y);color:var(--tx)}
+</style>
+</head>
+<body><div class="w">
+<a class="back" href="https://unnizip.kr/links/">‹ 착한언니 링크로</a>
+<div class="top"><b>착한언니복덕방</b><span>@goodsister4080</span></div>
+<h1>내 <em>잔금일</em>만 넣으세요</h1>
+<p class="d">D-30부터 잔금 후 기한까지, 날짜를 자동으로 계산해 드려요.</p>
+<div class="in"><label for="d">잔금일</label><input type="date" id="d"></div>
+<ol id="list"></ol>
+<button class="b1" id="ics" type="button">📅 휴대폰 캘린더에 한 번에 넣기</button>
+<a class="b2" href="https://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">💬 잔금 일정 카톡으로 물어보기</a>
+<p class="foot">※ 전입신고는 이사 후 14일, 취득세는 잔금일부터 60일 이내가 일반 기준이에요. 대출 심사 기간은 은행·상품마다 달라요. 실제 일정은 은행·법무사와 꼭 확인하세요.<br><br><a href="https://unnizip.kr/guide/jangeum/">잔금 노트 (노션 템플릿)</a> · <a href="https://www.instagram.com/goodsister4080/">인스타그램 @goodsister4080</a> · <a href="https://blog.naver.com/ellarang">블로그</a></p>
+</div>
+<script src="jangeum.js"></script>
+</body>
+</html>
