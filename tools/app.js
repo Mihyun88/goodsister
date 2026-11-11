@@ -157,7 +157,7 @@
       }
     }
     rows.sort((x, y) => y.med - x.med);
-    // T4: 서비스 지역(마포·서대문) 고정 블록 — 희망 지역 선택과 무관하게 같은 조건으로
+    // T4: 서비스 지역(마포·서대문) 블록 — 결과 맨 끝에 (예산 맞춤 추천이 먼저)
     const home = [];
     for (const c of T.complexes) {
       if (c.g !== "마포구" && c.g !== "서대문구") continue;
@@ -167,7 +167,7 @@
       for (const [a, ts] of Object.entries(byA)) { const med = median(ts.map(t => t[2])); if (med <= h.P0) home.push({ c, a: +a, med, n: ts.length }); }
     }
     home.sort((x, y) => y.med - x.med);
-    const homeHTML = `<div class="homeblock"><h3>이 예산으로 마포·서대문에서는</h3>${home.length
+    const homeHTML = `<div class="homeblock"><h3>마포·서대문이라면 어디까지 갈 수 있을까?</h3><p class="muted" style="font-size:.85rem;margin:-.2rem 0 .4rem">착한언니가 직접 다니는 동네예요. 같은 예산으로 들어갈 수 있는 단지예요.</p>${home.length
       ? `<ul>${home.slice(0, 3).map(r => `<li><b>${esc(r.c.n)}</b> <span class="muted">${esc(r.c.g)} ${esc(r.c.d)} · 전용 ${r.a}㎡</span><span class="r">${money(r.med)}</span></li>`).join("")}</ul>`
       : `<p>이 조건으로는 마포·서대문 아파트가 어려워요. <b>오피스텔·전세</b>로는 가능할 수 있어요. <a href="#rent">자취·전월세 동네 비교하기 →</a></p>`}</div>`;
     // 가격대 안에서 거래가 가장 많은 동 TOP3 (예산의 80~100% 구간)
@@ -185,15 +185,15 @@
         <span class="tag">${o.mode === "none" ? "대출 없이 계산" : o.mode === "custom" && h.loan.by === "희망 대출액" ? "희망 대출액만큼" : `${esc(h.loan.by)}에서 막힘`}</span> − 취득세·중개보수 <b>${money(h.cost)}</b>
         ${h.loan.amt ? `· 월 상환 약 <b>${Math.round(mpay).toLocaleString()}만 원</b> (금리 ${o.rate}%, ${o.term}년)` : ""}
         ${h.n ? `<br>${h.n}년 뒤 집값이 연 ${(hg * 100).toFixed(1)}% 오른다고 보고 <b>오늘 시세로 환산</b>한 가격(${money(h.P0)})으로 단지를 골랐습니다.` : ""}</p>
-      ${homeHTML}
-      ${topDong.length ? `<h3>이 가격대에서 거래가 가장 많은 동네 TOP3</h3>
-        <div class="kpis">${topDong.map(([d, n], i) => `<div class="kpi"><div class="l">${i + 1}위</div><div class="v" style="font-size:1rem">${esc(d)}</div><div class="l">최근 6개월 ${n}건</div></div>`).join("")}</div>` : ""}
       ${rows.length ? `<h3>예산에 가장 가까운 단지 TOP ${Math.min(30, rows.length)}${big ? " (500세대 이상)" : ""}</h3>
       <table><tr><th>단지</th><th>위치</th><th class="r">전용</th><th class="r">최근 6개월 중위가</th>${h.n ? `<th class="r">${h.n}년 후 예상</th>` : ""}<th class="r">거래</th><th>최근 거래</th></tr>
       ${rows.slice(0, 30).map(r => `<tr><td>${esc(r.c.n)}<span class="tag">${r.c.y || "-"}년</span>${r.c.h ? `<span class="tag">${r.c.h.toLocaleString()}세대</span>` : ""}</td><td>${esc(r.c.g)} ${esc(r.c.d)}</td>
         <td class="r">${r.a}㎡</td><td class="r"><b>${money(r.med)}</b></td>${h.n ? `<td class="r">${money(r.med * (1 + hg) ** h.n)}</td>` : ""}<td class="r">${r.n}건</td>
         <td>${r.last[0].slice(2, 4)}.${r.last[0].slice(4, 6)} · ${r.last[3]}층 · ${money(r.last[2])}</td></tr>`).join("")}</table>`
         : `<p class="verdict na">최근 6개월 실거래 중 이 예산에 맞는 거래가 없습니다. 평형·지역·세대수 조건을 넓혀 보세요.</p>`}
+      ${topDong.length ? `<h3>이 가격대에서 거래가 가장 많은 동네 TOP3</h3>
+        <div class="kpis">${topDong.map(([d, n], i) => `<div class="kpi"><div class="l">${i + 1}위</div><div class="v" style="font-size:1rem">${esc(d)}</div><div class="l">최근 6개월 ${n}건</div></div>`).join("")}</div>` : ""}
+      ${homeHTML}
       <div class="check"><b>착한언니 체크포인트</b><br>
         ${o.mode === "none" ? "· 대출 없이 현금(과 돌려받을 보증금)만으로 계산했어요. 대출을 쓰면 볼 수 있는 단지가 크게 늘어나요.<br>" : ""}
         · 대출 한도 = <b>LTV</b>(${o.first ? "생애최초 70%" : "40%"}) · <b>가격별 상한</b>(15억 이하 6억, 25억 이하 4억, 초과 2억) · <b>스트레스 DSR</b>(연소득 ${o.dsr}%, 금리 ${o.rate}%+가산 ${o.stress}%p) 중 가장 작은 값입니다. 2025.10.15 대책 기준이라 이후 바뀌었을 수 있어요. 은행 상담으로 꼭 확인하세요.<br>
