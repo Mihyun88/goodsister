@@ -137,6 +137,9 @@ a.stk:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
 .office .lbl{font-family:var(--f-display);font-size:18px}
 .office .addr{font-size:13px;color:var(--sub)}
 .office .tel{text-decoration:none;display:inline-block;padding:4px 0;font-family:var(--f-display);font-size:22px;color:var(--pink-deep);font-variant-numeric:tabular-nums;user-select:all}
+.office.biz{text-align:center;justify-items:center}
+.mailbtn{margin-top:8px;font:inherit;font-weight:700;font-size:15px;color:var(--ink);border:2px solid var(--ink);border-radius:999px;background:var(--butter);padding:9px 18px;min-height:44px;cursor:pointer}
+.office .tel.mail{font-size:18px;margin-top:6px;word-break:break-all}
 footer{text-align:center;color:var(--white);font-size:12.5px;line-height:1.8}
 footer a{text-decoration:underline;text-underline-offset:3px;font-weight:500}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -254,6 +257,14 @@ footer a{text-decoration:underline;text-underline-offset:3px;font-weight:500}
     </div>
   </section>
 
+  <section class="sec" aria-labelledby="h-biz">
+    <div class="stk office biz">
+      <span class="lbl" id="h-biz">협업·비즈니스 문의</span>
+      <span class="addr">광고·제휴·강의·콘텐츠 협업 제안을 받아요</span>
+      <button type="button" class="mailbtn" data-mail="dbsaus|naver|com">✉️ 메일 주소 보기</button>
+    </div>
+  </section>
+
   <footer>
     착한언니복덕방<br>
     <a href="https://www.instagram.com/goodsister4080/" target="_blank" rel="noopener">인스타그램</a> ·
@@ -261,5 +272,6 @@ footer a{text-decoration:underline;text-underline-offset:3px;font-weight:500}
     <a href="https://pf.kakao.com/_xcxoBxnX" target="_blank" rel="noopener">카카오톡 채널</a>
   </footer>
 </main>
+<script src="../assets/mail.js?v=20261113"></script>
 </body>
 </html>
