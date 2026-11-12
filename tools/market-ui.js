@@ -35,6 +35,7 @@
     const top3 = rows.slice(0, 3).map(r => `<b>${esc(r.g)}</b>(${pct(r.w)})`).join(" · ");
     const zones = ["도심권", "동북권", "서북권", "서남권", "동남권"];
     el.innerHTML = `
+      <div class="brief" id="mk-brief"></div>
       <div class="kpis">
         <div class="kpi"><div class="l">서울 매매가 (주간)</div><div class="v">${pct(chg(seoulSale))}</div><div class="l">4주 ${pct(chg(seoulSale, 4))} · ${n - 1}주 ${pct(chg(seoulSale, last))}</div></div>
         <div class="kpi"><div class="l">서울 전세가 (주간)</div><div class="v">${pct(chg(seoulJ))}</div><div class="l">4주 ${pct(chg(seoulJ, 4))} · ${n - 1}주 ${pct(chg(seoulJ, last))}</div></div>
@@ -55,6 +56,62 @@
         <td class="r"><b>${sdTxt(sd(S.jeonse_sd[z]))}</b></td><td class="r muted">${sdTxt(S.jeonse_sd[z][last - 4])}</td></tr>`).join("")}</table></div>
       <p class="muted" style="font-size:.78rem;margin-top:.5rem">도심권 종로·중구·용산 / 동북권 성동·광진·동대문·중랑·성북·강북·도봉·노원 / 서북권 은평·서대문·마포 / 서남권 양천·강서·구로·금천·영등포·동작·관악 / 동남권 서초·강남·송파·강동</p>`;
     lineChart($("#mk-line"), M.dates, [{ name: "매매", color: "#2a78d6", v: seoulSale }, { name: "전세", color: "#eb6834", v: seoulJ }]);
+    brief("sale");
+  }
+
+  // ================= ⓪ 이번 주 서울 한눈에 (인포그래픽) =================
+  const ZONES = {
+    "서북권": ["서대문구", "마포구", "은평구"],
+    "도심권": ["종로구", "중구", "용산구"],
+    "동북권": ["성북구", "강북구", "동대문구", "중랑구", "도봉구", "노원구", "성동구", "광진구"],
+    "서남권": ["양천구", "강서구", "구로구", "금천구", "영등포구", "동작구", "관악구"],
+    "동남권": ["서초구", "강남구", "송파구", "강동구"]
+  };
+  const HOME = new Set(["서대문구", "마포구"]);
+  function brief(kind) {
+    const box = $("#mk-brief"); if (!box) return;
+    const S = M.series[kind === "sale" ? "sale" : "jeonse"], n = M.weeks.length, last = n - 1;
+    const w = (arr, k = 0) => arr && arr[last - k] != null && arr[last - k - 1] != null ? (arr[last - k] / arr[last - k - 1] - 1) * 100 : null;
+    const r2 = x => Math.round(x * 100) / 100; // 발표 기준(소수 둘째 자리)으로 맞춰 비교
+    const all = Object.values(ZONES).flat().filter(g => S[g]).map(g => ({ g, now: r2(w(S[g])), prev: r2(w(S[g], 1)) }));
+    const up = all.filter(r => r.now > 0).length, down = all.filter(r => r.now < 0).length, flat = all.length - up - down;
+    const seoul = r2(w(S["서울"])), seoulPrev = r2(w(S["서울"], 1));
+    const top = [...all].sort((a, b) => b.now - a.now)[0], bottom = [...all].sort((a, b) => a.now - b.now)[0];
+    const zAvg = Object.fromEntries(Object.entries(ZONES).map(([z, gs]) => { const v = all.filter(r => gs.includes(r.g)).map(r => r.now); return [z, v.reduce((a, b) => a + b, 0) / v.length]; }));
+    const zSorted = Object.entries(zAvg).sort((a, b) => b[1] - a[1]);
+    const d = new Date(M.dates[last] + "T00:00:00"), wk = `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${Math.ceil(d.getDate() / 7)}주`;
+    const max = Math.max(0.2, ...all.map(r => Math.abs(r.now)));
+    const sign = x => x > 0 ? "+" : x < 0 ? "−" : "";
+    const fx = x => `${sign(x)}${Math.abs(x).toFixed(2)}%`;
+    const delta = r => { const dd = r2(r.now - r.prev); return dd === 0 ? `<span class="bd-d">전주와 같음</span>` : `<span class="bd-d">${dd > 0 ? "▲" : "▼"}${Math.abs(dd).toFixed(2)}%p</span>`; };
+    const turn = r => r.prev <= 0 && r.now > 0 ? `<span class="bd-turn up">상승 전환</span>` : r.prev >= 0 && r.now < 0 ? `<span class="bd-turn down">하락 전환</span>` : "";
+    const word = kind === "sale" ? "매매" : "전세";
+    const lead = `${esc(top.g)}가 ${fx(top.now)}로 가장 많이 올랐고, ${zAvg[zSorted[0][0]] > 0 ? `${esc(zSorted[0][0])}이 전체적으로 강해요` : "전반적으로 쉬어가는 주예요"}.` +
+      (bottom.now < 0 ? ` ${esc(bottom.g)}는 ${fx(bottom.now)}로 가장 많이 내렸어요.` : "");
+    box.innerHTML = `
+      <div class="bf-head">
+        <div><span class="bf-week">${esc(wk)} · ${esc(M.dates[last].slice(5).replace("-", "."))} 기준</span>
+          <h3>이번 주 서울 아파트 ${word}가격</h3></div>
+        <div class="bf-seg" role="group" aria-label="매매·전세 선택">
+          <button type="button" data-k="sale" class="${kind === "sale" ? "on" : ""}">매매</button><button type="button" data-k="jeonse" class="${kind !== "sale" ? "on" : ""}">전세</button></div>
+      </div>
+      <div class="bf-stats">
+        <div><b class="${seoul > 0 ? "up" : seoul < 0 ? "down" : ""}">${fx(seoul)}</b><span>서울 평균 · 전주 ${fx(seoulPrev)}</span></div>
+        <div><b class="up">${up}개</b><span>오른 구</span></div>
+        <div><b class="down">${down}개</b><span>내린 구${flat ? ` · 보합 ${flat}` : ""}</span></div>
+      </div>
+      <p class="bf-lead"><span class="bf-tag">착한언니 한 줄</span>${lead}</p>
+      <div class="bf-zones">
+        ${zSorted.map(([z]) => `<div class="bf-zone"><div class="bf-zh"><b>${esc(z)}</b><span>평균 ${fx(r2(zAvg[z]))}</span></div>
+          ${all.filter(r => ZONES[z].includes(r.g)).sort((a, b) => b.now - a.now).map(r => {
+            const pctW = Math.min(50, Math.abs(r.now) / max * 50);
+            return `<div class="bd${HOME.has(r.g) ? " home" : ""}"><span class="bd-g">${esc(r.g.length > 2 ? r.g.replace(/구$/, "") : r.g)}${HOME.has(r.g) ? `<i>우리 동네</i>` : ""}</span>
+              <span class="bd-bar"><i class="${r.now >= 0 ? "up" : "down"}" style="${r.now >= 0 ? `left:50%` : `right:50%`};width:${pctW.toFixed(1)}%"></i></span>
+              <span class="bd-v ${r.now > 0 ? "up" : r.now < 0 ? "down" : ""}">${fx(r.now)}</span>${turn(r) || delta(r)}</div>`; }).join("")}
+        </div>`).join("")}
+      </div>
+      <p class="bf-src">자료: 한국부동산원 주간아파트가격동향 · 구별 ${word}가격지수의 전주 대비 변동률 · 막대 가운데가 0%</p>`;
+    box.querySelectorAll(".bf-seg button").forEach(b => b.onclick = () => brief(b.dataset.k));
   }
 
   function lineChart(el, xs, series) {
