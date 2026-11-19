@@ -59,7 +59,12 @@ window.GS_NEWS = {
       "t": "10월 가계대출 6.4조 원 늘어 한 달 만에 다시 증가",
       "d": "9월엔 2.2조 원 줄었지만 10월엔 다시 늘었고, 주택담보대출만 4조 원 증가했어요. 이미 승인된 집단대출이 많이 실행된 영향이라 연말 대출 관리가 더 깐깐해질 수 있어요.",
       "src": "아시아경제",
-      "url": "https://view.asiae.co.kr/article/2026111114113755714"
+      "url": "https://view.asiae.co.kr/article/2026111114113755714",
+      "impact": "i",
+      "who": [
+        "buy"
+      ],
+      "me": "대출 관리가 연말까지 더 깐깐해질 수 있어요. 대출 받아 집 살 계획이면 은행 한도부터 미리 확인하세요."
     },
     {
       "date": "2026-11-09",
@@ -67,7 +72,12 @@ window.GS_NEWS = {
       "t": "여당, 종부세 기본공제 \"1주택자 일괄 14억\" 정부에 요청",
       "d": "정부안은 실거주 1주택만 14억, 비거주는 12억 유지예요. 여당이 거주 여부와 상관없이 14억으로 올리자고 요청했고, 국회 재경위에서 11월 셋째~넷째 주에 논의할 예정이에요. 아직 확정 전이에요.",
       "src": "헤럴드경제",
-      "url": "https://biz.heraldcorp.com/article/10930327"
+      "url": "https://biz.heraldcorp.com/article/10930327",
+      "impact": "i",
+      "who": [
+        "own"
+      ],
+      "me": "아직 \"요청\" 단계라 확정이 아니에요. 비거주 1주택이라면 국회 논의 결과를 지켜보세요."
     },
     {
       "date": "2026-11-06",
@@ -75,7 +85,14 @@ window.GS_NEWS = {
       "t": "국토부 \"11월 추가 부동산 대책설은 사실 아냐\"",
       "d": "규제지역 추가·주담대 한도 축소 등을 담은 게시글이 온라인에 돌자 국토부가 정부안이 아니라며 수사를 의뢰하기로 했어요. 지금 규칙은 그대로예요.",
       "src": "이투데이",
-      "url": "https://www.etoday.co.kr/news/view/2645099"
+      "url": "https://www.etoday.co.kr/news/view/2645099",
+      "impact": "i",
+      "who": [
+        "buy",
+        "rent",
+        "own"
+      ],
+      "me": "떠도는 \"11월 추가 대책\" 글은 정부안이 아니에요. 지금 규칙 그대로예요."
     },
     {
       "date": "2026-11-06",
@@ -83,7 +100,13 @@ window.GS_NEWS = {
       "t": "장위9구역 공공재개발로 재추진 — 약 2,270호",
       "d": "정비구역에서 해제됐던 장위9구역을 공공재개발로 다시 추진해요. 정부는 앞으로 5년간 수도권 정비사업 23만 4천 호(서울 10만 9천 호) 착공을 지원하겠다고 밝혔어요.",
       "src": "정책브리핑",
-      "url": "https://www.korea.kr/multi/visualNewsView.do?newsId=148975190"
+      "url": "https://www.korea.kr/multi/visualNewsView.do?newsId=148975190",
+      "impact": "i",
+      "who": [
+        "buy",
+        "apply"
+      ],
+      "me": "장위동 일대 새 아파트 공급이 다시 추진돼요. 입주까지는 몇 년 걸려요."
     },
     {
       "date": "2026-11-04",
@@ -91,7 +114,12 @@ window.GS_NEWS = {
       "t": "보증금은 HUG에 맡기는 '전월세 안심신탁' 첫 집주인 모집",
       "d": "세입자는 보증금을 HUG에 맡기고, HUG가 집주인에게 월세처럼 수익(이번 공고 세전 연 4.35%)을 줘요. 주택가격 20억 이하·선순위 부채 80% 이하 집이 대상이고, 계약이 끝나면 HUG가 세입자에게 돈을 돌려줘요.",
       "src": "정책브리핑",
-      "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148974991"
+      "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148974991",
+      "impact": "g",
+      "who": [
+        "rent"
+      ],
+      "me": "보증금 떼일 걱정이 줄어요. 단, 집주인이 신청한 집만 해당돼요."
     },
     {
       "date": "2026-11-04",
@@ -99,7 +127,12 @@ window.GS_NEWS = {
       "t": "분양가 25%로 입주하는 \"지분적립형\" 공공분양, 12월 고양창릉 첫 공급",
       "d": "고양창릉 S-2블록 1,057세대 중 284세대예요. 25%만 내고 입주한 뒤 4년마다 15%씩 나머지 지분을 사고, 아직 안 산 지분엔 주변 전세 시세의 90% 수준 임대료를 내요.",
       "src": "정책브리핑",
-      "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148975005"
+      "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148975005",
+      "impact": "g",
+      "who": [
+        "apply"
+      ],
+      "me": "분양가의 25%만 있으면 새 아파트에 들어갈 수 있어요. 나머지 지분은 4년마다 15%씩 사고, 안 산 지분엔 임대료를 내요."
     },
     {
       "date": "2026-11-03",
@@ -107,7 +140,12 @@ window.GS_NEWS = {
       "t": "다세대·다가구 면적 1,000㎡·다가구 4층까지 허용 (11.12 시행)",
       "d": "30년 넘게 묶였던 다세대·다가구 면적 제한이 660㎡에서 1,000㎡로, 다가구 층수는 3층에서 4층으로 늘어요. 11월 12일부터 시행돼요.",
       "src": "정책브리핑",
-      "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148974876"
+      "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148974876",
+      "impact": "i",
+      "who": [
+        "rent"
+      ],
+      "me": "빌라·원룸 건물을 더 크게 지을 수 있게 돼요. 길게 보면 전월세 물량이 늘 수 있어요."
     },
     {
       "date": "2026-10-29",
@@ -115,7 +153,13 @@ window.GS_NEWS = {
       "t": "수도권 신규택지 후보지 발표 — 김포·구리·하남·의정부·고양",
       "d": "8·13 주택 신속 공급방안 후속으로 수도권 신규택지 후보지를 공개했어요. 2030년까지 착공 목표이며, 신규택지 영향권을 뺀 서울 그린벨트 등의 토지거래허가구역 해제 구상도 함께 나왔어요.",
       "src": "대전일보",
-      "url": "https://www.daejonilbo.com/news/articleView.html?idxno=2310324"
+      "url": "https://www.daejonilbo.com/news/articleView.html?idxno=2310324",
+      "impact": "i",
+      "who": [
+        "buy",
+        "apply"
+      ],
+      "me": "김포·구리·하남·의정부·고양에 새 택지가 생겨요. 청약은 2030년 착공 이후라 길게 보세요."
     },
     {
       "date": "2026-10-27",
@@ -123,7 +167,12 @@ window.GS_NEWS = {
       "t": "3분기 전국 땅값 0.62% 상승",
       "d": "국토교통부가 발표한 2026년 3분기 전국 지가 변동률이에요.",
       "src": "국토교통부 보도자료",
-      "url": "https://www.molit.go.kr/USR/NEWS/m_71/lst.jsp?search_section=p_sec_2"
+      "url": "https://www.molit.go.kr/USR/NEWS/m_71/lst.jsp?search_section=p_sec_2",
+      "impact": "i",
+      "who": [
+        "own"
+      ],
+      "me": "전국 땅값 흐름 참고용이에요."
     },
     {
       "date": "2026-10-20",
@@ -131,7 +180,12 @@ window.GS_NEWS = {
       "t": "민간임대주택법 시행령 개정안 국무회의 의결",
       "d": "같은 날 서울 동자동 쪽방촌 공공주택지구(약 2,150호) 지정도 발표됐어요.",
       "src": "국토교통부 보도자료",
-      "url": "https://www.molit.go.kr/USR/NEWS/m_71/lst.jsp?search_section=p_sec_2"
+      "url": "https://www.molit.go.kr/USR/NEWS/m_71/lst.jsp?search_section=p_sec_2",
+      "impact": "i",
+      "who": [
+        "rent"
+      ],
+      "me": "민간임대 제도 손질이에요. 당장 세입자에게 바뀌는 건 크지 않아요."
     },
     {
       "date": "2026-10-16",
@@ -139,7 +193,13 @@ window.GS_NEWS = {
       "t": "\"내 집 어디에, 언제 공급되나\" 주택공급 정례 공개",
       "d": "주택공급 계획부터 착공·준공 성과까지 정기적으로 공개하겠다는 발표예요.",
       "src": "국토교통부 보도자료",
-      "url": "https://www.molit.go.kr/USR/NEWS/m_71/lst.jsp?search_section=p_sec_2"
+      "url": "https://www.molit.go.kr/USR/NEWS/m_71/lst.jsp?search_section=p_sec_2",
+      "impact": "i",
+      "who": [
+        "buy",
+        "apply"
+      ],
+      "me": "어디에 언제 공급되는지 정부가 정기적으로 공개해요. 청약 계획 세울 때 참고하세요."
     },
     {
       "date": "2026-10-15",
@@ -147,7 +207,12 @@ window.GS_NEWS = {
       "t": "HUG, 전세보증 가입 기준 90%→80% 하향 추진",
       "d": "국정감사에서 HUG가 전세가율 기준을 단계적으로 낮추겠다고 밝혔어요. 시행 시점은 정해지지 않았어요.",
       "src": "네이트 뉴스",
-      "url": "https://m.news.nate.com/view/20261015n23262"
+      "url": "https://m.news.nate.com/view/20261015n23262",
+      "impact": "b",
+      "who": [
+        "rent"
+      ],
+      "me": "시행되면 전세가율 높은 빌라는 보증보험 가입이 어려워질 수 있어요. 계약 전에 꼭 확인하세요."
     },
     {
       "date": "2026-10-01",
@@ -155,7 +220,12 @@ window.GS_NEWS = {
       "t": "조정지역 일시적 2주택 처분기한 2년으로 단축 시행",
       "d": "9월 29일 국무회의 의결 후 10월 1일부터 시행됐어요. 두 집이 모두 조정지역일 때만 2년이고, 8월 3일 이전 계약분은 3년이에요.",
       "src": "아이뉴스24",
-      "url": "https://www.inews24.com/view/2010025"
+      "url": "https://www.inews24.com/view/2010025",
+      "impact": "b",
+      "who": [
+        "own"
+      ],
+      "me": "두 집 모두 조정지역이면 기존 집을 2년 안에 팔아야 비과세예요. 8월 3일 이전 계약은 3년이에요."
     },
     {
       "date": "2026-09-01",
@@ -163,7 +233,12 @@ window.GS_NEWS = {
       "t": "세제개편안 수정 — 비거주 1주택 종부세 공제 12억 유지",
       "d": "9억으로 줄이려던 안을 철회하고, 세부담 상한도 150%를 유지하기로 했어요. 개편안은 국회 심의 중이에요.",
       "src": "SBS Biz",
-      "url": "https://biz.sbs.co.kr/amp/article/20000332033"
+      "url": "https://biz.sbs.co.kr/amp/article/20000332033",
+      "impact": "g",
+      "who": [
+        "own"
+      ],
+      "me": "비거주 1주택도 종부세 공제 12억이 유지돼요. 국회 심의 결과는 확인이 필요해요."
     },
     {
       "date": "2026-08-26",
@@ -171,7 +246,12 @@ window.GS_NEWS = {
       "t": "지방세 개편안: 생애최초 감면에 오피스텔 포함·청년 300만 원",
       "d": "40세 미만 청년의 생애최초 취득세 감면 한도를 300만 원으로 올리고 주거용 오피스텔도 넣는 안이에요. 아직 확정 전이에요.",
       "src": "한국일보",
-      "url": "https://www.hankookilbo.com/news/article/A2026082620330002408"
+      "url": "https://www.hankookilbo.com/news/article/A2026082620330002408",
+      "impact": "g",
+      "who": [
+        "buy"
+      ],
+      "me": "확정되면 40세 미만 생애최초는 취득세 감면이 300만 원까지 늘고 오피스텔도 포함돼요. 아직 확정 전이에요."
     },
     {
       "date": "2026-08-20",
@@ -179,7 +259,12 @@ window.GS_NEWS = {
       "t": "외국인 토지거래허가구역 1년 연장",
       "d": "서울 전역·경기 23개 시군·인천 자치구의 외국인 주택거래 허가제가 2027년 8월 25일까지 연장됐어요.",
       "src": "정책브리핑",
-      "url": "https://www.korea.kr/news/customizedNewsView.do?newsId=148970419"
+      "url": "https://www.korea.kr/news/customizedNewsView.do?newsId=148970419",
+      "impact": "i",
+      "who": [
+        "buy"
+      ],
+      "me": "외국인 주택 거래 허가제 이야기예요. 내국인 매수자에겐 해당 없어요."
     },
     {
       "date": "2026-08-03",
@@ -187,7 +272,13 @@ window.GS_NEWS = {
       "t": "2026년 세제개편안 발표 — 실거주 1주택 보호, 비거주·다주택 부담",
       "d": "종부세 공정시장가액비율 인상(70~80%), 거주 1주택 공제 14억, 장기보유공제의 거주 중심 전환(2028년~) 등이 담긴 정부안이에요.",
       "src": "경향신문",
-      "url": "https://www.khan.co.kr/article/202608032138005"
+      "url": "https://www.khan.co.kr/article/202608032138005",
+      "impact": "i",
+      "who": [
+        "own",
+        "buy"
+      ],
+      "me": "실거주 1주택은 보호, 비거주·다주택은 세금이 늘어나는 방향이에요."
     },
     {
       "date": "2026-08",
@@ -195,7 +286,12 @@ window.GS_NEWS = {
       "t": "토지거래허가구역 실거주 유예 신청 2027년 말까지 연장 추진",
       "d": "2026년 말까지였던 실거주 유예 신청 기한을 1년 늘리는 시행령 개정이 입법예고됐어요. 확정 전이니 시행 여부를 확인하세요.",
       "src": "한국AI부동산신문",
-      "url": "https://www.kairnews.com/news/523492"
+      "url": "https://www.kairnews.com/news/523492",
+      "impact": "g",
+      "who": [
+        "buy"
+      ],
+      "me": "토허구역에서 산 집의 실거주 유예 신청 기한이 1년 늘어날 수 있어요. 아직 확정 전이에요."
     }
   ],
   "official": [
@@ -218,6 +314,28 @@ window.GS_NEWS = {
     {
       "t": "청약홈",
       "url": "https://www.applyhome.co.kr/"
+    }
+  ],
+  "top": [
+    5,
+    4,
+    0
+  ],
+  "dates": [
+    {
+      "d": "2026-12",
+      "t": "고양창릉 지분적립형 첫 공급",
+      "tag": "청약"
+    },
+    {
+      "d": "2026-12-31",
+      "t": "서울 토지거래허가구역 지정 만료 (연장 여부 미정)",
+      "tag": "규제"
+    },
+    {
+      "d": "2026-11-12",
+      "t": "다세대·다가구 면적 완화 시행",
+      "tag": "공급"
     }
   ]
 };
