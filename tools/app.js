@@ -72,13 +72,13 @@
   }
   initHH();
 
-  /** 1주택 취득세(+지방교육세) + 중개보수 상한 추정 (만원) */
-  function buyCost(p) {
-    const eok = p / 10000;
+  /** 매매 부대비용(세금·등기비용·중개보수, 만원): 부대비용 계산기(cost.js)와 같은 엔진을 씀 */
+  function buyCost(p, o = {}) {
+    const C = window.GS_COST && window.GS_COST.buyTotal;
+    if (C) return C(p, { relief: o.first ? "first" : "", area: o.band === "l" ? 100 : 84 }).total;
+    const eok = p / 10000; // 엔진을 못 불러온 경우의 근사치
     let tax = eok <= 6 ? 0.01 : eok <= 9 ? (eok * 2 / 3 - 3) / 100 : 0.03;
-    tax *= 1.1; // 지방교육세(취득세의 10%) 근사
-    const fee = eok < 9 ? 0.004 : eok < 12 ? 0.005 : eok < 15 ? 0.006 : 0.007;
-    return p * (tax + fee);
+    return p * (tax * 1.1 + (eok < 9 ? 0.004 : eok < 12 ? 0.005 : eok < 15 ? 0.006 : 0.007) * 1.1);
   }
   /** 원리금균등: 월 상환 가능액 m 으로 빌릴 수 있는 원금 */
   const principal = (m, ratePct, years) => { const i = ratePct / 1200, n = years * 12; return m <= 0 ? 0 : i ? m * (1 - (1 + i) ** -n) / i : m * n; };
@@ -105,10 +105,10 @@
     for (let i = 0; i < 60; i++) {
       const p = (lo + hi) / 2;
       const loan = loanFor(p, o, income).amt;
-      if (p + buyCost(p) <= assets + loan) lo = p; else hi = p;
+      if (p + buyCost(p, o) <= assets + loan) lo = p; else hi = p;
     }
     const loan = loanFor(lo, o, income);
-    return { P: lo, loan, cost: buyCost(lo) };
+    return { P: lo, loan, cost: buyCost(lo, o) };
   }
 
   // 대출 선택에 따라 입력칸 보이기
@@ -126,7 +126,7 @@
     e.preventDefault();
     const out = $("#o-budget"); if (!(await ensure("trades", out))) return;
     const f = e.target, v = n => +f[n].value || 0;
-    const o = { first: f.first.checked, rate: v("rate"), stress: v("stress"), term: v("term") || 30, dsr: v("dsr"), debt: v("debt"),
+    const o = { first: f.first.checked, band: f.band.value, rate: v("rate"), stress: v("stress"), term: v("term") || 30, dsr: v("dsr"), debt: v("debt"),
       mode: f.loanmode.value, loan: f.loan.value === "" ? null : v("loan") * 10000 };
     const r = v("ret") / 100, ig = v("incg") / 100, hg = v("hpg") / 100, save = v("save");
     const start = (v("cash") + v("dep")) * 10000;
@@ -182,7 +182,7 @@
         <div class="t">${label(x.n)}</div><div class="p">${money(x.P0)}</div>
         <div class="s">${x.n ? `명목 ${money(x.P)}` : "최대 매매가"}</div></button>`).join("")}</div>
       <p class="lim">${label(h.n)} 기준 · 자산 <b>${money(h.assets)}</b> + 대출 <b>${money(h.loan.amt)}</b>
-        <span class="tag">${o.mode === "none" ? "대출 없이 계산" : o.mode === "custom" && h.loan.by === "희망 대출액" ? "희망 대출액만큼" : `${esc(h.loan.by)}에서 막힘`}</span> − 취득세·중개보수 <b>${money(h.cost)}</b>
+        <span class="tag">${o.mode === "none" ? "대출 없이 계산" : o.mode === "custom" && h.loan.by === "희망 대출액" ? "희망 대출액만큼" : `${esc(h.loan.by)}에서 막힘`}</span> − 세금·등기·중개보수 <b>${money(h.cost)}</b>
         ${h.loan.amt ? `· 월 상환 약 <b>${Math.round(mpay).toLocaleString()}만 원</b> (금리 ${o.rate}%, ${o.term}년)` : ""}
         ${h.n ? `<br>${h.n}년 뒤 집값이 연 ${(hg * 100).toFixed(1)}% 오른다고 보고 <b>오늘 시세로 환산</b>한 가격(${money(h.P0)})으로 단지를 골랐습니다.` : ""}</p>
       ${rows.length ? `<h3>예산에 가장 가까운 단지 TOP ${Math.min(30, rows.length)}${big ? " (500세대 이상)" : ""}</h3>
@@ -199,7 +199,7 @@
         · 대출 한도 = <b>LTV</b>(${o.first ? "생애최초 70%" : "40%"}) · <b>가격별 상한</b>(15억 이하 6억, 25억 이하 4억, 초과 2억) · <b>스트레스 DSR</b>(연소득 ${o.dsr}%, 금리 ${o.rate}%+가산 ${o.stress}%p) 중 가장 작은 값입니다. 2025.10.15 대책 기준이라 이후 바뀌었을 수 있어요. 은행 상담으로 꼭 확인하세요.<br>
         · DSR은 <b>세전 소득</b> 기준입니다. 실수령액을 넣으면 한도가 작게 나옵니다.<br>
         · N년 후 자산은 현금·보증금이 연 ${budgetState.ret}%로 불고, 매달 같은 금액을 모은다고 가정했습니다. 수익률은 보장되지 않습니다.<br>
-        · 취득세는 1주택 기준(생애최초 감면 미반영). 중위가는 ${ymLabel(from)}~${ymLabel(lastYM())} 신고분이며 최근 1~2개월은 더 신고될 수 있습니다.</div>`;
+        · 세금·등기·중개보수는 부대비용 탭과 같은 방식으로 계산했어요(1주택${o.first ? ", 생애최초 취득세 감면 최대 200만 원 반영" : ""}, 국민주택채권 할인율 10%·법무사 50만 원·중개보수 상한+부가세 가정). 중위가는 ${ymLabel(from)}~${ymLabel(lastYM())} 신고분이며 최근 1~2개월은 더 신고될 수 있습니다.</div>`;
     out.querySelectorAll(".hz").forEach(b => b.onclick = () => { budgetState.sel = +b.dataset.i; renderBudget(); });
   }
 

@@ -54,6 +54,23 @@
     return { base, rate, cap: cap ?? null, fee, note };
   }
 
+
+  // ---------- 매매 부대비용 공통 엔진 (예산 계산기·진단 리포트도 이 함수를 씀) ----------
+  /** price: 매매가(만원). 반환 단위 만원 */
+  function buyTotal(price, opt = {}) {
+    const o = Object.assign({ kind: "apt", area: 84, homes: 1, adj: true, relief: "", pub: 0, disc: 10, law: 50, vat: true }, opt);
+    const kind = o.kind;
+    const t = acqTax(price, o);
+    const RL = { first: [200, "생애최초 감면"], small: [300, "생애최초 감면(소형주택)"], birth: [500, "출산·양육 감면"] }[o.relief];
+    const reliefOk = !!RL && kind !== "offi" && price <= 120000 && o.homes <= 1;
+    const first = reliefOk ? Math.min(t.tax, RL[0]) : 0;
+    const pub = o.pub || price * 0.69, br = bondRate(pub, kind), bond = pub * br, bondCost = bond * o.disc / 100;
+    const st = stamp(price, kind) / 10000, reg = 1.5, law = o.law;
+    const fee = brokerFee("sale", price, kind), feeV = o.vat ? fee.fee * 1.1 : fee.fee;
+    const taxSum = t.tax - first + t.edu + t.rural, regSum = bondCost + st + reg + law, total = taxSum + regSum + feeV;
+    return { t, RL, reliefOk, first, pub, br, bond, bondCost, st, reg, law, fee, feeV, taxSum, regSum, total };
+  }
+
   // ---------- 화면: 모드 전환 ----------
   const form = $("#f-cost");
   const sync = () => {
@@ -80,14 +97,8 @@
     if (form.mode.value === "buy") {
       const price = v("price") * 10000; if (!price) { out.innerHTML = `<p class="muted">매매가를 입력해 주세요.</p>`; return; }
       const o = { kind, area: +form.area.value, homes: +form.homes.value, adj: form.adj.checked };
-      const t = acqTax(price, o);
-      const RL = { first: [200, "생애최초 감면"], small: [300, "생애최초 감면(소형주택)"], birth: [500, "출산·양육 감면"] }[form.relief.value];
-      const reliefOk = RL && kind !== "offi" && price <= 120000 && o.homes <= 1;
-      const first = reliefOk ? Math.min(t.tax, RL[0]) : 0;
-      const pub = (v("pub") || v("price") * 0.69) * 10000, br = bondRate(pub, kind), bond = pub * br, bondCost = bond * v("disc") / 100;
-      const st = stamp(price, kind) / 10000, reg = 1.5, law = v("law");
-      const fee = brokerFee("sale", price, kind), feeV = form.vat.checked ? fee.fee * 1.1 : fee.fee;
-      const taxSum = t.tax - first + t.edu + t.rural, regSum = bondCost + st + reg + law, total = taxSum + regSum + feeV;
+      const { t, RL, reliefOk, first, pub, br, bond, bondCost, st, reg, law, fee, feeV, taxSum, regSum, total } =
+        buyTotal(price, { ...o, relief: form.relief.value, pub: v("pub") * 10000, disc: v("disc"), law: v("law"), vat: form.vat.checked });
       const R = [
         ["취득세", t.tax, `${pct(t.rate)}${t.heavy ? " (다주택 중과)" : ""}`],
         first ? [RL[1], -first, `취득세 100% 감면, 한도 ${RL[0]}만 원`] : null,
@@ -164,5 +175,5 @@
           · 중개보수는 법정 상한이며, 실제 금액은 이 안에서 협의해요.</div>`;
     }
   });
-  window.GS_COST = { acqTax, bondRate, stamp, brokerFee };
+  window.GS_COST = { acqTax, bondRate, stamp, brokerFee, buyTotal };
 })();
