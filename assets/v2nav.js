@@ -30,8 +30,9 @@
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", go) : go();
   const css = document.createElement("style");
   css.textContent = `
-  body.v2nav{padding-bottom:84px}
-  .v2tabbar{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;background:#fff;border-top:1px solid #E4DED6;padding:6px 4px calc(8px + env(safe-area-inset-bottom))}
+  body.v2nav{padding-bottom:100px}
+  .v2tabbar{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:60;display:flex;background:#fff;border:1px solid #E4DED6;border-radius:26px;box-shadow:0 8px 28px rgba(28,26,25,.12);padding:6px;max-width:560px;margin:0 auto}
+  .v2tabbar a.on{background:#FBEDF1;border-radius:20px}
   .v2tabbar a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:52px;font-size:12px;font-weight:600;color:#8A847B;text-decoration:none;font-family:inherit}
   .v2tabbar .ic{display:block;width:22px;height:22px;margin-bottom:3px;color:#A9A39A}.v2tabbar .ic svg{width:100%;height:100%}
   .v2tabbar a.on{color:#C2325F}.v2tabbar a.on .ic{color:#C2325F}
@@ -45,7 +46,7 @@
   body.v2skin .hook{border-left-color:#C2325F}
   body.v2skin .btn{background:#C2325F;min-height:52px;border-radius:12px;font-size:16px}
   body.v2skin main{padding-top:14px}
-  body.v2nav .totop{bottom:96px!important}
+  body.v2nav .totop{bottom:108px!important}
   body.v2skin .send-k{background:#fff;border:1px solid #E4DED6;color:#1C1A19}`;
   document.head.appendChild(css);
 })();
