@@ -26,6 +26,7 @@
       { k: "type", q: "전세·월세 중에", t: "chips", o: ["전세", "월세", "둘 다"] },
       { k: "dep", q: "보증금은 어디까지?", t: "money", unit: "만 원", ph: "예: 50000" },
       { k: "mon", q: "월세+관리비는 어디까지?", sub: "월세일 때만", t: "money", unit: "만 원", ph: "예: 150", opt: true, show: a => a.type && a.type !== "전세" },
+      { k: "park", q: "주차가 필요해요?", t: "chips", o: ["필요 없음", "필요", "꼭 필요"], opt: true },
       { k: "must", q: "매물 볼 때 꼭 맞아야 하는 조건", t: "chips", o: ["이 단지만", "근처 단지도 괜찮아요", "통근·통학", "방 개수", "보증보험 가입 가능"], opt: true } ] },
     offi: { title: "신촌·이대 오피스텔,<br><em>입주 조건</em>을 알려주세요", deal: "오피스텔 월세", area: "신촌·서대문·마포 오피스텔을 직접 중개해요", qs: [
       { k: "move", q: "언제부터 살 집이 필요하세요?", t: "date", alt: MOVE },
@@ -33,7 +34,8 @@
       { k: "mon", q: "한 달 주거비는 어디까지?", sub: "월세 + 관리비 합계", t: "money", unit: "만 원", ph: "예: 85" },
       { k: "near", q: "어디까지 걸어서 다니고 싶으세요?", t: "chips", o: ["신촌역", "이대역", "아현역", "홍대입구역", "연세대", "이화여대", "서강대", "회사 근처"] },
       { k: "nearTxt", q: "회사 이름이나 가까운 역", t: "text", ph: "예: 공덕역, ○○빌딩", show: a => a.near === "회사 근처" },
-      { k: "walk", q: "걸어서 몇 분까지?", t: "chips", o: ["5분", "10분", "15분"] } ] },
+      { k: "walk", q: "걸어서 몇 분까지?", t: "chips", o: ["5분", "10분", "15분"] },
+      { k: "park", q: "주차가 필요해요?", sub: "차가 있다면", t: "chips", o: ["필요 없음", "필요", "꼭 필요"] } ] },
     owner: { title: "집을 내놓기 전에<br><em>몇 가지만</em> 알려주세요", deal: "집주인", area: "아파트는 서울 전역, 오피스텔은 신촌·서대문·마포를 직접 중개해요", qs: [
       { k: "bld", q: "어느 집이에요?", sub: "단지·건물 이름", t: "text", ph: "예: 신촌○○오피스텔", show: (a, ctx) => !ctx.cx },
       { k: "ar", q: "전용면적", t: "money", unit: "㎡", ph: "예: 23", opt: true, show: (a, ctx) => !ctx.cx || !ctx.cx.area },
@@ -42,6 +44,8 @@
       { k: "dep", q: "희망 보증금", sub: "모르면 비워두세요. 주변 시세와 같이 정해요", t: "money", unit: "만 원", opt: true, show: a => a.deal && a.deal !== "매도" },
       { k: "mon", q: "희망 월세", t: "money", unit: "만 원", opt: true, show: a => a.deal === "월세" },
       { k: "fee", q: "관리비", sub: "알면 적어주세요", t: "money", unit: "만 원", opt: true, show: a => a.deal === "월세" || a.deal === "전세" },
+      { k: "park", q: "주차 되나요?", sub: "오피스텔은 세입자가 꼭 물어봐요", t: "chips", o: ["가능(무료)", "가능(유료)", "불가", "잘 모르겠어요"], show: a => a.deal === "월세" || a.deal === "전세" },
+      { k: "parkFee", q: "주차비", t: "money", unit: "만 원/월", opt: true, show: a => a.park === "가능(유료)" },
       { k: "sale", q: "희망 매도가", t: "money", unit: "억", opt: true, show: a => a.deal === "매도" } ] },
     gg: { title: "경기 지역 <em>중개 가능 여부</em><br>먼저 확인해 드려요", deal: "경기 매수", qs: [
       { k: "when", q: "언제까지 매수하고 싶으세요?", t: "chips", o: ["3개월 이내", "3~6개월", "6개월 이후", "미정"] },
@@ -52,7 +56,7 @@
   // 등급: A 바로 확인 / B 확인 후 연락 / P 준비 단계
   function grade(kind, a, ctx) {
     if (kind === "owner") {
-      if ((!ctx.cx && !a.bld) || !a.deal || !a.avail) return null;
+      if ((!ctx.cx && !a.bld) || !a.deal || !a.avail || ((a.deal === "월세" || a.deal === "전세") && !a.park)) return null;
       return { g: (a.dep || a.mon || a.sale) ? "A" : "B", ok: true, priced: !!(a.dep || a.mon || a.sale) };
     }
     if (kind === "buy" || kind === "gg") {
@@ -63,7 +67,7 @@
       return { g: a.when === "3개월 이내" && ready ? "A" : "B", ok: true,
         note: ready ? "" : a.fund === "기존 집 매도 후" ? "기존 집 매도 일정을 먼저 같이 확인할게요." : "대출 가능 금액을 먼저 확인해 주시면 매물 안내가 빨라져요." };
     }
-    const need = kind === "offi" ? ["move", "dep", "mon", "near", "walk"] : ["move", "type", "dep", ...(ctx.cx ? [] : ["where"])];
+    const need = kind === "offi" ? ["move", "dep", "mon", "near", "walk", "park"] : ["move", "type", "dep", ...(ctx.cx ? [] : ["where"])];
     if (need.some(k => !a[k])) return null;
     const d = days(a.move);
     if (a.move === "미정" || d > 92) return { g: "P" };
@@ -78,12 +82,12 @@
     const L = [];
     if (kind === "buy") { L.push(`${cx ? cx + " " : ""}매수 문의예요.`); L.push(`· 매수 시기: ${a.when}`, `· 예산: ${a.budget}억 원 이하`, `· 자금: ${a.fund}`); if (a.must && a.must !== "없음") L.push(`· 중요한 조건: ${a.must}`); }
     if (kind === "gg") { L.push(`${cx ? cx + " " : ""}경기 매수 중개 가능 여부 문의예요.`); L.push(`· 매수 시기: ${a.when}`, `· 예산: ${a.budget}억 원 이하`, `· 자금: ${a.fund}`); }
-    if (kind === "rent") { L.push(`${cx ? cx + " " : ""}${a.type === "전세" ? "전세" : a.type === "월세" ? "월세" : "전월세"} 문의예요.`); if (a.where) L.push(`· 희망 지역: ${a.where}`); L.push(`· 입주 희망일: ${dt(a.move)}`, `· 보증금: ${man(a.dep)} 이하`); if (a.mon) L.push(`· 월세+관리비: ${a.mon}만 원 이하`); if (a.must) L.push(`· 중요한 조건: ${a.must}`); }
-    if (kind === "offi") { L.push("신촌·이대 오피스텔 월세 문의예요."); L.push(`· 입주 희망일: ${dt(a.move)}`, `· 보증금: ${man(a.dep)} 이하`, `· 월세+관리비: ${a.mon}만 원 이하`, `· 위치: ${a.near === "회사 근처" && a.nearTxt ? a.nearTxt : a.near} 도보 ${a.walk}`); }
+    if (kind === "rent") { L.push(`${cx ? cx + " " : ""}${a.type === "전세" ? "전세" : a.type === "월세" ? "월세" : "전월세"} 문의예요.`); if (a.where) L.push(`· 희망 지역: ${a.where}`); L.push(`· 입주 희망일: ${dt(a.move)}`, `· 보증금: ${man(a.dep)} 이하`); if (a.mon) L.push(`· 월세+관리비: ${a.mon}만 원 이하`); if (a.park) L.push(`· 주차: ${a.park}`); if (a.must) L.push(`· 중요한 조건: ${a.must}`); }
+    if (kind === "offi") { L.push("신촌·이대 오피스텔 월세 문의예요."); L.push(`· 입주 희망일: ${dt(a.move)}`, `· 보증금: ${man(a.dep)} 이하`, `· 월세+관리비: ${a.mon}만 원 이하`, `· 위치: ${a.near === "회사 근처" && a.nearTxt ? a.nearTxt : a.near} 도보 ${a.walk}`, `· 주차: ${a.park}`); }
     if (kind === "owner") {
       L.push(`${cx || a.bld}${!cx && a.ar ? ` ${a.ar}㎡` : ""} ${a.deal === "매도" ? "매도" : a.deal === "아직 고민 중" ? "내놓기" : a.deal + " 임대"} 문의예요.`);
       L.push(`· 거래: ${a.deal}`, `· 입주 가능일: ${dt(a.avail)}`);
-      if (a.dep) L.push(`· 보증금: ${man(a.dep)}`); if (a.mon) L.push(`· 월세: ${a.mon}만 원`); if (a.fee) L.push(`· 관리비: ${a.fee}만 원`); if (a.sale) L.push(`· 희망 매도가: ${a.sale}억 원`);
+      if (a.dep) L.push(`· 보증금: ${man(a.dep)}`); if (a.mon) L.push(`· 월세: ${a.mon}만 원`); if (a.fee) L.push(`· 관리비: ${a.fee}만 원`); if (a.park) L.push(`· 주차: ${a.park === "잘 모르겠어요" ? "확인 필요" : a.park}${a.parkFee ? ` (월 ${a.parkFee}만 원)` : ""}`); if (a.sale) L.push(`· 희망 매도가: ${a.sale}억 원`);
       if (!gr.priced) L.push("· 희망가: 주변 시세 보고 같이 정하고 싶어요");
     }
     if (a.phone) L.push(`· 연락처: ${a.phone}`);
