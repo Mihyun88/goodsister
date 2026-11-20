@@ -111,6 +111,14 @@
     return { P: lo, loan, cost: buyCost(lo, o) };
   }
 
+  // 금리 기본값: 한국은행 최신 주담대 금리(신규취급액). 사용자가 바꾼 값·공유 링크 값은 그대로 둠
+  (() => {
+    const G = window.GS_RATE, inp = document.querySelector('#f-budget [name=rate]');
+    if (!G || !inp) return;
+    if (inp.value === "4.0") inp.value = (Math.round(G.mortgage * 10) / 10).toFixed(1);
+    const ym = `${G.month.slice(0, 4)}.${G.month.slice(4)}`;
+    inp.insertAdjacentHTML("afterend", `<small class="u">한국은행 ${ym} 신규 주담대 평균 ${G.mortgage}% (고정형 ${G.fixed}%)</small>`);
+  })();
   // 대출 선택에 따라 입력칸 보이기
   const fb = $("#f-budget"), hintTxt = {
     max: "LTV · 가격별 상한 · 스트레스 DSR 안에서 가장 많이 받는 경우로 계산해요.",

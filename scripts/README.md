@@ -4,6 +4,8 @@
 export DATA_GO_KR_KEY='공공데이터포털 Encoding 키'   # 파일에 저장하지 않기
 python3 scripts/build_data.py --trade-months 12 --rent-months 6 --households   # 실거래 (약 20~30분)
 python3 scripts/sync_notion.py                                                   # 노션 가이드 (약 1분, 키 불필요)
+python3 scripts/build_rate.py                                                    # 한국은행 주담대 금리 → 예산 계산기 기본 금리 (ECOS_KEY 없으면 공개 샘플키)
+python3 scripts/build_data.py --rent-only                                        # 전월세만 다시 (아파트·오피스텔·연립다세대·단독다가구)
 ```
 
 - `households_cache.json`: 지번별 세대수 캐시. 새 단지만 조회하므로 두 번째부터 빨라집니다.
