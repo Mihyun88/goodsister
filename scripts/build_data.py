@@ -23,7 +23,9 @@ GU = {"11110": "종로구", "11140": "중구", "11170": "용산구", "11200": "�
       "11620": "관악구", "11650": "서초구", "11680": "강남구", "11710": "송파구", "11740": "강동구"}
 EP = {"apt_trade": "RTMSDataSvcAptTradeDev/getRTMSDataSvcAptTradeDev",
       "apt_rent": "RTMSDataSvcAptRent/getRTMSDataSvcAptRent",
-      "offi_rent": "RTMSDataSvcOffiRent/getRTMSDataSvcOffiRent"}
+      "offi_rent": "RTMSDataSvcOffiRent/getRTMSDataSvcOffiRent",
+      "rh_rent": "RTMSDataSvcRHRent/getRTMSDataSvcRHRent",   # 연립·다세대
+      "sh_rent": "RTMSDataSvcSHRent/getRTMSDataSvcSHRent"}   # 단독·다가구 (면적=계약면적 totalFloorAr)
 OUT = Path(__file__).resolve().parent.parent / "tools" / "data"
 HH_CACHE = Path(__file__).resolve().parent / "households_cache.json"
 BLD = "https://apis.data.go.kr/1613000/BldRgstHubService/"
@@ -150,6 +152,7 @@ def main():
     ap.add_argument("--rent-months", type=int, default=6)
     ap.add_argument("--gu", nargs="*", help="LAWD_CD 일부만 (기본: 서울 25개 구 전체)")
     ap.add_argument("--households", action="store_true", help="건축물대장으로 단지 세대수 조회")
+    ap.add_argument("--rent-only", action="store_true", help="전월세(rents.js)만 다시 만들기")
     ap.add_argument("--summary-only", action="store_true", help="기존 데이터로 summary.js 만 다시 생성")
     a = ap.parse_args()
     if a.summary_only:
@@ -160,66 +163,67 @@ def main():
     gus = a.gu or list(GU)
     today = dt.date.today().isoformat()
 
-    # ---- 아파트 매매: 단지별 거래 리스트 ----
-    tm = months_back(a.trade_months)
-    cx = {}  # (gu, dong, name) -> complex
-    got = fetch_many(key, "apt_trade", [(l, y) for l in gus for y in tm])
-    for (lawd, ym), rows in got.items():
-        for r in rows:
-            if r.get("cdealType"):  # 해제된 거래 제외
-                continue
-            name, dong = r.get("aptNm", ""), r.get("umdNm", "")
-            k = r.get("aptSeq") or (lawd, dong, name)
-            c = cx.setdefault(k, {"g": GU[lawd], "d": dong, "n": name,
-                                  "y": num(r.get("buildYear"), int), "t": [],
-                                  "_lot": (r.get("sggCd") or lawd, r.get("umdCd", ""),
-                                           (r.get("bonbun") or "").zfill(4), (r.get("bubun") or "").zfill(4))})
-            c["t"].append([f"{r.get('dealYear')}{int(num(r.get('dealMonth'), int)):02d}"
-                           f"{int(num(r.get('dealDay'), int)):02d}",
-                           round(num(r.get("excluUseAr")), 2), won(r.get("dealAmount")),
-                           num(r.get("floor"), int), 1 if "직거래" in r.get("dealingGbn", "") else 0])
-    if a.households:
-        from concurrent.futures import ThreadPoolExecutor
-        cache = json.loads(HH_CACHE.read_text()) if HH_CACHE.exists() else {}
-        lots = {}
+    if not a.rent_only:
+        # ---- 아파트 매매: 단지별 거래 리스트 ----
+        tm = months_back(a.trade_months)
+        cx = {}  # (gu, dong, name) -> complex
+        got = fetch_many(key, "apt_trade", [(l, y) for l in gus for y in tm])
+        for (lawd, ym), rows in got.items():
+            for r in rows:
+                if r.get("cdealType"):  # 해제된 거래 제외
+                    continue
+                name, dong = r.get("aptNm", ""), r.get("umdNm", "")
+                k = r.get("aptSeq") or (lawd, dong, name)
+                c = cx.setdefault(k, {"g": GU[lawd], "d": dong, "n": name,
+                                      "y": num(r.get("buildYear"), int), "t": [],
+                                      "_lot": (r.get("sggCd") or lawd, r.get("umdCd", ""),
+                                               (r.get("bonbun") or "").zfill(4), (r.get("bubun") or "").zfill(4))})
+                c["t"].append([f"{r.get('dealYear')}{int(num(r.get('dealMonth'), int)):02d}"
+                               f"{int(num(r.get('dealDay'), int)):02d}",
+                               round(num(r.get("excluUseAr")), 2), won(r.get("dealAmount")),
+                               num(r.get("floor"), int), 1 if "직거래" in r.get("dealingGbn", "") else 0])
+        if a.households:
+            from concurrent.futures import ThreadPoolExecutor
+            cache = json.loads(HH_CACHE.read_text()) if HH_CACHE.exists() else {}
+            lots = {}
+            for c in cx.values():
+                sgg, bjd, bun, ji = c["_lot"]
+                if bjd and bun.strip("0"):
+                    c["_ck"] = f"{sgg}-{bjd}-{bun}-{ji}"
+                    lots[c["_ck"]] = c["_lot"]
+            todo = [k for k in lots if k not in cache]
+            print(f"세대수 조회: {len(todo)}개 지번 (캐시 {len(lots) - len(todo)}개)", flush=True)
+            with ThreadPoolExecutor(6) as ex:
+                for i, (k, n) in enumerate(zip(todo, ex.map(lambda k: households(key, *lots[k]), todo))):
+                    if n is not None:
+                        cache[k] = n
+                    if i % 200 == 0:
+                        HH_CACHE.write_text(json.dumps(cache))
+                        print(f"  세대수 {i}/{len(todo)}", flush=True)
+            HH_CACHE.write_text(json.dumps(cache))
+            for c in cx.values():
+                if cache.get(c.get("_ck")):
+                    c["h"] = cache[c["_ck"]]
         for c in cx.values():
-            sgg, bjd, bun, ji = c["_lot"]
-            if bjd and bun.strip("0"):
-                c["_ck"] = f"{sgg}-{bjd}-{bun}-{ji}"
-                lots[c["_ck"]] = c["_lot"]
-        todo = [k for k in lots if k not in cache]
-        print(f"세대수 조회: {len(todo)}개 지번 (캐시 {len(lots) - len(todo)}개)", flush=True)
-        with ThreadPoolExecutor(6) as ex:
-            for i, (k, n) in enumerate(zip(todo, ex.map(lambda k: households(key, *lots[k]), todo))):
-                if n is not None:
-                    cache[k] = n
-                if i % 200 == 0:
-                    HH_CACHE.write_text(json.dumps(cache))
-                    print(f"  세대수 {i}/{len(todo)}", flush=True)
-        HH_CACHE.write_text(json.dumps(cache))
-        for c in cx.values():
-            if cache.get(c.get("_ck")):
-                c["h"] = cache[c["_ck"]]
-    for c in cx.values():
-        c["t"].sort()
-        c.pop("_lot", None)
-        c.pop("_ck", None)
-    write_js("trades.js", "GS_TRADES", {"updated": today, "months": tm,
-                                         "source": f"국토교통부 실거래가 공개시스템({tm[0][:4]}.{tm[0][4:]}~{tm[-1][:4]}.{tm[-1][4:]} 신고분)",
-                                         "complexes": list(cx.values())})
+            c["t"].sort()
+            c.pop("_lot", None)
+            c.pop("_ck", None)
+        write_js("trades.js", "GS_TRADES", {"updated": today, "months": tm,
+                                             "source": f"국토교통부 실거래가 공개시스템({tm[0][:4]}.{tm[0][4:]}~{tm[-1][:4]}.{tm[-1][4:]} 신고분)",
+                                             "complexes": list(cx.values())})
 
-    # ---- 전월세 (오피스텔 + 아파트, 전용 60㎡ 이하) ----
+    # ---- 전월세 (오피스텔 O + 아파트 A + 연립·다세대 R + 단독·다가구 H, 60㎡ 이하) ----
     rm = months_back(a.rent_months)
     rents = {}
     got = {tag: fetch_many(key, kind, [(l, y) for l in gus for y in rm])
-           for kind, tag in (("offi_rent", "O"), ("apt_rent", "A"))}
+           for kind, tag in (("offi_rent", "O"), ("apt_rent", "A"), ("rh_rent", "R"), ("sh_rent", "H"))}
     for lawd in gus:
         rows_out = []
         for ym in rm:
-            for tag in ("O", "A"):
+            for tag in ("O", "A", "R", "H"):
                 rows = got[tag][(lawd, ym)]
                 for r in rows:
-                    ar = num(r.get("excluUseAr"))
+                    ar = num(r.get("excluUseAr") or r.get("totalFloorAr"))
                     if not ar or ar > 60:
                         continue
                     rows_out.append([r.get("umdNm", ""), tag, round(ar, 1), won(r.get("deposit")),
@@ -227,7 +231,7 @@ def main():
                                      1 if r.get("contractType", "") == "갱신" else 0])
         rents[GU[lawd]] = rows_out
     write_js("rents.js", "GS_RENTS", {"updated": today, "months": rm,
-                                       "source": f"국토교통부 실거래가 공개시스템 오피스텔·아파트 전월세({rm[0][:4]}.{rm[0][4:]}~{rm[-1][:4]}.{rm[-1][4:]} 신고분)",
+                                       "source": f"국토교통부 실거래가 공개시스템 오피스텔·아파트·연립다세대·단독다가구 전월세({rm[0][:4]}.{rm[0][4:]}~{rm[-1][:4]}.{rm[-1][4:]} 신고분)",
                                        "rows": rents})
     write_summary()
     print("완료. tools/index.html 을 열어 확인하세요.")
