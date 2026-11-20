@@ -229,3 +229,24 @@ body{padding-bottom:100px}
 .nli summary{list-style:none;cursor:pointer;padding:12px 0;min-height:52px}.nli summary::-webkit-details-marker{display:none}
 .nlt{display:block;font-size:14.5px;font-weight:700;line-height:1.4}.nld{display:block;font-size:12.5px;color:#55524C;margin-top:2px}
 .nli .me{margin:0 0 4px}.nli .nsrc{margin-bottom:6px}
+/* 이번 주 서울 시황 카드 */
+.wk{margin-top:6px}
+.wkh{display:flex;justify-content:space-between;align-items:center;margin:26px 0 10px}
+.wkc{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px}
+.wkd{font-size:12.5px;color:#55524C}
+.wkm{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-top:8px}
+.wkl{font-size:14px;font-weight:700;color:#55524C}
+.wkv{font-size:40px;font-weight:900;letter-spacing:-1.5px;line-height:1.1}
+.wkv.up,.wkhome .up,.wkp .up{color:var(--pink)}.wkv.dn,.wkhome .dn,.wkp .dn{color:#2457A6}
+.wks{font-size:14px;color:#1C1A19;margin-top:4px}.wks span{color:#55524C;font-size:13px}
+.wkbar{position:relative;display:flex;align-items:flex-end;gap:3px;width:120px;height:64px;padding-bottom:16px;flex:none}
+.wkbar i{flex:1;background:#E4DED6;border-radius:3px 3px 0 0}.wkbar i.up{background:#F0B3C6}.wkbar i.dn{background:#B9CBEA}.wkbar i.last.up{background:var(--pink)}.wkbar i.last.dn{background:#2457A6}
+.wkbar small{position:absolute;bottom:0;font-size:11px;color:#8A847B}.wkbar small:first-of-type{left:0}.wkbar small:last-of-type{right:0}
+.wkp{display:flex;gap:6px;margin-top:14px}.wkp span{flex:1;text-align:center;background:var(--bg);border-radius:12px;padding:8px 4px;font-size:13px}.wkp b{display:block;font-size:20px;font-weight:900}
+.wkhome{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.wkhome div{border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.wkhome small{display:block;font-size:12px;color:var(--pink);font-weight:700}.wkhome b{font-size:15px;margin-right:6px}.wkhome span{font-size:16px;font-weight:900}
+.wkhome em{display:block;font-style:normal;font-size:12.5px;color:#55524C}
+.wkact{display:flex;gap:8px;margin-top:12px}
+.wkact button,.wkact a{flex:1;display:flex;align-items:center;justify-content:center;min-height:46px;border-radius:12px;font:inherit;font-size:14.5px;font-weight:800;text-decoration:none;cursor:pointer}
+.wkact button{background:#1C1A19;color:#fff;border:0}.wkact a{background:#fff;border:1px solid var(--line);color:#1C1A19}

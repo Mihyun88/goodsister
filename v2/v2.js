@@ -72,7 +72,7 @@
     let mk = "";
     if (M) { const s = M.series.sale["서울"], ch = (s[s.length - 1] / s[s.length - 2] - 1) * 100;
       const up = Object.keys(M.series.sale).filter(k => /구$/.test(k)).filter(k => { const x = M.series.sale[k]; return x[x.length - 1] > x[x.length - 2]; }).length;
-      mk = `<a class="mkline" href="#news"><span><i class='ic' data-i='chart'></i>이번 주 서울 아파트 <small style="color:var(--mut)">${M.dates[M.dates.length - 1].slice(5).replace("-", ".")} 기준</small></span><span><b class="${ch >= 0 ? "up" : "dn"}">${ch >= 0 ? "+" : ""}${ch.toFixed(2)}%</b> · ${up}개 구 상승 ›</span></a>`; }
+      mk = `<section class="wk" id="wk"></section>`; }
     const saved = store.get("gs_lead_saved", []), watch = store.get("gs_watch", []);
     const KN = { offi: "신촌 월세 조건", rent: "전월세 조건", buy: "매수 조건", owner: "임대 내놓기 조건", gg: "경기 매수 조건" };
     main.innerHTML = `<h1 class="h0">서울·경기 실거래가,<br><em>어디가 궁금하세요?</em></h1>
@@ -99,8 +99,8 @@
         <a href="../check/?t=jangeum"><span><i class='ic' data-i='calendar'></i></span>잔금<br>30일</a>
         <a href="../tools/#cost"><span><i class='ic' data-i='receipt'></i></span>세금·<br>복비</a>
       </div>
-      <section class="rank" id="rank"><div class="secrow"><p class="sec" style="margin:0">착한언니 동네 순위</p></div><div id="rkbox"><p class="empty">불러오는 중…</p></div></section>
       ${mk}
+      <section class="rank" id="rank"><div class="secrow"><p class="sec" style="margin:0">착한언니 동네 순위</p></div><div id="rkbox"><p class="empty">불러오는 중…</p></div></section>
       <section class="why2">
         <p class="q1">“부동산이 이런 것까지 해줘요?”</p>
         <p class="q2">착한언니가 손님들께 자주 듣는 말이에요.</p>
@@ -126,7 +126,32 @@
     });
     $("#resume") && ($("#resume").onclick = () => GS_lead.open({ kind: saved[0].kind, cx: saved[0].cx || undefined }));
     main.querySelector("[data-rk]").onclick = e => { e.preventDefault(); RK.t = "offi"; rankDraw(); $("#rank").scrollIntoView({ behavior: "smooth" }); };
-    rankDraw();
+    rankDraw(); wkDraw();
+  }
+
+  // ---------- 이번 주 서울 시황 카드: 큰 숫자 · 지난주 비교 · 12주 막대 · 착한언니 동네 ----------
+  let WK = "sale";
+  function wkDraw() {
+    const box = $("#wk"), M = window.GS_MARKET; if (!box || !M) return;
+    const ser = M.series[WK], ch = (k, i = 0) => { const x = ser[k], n = x.length - 1 - i; return (x[n] / x[n - 1] - 1) * 100; };
+    const now = ch("서울"), prev = ch("서울", 1), gus = Object.keys(ser).filter(k => /구$/.test(k));
+    const up = gus.filter(k => ch(k) > 0).length, dn = gus.filter(k => ch(k) < 0).length;
+    const rank = gus.map(k => [k, ch(k)]).sort((a, b) => b[1] - a[1]), rk = g => rank.findIndex(r => r[0] === g) + 1;
+    const hist = Array.from({ length: 12 }, (_, i) => ch("서울", 11 - i)), mx = Math.max(...hist.map(Math.abs), 0.01);
+    const f = v => `${v >= 0 ? "+" : ""}${v.toFixed(2)}%`, cls = v => v > 0 ? "up" : v < 0 ? "dn" : "";
+    const diff = now - prev;
+    const say = Math.abs(diff) < 0.005 ? "지난주와 비슷한 흐름이에요" : diff > 0 ? `지난주보다 오름폭이 커졌어요` : now > 0 ? "오르긴 했지만 오름폭이 줄었어요" : "지난주보다 약해졌어요";
+    box.innerHTML = `<div class="wkh"><p class="sec" style="margin:0">이번 주 서울 아파트</p><div class="rseg">${[["sale", "매매"], ["jeonse", "전세"]].map(([k, t]) => `<button type="button" data-w="${k}" class="${WK === k ? "on" : ""}">${t}</button>`).join("")}</div></div>
+      <div class="wkc">
+        <p class="wkd">${M.dates[M.dates.length - 1].replace(/-/g, ".")} 기준 · 한국부동산원 주간 ${WK === "sale" ? "매매" : "전세"}가격</p>
+        <div class="wkm"><div><p class="wkl">서울 평균</p><p class="wkv ${cls(now)}">${f(now)}</p><p class="wks">${say} <span>(지난주 ${f(prev)})</span></p></div>
+          <div class="wkbar" aria-label="최근 12주 서울 주간 변동률">${hist.map((v, i) => `<i class="${cls(v)}${i === 11 ? " last" : ""}" style="height:${Math.max(6, Math.abs(v) / mx * 100)}%"></i>`).join("")}<small>12주 전</small><small>이번 주</small></div></div>
+        <div class="wkp"><span><b class="up">${up}</b>개 구 상승</span><span><b class="dn">${dn}</b>개 구 하락</span><span><b>${25 - up - dn}</b>개 구 보합</span></div>
+        <div class="wkhome">${["마포구", "서대문구"].map(g => `<div><small>착한언니 동네</small><b>${g}</b><span class="${cls(ch(g))}">${f(ch(g))}</span><em>25개 구 중 ${rk(g)}위</em></div>`).join("")}</div>
+        <div class="wkact"><button type="button" id="wkRank">구별 순위 보기</button><a href="#news">이번 주 뉴스 ›</a></div>
+      </div>`;
+    box.querySelectorAll("[data-w]").forEach(b => b.onclick = () => { WK = b.dataset.w; wkDraw(); });
+    $("#wkRank").onclick = () => { RK.t = "seoul"; RK.d = WK; RK.s = "up"; rankDraw(); $("#rank").scrollIntoView({ behavior: "smooth" }); };
   }
 
   // ---------- 순위표: 마포·서대문 아파트 / 신촌 오피스텔 / 서울 구별 주간 ----------
