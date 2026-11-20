@@ -34,7 +34,7 @@
   }
 
   // ---------- 라우팅 ----------
-  const routes = { home, report, apply: applyPage, news };
+  const routes = { home, report, apply: applyPage, news, tools: toolsPage };
   function route() {
     const r = (location.hash.slice(1).split("?")[0]) || "home";
     (routes[r] || home)();
@@ -42,6 +42,29 @@
     window.scrollTo(0, 0);
   }
   window.addEventListener("hashchange", route);
+
+  // ---------- 도구 모음 (기존 /tools/ 를 같은 메뉴 안으로) ----------
+  function toolsPage() {
+    const T = (href, i, t, d) => `<a class="trow" href="${href}"><span class="e"><i class='ic' data-i='${i}'></i></span><span><b>${t}</b><small>${d}</small></span><span class="arr">›</span></a>`;
+    main.innerHTML = `<h1>도구</h1><p class="lead">숫자로 먼저 확인하고, 필요할 때 착한언니에게 물어보세요.</p>
+      <p class="sec">계산하기</p><div class="tgrp">
+        ${T("#report", "report", "내 상황 진단 리포트", "예산·대출·잔금·볼 만한 단지·청약까지 한 장으로")}
+        ${T("/tools/#budget", "wallet", "예산으로 단지 찾기", "현금·소득으로 지금, 1·3·5년 뒤 살 수 있는 단지")}
+        ${T("/tools/#rent", "train", "자취 동네 찾기", "학교·직장 통근 시간과 실제 월세로 동네 비교")}
+        ${T("/tools/#cost", "receipt", "세금·복비 계산", "취득세·등기비용·중개보수·전세보증보험")}</div>
+      <p class="sec">확인하기</p><div class="tgrp">
+        ${T("/apt/", "building", "단지·오피스텔 시세", "면적별 매매·전세·월세 실거래 · 가격 검토도 여기서")}
+        ${T("/check/?t=imjang", "check", "임장 체크리스트", "단지 보러 갈 때 · 별점·메모로 비교")}
+        ${T("/check/?t=jangeum", "calendar", "잔금 30일 체크리스트", "잔금일 넣으면 캘린더에 한 번에")}
+        ${T("/check/?t=jachwi", "key", "자취방 계약 체크리스트", "계약 전·당일·입주 후")}</div>
+      <p class="sec">읽어보기</p><div class="tgrp">
+        ${T("/tools/#market", "chart", "서울 시황 자세히", "구별 변동률·수급지수·거래 많은 단지")}
+        ${T("/tools/#timeline", "calendar", "세금 타임라인", "정부별 부동산 세금 변화")}
+        ${T("/tools/#jachwi", "home", "첫 자취방 가이드", "방 구하기부터 입주까지")}
+        ${T("/tools/#tips", "bulb", "부동산 꿀팁", "현장에서 매일 받는 질문 정리")}
+        ${T("/guide/jangeum/", "doc", "잔금 가이드", "잔금날까지 뭐부터 해야 하지?")}</div>
+      <p class="why" style="margin-top:14px">가격 검토는 단지 시세 화면으로, 정책 뉴스는 뉴스·시황 탭으로 합쳤어요.</p>`;
+  }
 
   // ---------- 홈 ----------
   function home() {
