@@ -48,8 +48,11 @@ def main():
     ap.add_argument("--region", default="all", choices=["seoul", "gg", "all"])
     ap.add_argument("--trade-months", type=int, default=12)
     ap.add_argument("--rent-months", type=int, default=6)
+    ap.add_argument("--offi-only", action="store_true", help="오피스텔(서대문·마포)만 다시 만들기")
     a = ap.parse_args()
     key = os.environ.get("DATA_GO_KR_KEY") or sys.exit("DATA_GO_KR_KEY 환경변수를 설정하세요.")
+    if a.offi_only:
+        return build_offi(key, a)
     names = {**(SEOUL if a.region in ("seoul", "all") else {}), **(GGN if a.region in ("gg", "all") else {})}
     tm, rm = months_back(a.trade_months), months_back(a.rent_months)
     # 세대수: 기존 trades.js(서울)에서 (구, 동, 단지명)으로 가져옴
@@ -127,6 +130,45 @@ def main():
          "source": "국토교통부 아파트 매매·전월세 실거래가", "cols": ["id", "name", "dong", "year", "sgg", "nTrade", "nRent"],
          "regions": {k: names.get(k, "경기 화성시") for k in by_sgg}, "rows": index}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(f"완료: 단지 {len(index)}개, 파일 {len(by_sgg) + 1}개 → {OUT}")
+
+
+OFFI = {"11410": "서울 서대문구", "11440": "서울 마포구"}  # 직접 중개하는 지역만
+
+
+def build_offi(key, a):
+    """서대문·마포 오피스텔 건물별 매매(12개월)·전월세(12개월) → cx/o{sgg}.json, index.json 에 합침"""
+    tm = months_back(a.trade_months); rm = months_back(12)
+    T = grab(key, "offi_trade", list(OFFI), tm)
+    R = grab(key, "offi_rent", list(OFFI), rm)
+    today = dt.date.today().isoformat()
+    by = {}
+    def cxof(code, r):
+        cid = f"O{code}-{r.get('umdNm')}-{r.get('offiNm')}"
+        d = by.setdefault(code, {})
+        return d.setdefault(cid, {"n": r.get("offiNm", ""), "d": r.get("umdNm", ""), "y": num(r.get("buildYear"), int) or None, "k": "o", "t": [], "r": []})
+    for (code, m), rows in T.items():
+        for r in rows:
+            if (r.get("cdealType") or "").strip():
+                continue
+            cxof(code, r)["t"].append([ymd(r), round(num(r.get("excluUseAr")), 2), won(r.get("dealAmount")), num(r.get("floor"), int), 1 if "직거래" in r.get("dealingGbn", "") else 0])
+    for (code, m), rows in R.items():
+        for r in rows:
+            ct = r.get("contractType", "").strip()
+            cxof(code, r)["r"].append([ymd(r), round(num(r.get("excluUseAr")), 2), won(r.get("deposit")), won(r.get("monthlyRent")), num(r.get("floor"), int), 1 if ct == "신규" else 0 if ct == "갱신" else None])
+    idx_path = OUT / "index.json"
+    I = json.loads(idx_path.read_text(encoding="utf-8"))
+    I["rows"] = [r for r in I["rows"] if not str(r[4]).startswith("o")]
+    for code, d in by.items():
+        sg = f"o{code}"
+        for cid, c in d.items():
+            c["t"].sort(key=lambda x: x[0]); c["r"].sort(key=lambda x: x[0])
+            I["rows"].append([cid, c["n"], c["d"], c["y"], sg, len(c["t"]), len(c["r"])])
+        I["regions"][sg] = f"{OFFI[code]} 오피스텔"
+        (OUT / f"{sg}.json").write_text(json.dumps({"updated": today, "sgg": sg, "kind": "offi", "name": f"{OFFI[code]} 오피스텔",
+            "tm": [tm[0], tm[-1]], "rm": [rm[0], rm[-1]], "cx": d}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    I["rows"].sort(key=lambda x: -(x[5] + x[6]))
+    idx_path.write_text(json.dumps(I, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    print(f"오피스텔 건물 {sum(len(d) for d in by.values())}개 → cx/o*.json")
 
 
 if __name__ == "__main__":

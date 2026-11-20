@@ -24,6 +24,7 @@ GU = {"11110": "종로구", "11140": "중구", "11170": "용산구", "11200": "�
 EP = {"apt_trade": "RTMSDataSvcAptTradeDev/getRTMSDataSvcAptTradeDev",
       "apt_rent": "RTMSDataSvcAptRent/getRTMSDataSvcAptRent",
       "offi_rent": "RTMSDataSvcOffiRent/getRTMSDataSvcOffiRent",
+      "offi_trade": "RTMSDataSvcOffiTrade/getRTMSDataSvcOffiTrade",
       "rh_rent": "RTMSDataSvcRHRent/getRTMSDataSvcRHRent",   # 연립·다세대
       "sh_rent": "RTMSDataSvcSHRent/getRTMSDataSvcSHRent"}   # 단독·다가구 (면적=계약면적 totalFloorAr)
 OUT = Path(__file__).resolve().parent.parent / "tools" / "data"
