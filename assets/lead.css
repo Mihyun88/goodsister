@@ -43,3 +43,7 @@ body.lead-open{overflow:hidden}
 .lead-sv a{border:1px solid #E4DED6;min-height:44px;display:flex;align-items:center;justify-content:center}
 .lead-sv .ic{color:#C2325F}
 .lead-fine a{color:#C2325F}
+.lead-go:disabled{background:#E9E4DC;color:#8A847B;cursor:default}
+.lead-strong{color:#1C1A19;font-weight:700;font-size:13px}
+.lead-wait{text-align:center;margin-top:8px}
+.lead-area a{color:#C2325F;font-weight:700;text-decoration:none}

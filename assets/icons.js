@@ -37,3 +37,13 @@
   const start = () => { fill(document); new MutationObserver(() => fill(document)).observe(document.body, { childList: true, subtree: true }); };
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", start) : start();
 })();
+/* 미리보기(/v2/)에서 넘어온 경우, 단지 시세·체크리스트 머리말에 '미리보기 홈' 복귀 링크 */
+(() => {
+  try {
+    if (location.pathname.startsWith("/v2")) { sessionStorage.setItem("gs_from_v2", "1"); return; }
+    if (sessionStorage.getItem("gs_from_v2") !== "1") return;
+    const go = () => { const nav = document.querySelector(".hd nav"); if (!nav || nav.querySelector(".v2back")) return;
+      nav.insertAdjacentHTML("afterbegin", '<a class="v2back" href="/v2/" style="border-color:#C2325F;color:#C2325F;font-weight:700">← 미리보기 홈</a>'); };
+    document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", go) : go();
+  } catch (e) { /* 저장 불가 환경 */ }
+})();

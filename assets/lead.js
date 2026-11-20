@@ -21,6 +21,7 @@
       { k: "fund", q: "자금 준비는요?", t: "chips", o: ["자기자금으로 가능", "대출 사전상담 완료", "대출 확인 중", "기존 집 매도 후"] },
       { k: "must", q: "꼭 맞아야 하는 조건 하나만", t: "chips", o: ["층", "향", "입주 날짜", "수리 상태", "학군", "없음"], opt: true } ] },
     rent: { title: "전세·월세 매물 의뢰 전에<br><em>몇 가지만</em> 확인할게요", deal: "전월세", qs: [
+      { k: "where", q: "어느 동네·단지를 보세요?", t: "text", ph: "예: 공덕역 근처, 마포래미안푸르지오", show: (a, ctx) => !ctx.cx },
       { k: "move", q: "언제 입주하고 싶으세요?", t: "date", alt: MOVE },
       { k: "type", q: "전세·월세 중에", t: "chips", o: ["전세", "월세", "둘 다"] },
       { k: "dep", q: "보증금은 어디까지?", t: "money", unit: "만 원", ph: "예: 50000" },
@@ -62,7 +63,7 @@
       return { g: a.when === "3개월 이내" && ready ? "A" : "B", ok: true,
         note: ready ? "" : a.fund === "기존 집 매도 후" ? "기존 집 매도 일정을 먼저 같이 확인할게요." : "대출 가능 금액을 먼저 확인해 주시면 매물 안내가 빨라져요." };
     }
-    const need = kind === "offi" ? ["move", "dep", "mon", "near", "walk"] : ["move", "type", "dep"];
+    const need = kind === "offi" ? ["move", "dep", "mon", "near", "walk"] : ["move", "type", "dep", ...(ctx.cx ? [] : ["where"])];
     if (need.some(k => !a[k])) return null;
     const d = days(a.move);
     if (a.move === "미정" || d > 92) return { g: "P" };
@@ -77,7 +78,7 @@
     const L = [];
     if (kind === "buy") { L.push(`${cx ? cx + " " : ""}매수 문의예요.`); L.push(`· 매수 시기: ${a.when}`, `· 예산: ${a.budget}억 원 이하`, `· 자금: ${a.fund}`); if (a.must && a.must !== "없음") L.push(`· 중요한 조건: ${a.must}`); }
     if (kind === "gg") { L.push(`${cx ? cx + " " : ""}경기 매수 중개 가능 여부 문의예요.`); L.push(`· 매수 시기: ${a.when}`, `· 예산: ${a.budget}억 원 이하`, `· 자금: ${a.fund}`); }
-    if (kind === "rent") { L.push(`${cx ? cx + " " : ""}${a.type === "전세" ? "전세" : a.type === "월세" ? "월세" : "전월세"} 문의예요.`); L.push(`· 입주 희망일: ${dt(a.move)}`, `· 보증금: ${man(a.dep)} 이하`); if (a.mon) L.push(`· 월세+관리비: ${a.mon}만 원 이하`); if (a.must) L.push(`· 중요한 조건: ${a.must}`); }
+    if (kind === "rent") { L.push(`${cx ? cx + " " : ""}${a.type === "전세" ? "전세" : a.type === "월세" ? "월세" : "전월세"} 문의예요.`); if (a.where) L.push(`· 희망 지역: ${a.where}`); L.push(`· 입주 희망일: ${dt(a.move)}`, `· 보증금: ${man(a.dep)} 이하`); if (a.mon) L.push(`· 월세+관리비: ${a.mon}만 원 이하`); if (a.must) L.push(`· 중요한 조건: ${a.must}`); }
     if (kind === "offi") { L.push("신촌·이대 오피스텔 월세 문의예요."); L.push(`· 입주 희망일: ${dt(a.move)}`, `· 보증금: ${man(a.dep)} 이하`, `· 월세+관리비: ${a.mon}만 원 이하`, `· 위치: ${a.near === "회사 근처" && a.nearTxt ? a.nearTxt : a.near} 도보 ${a.walk}`); }
     if (kind === "owner") {
       L.push(`${cx || a.bld}${!cx && a.ar ? ` ${a.ar}㎡` : ""} ${a.deal === "매도" ? "매도" : a.deal === "아직 고민 중" ? "내놓기" : a.deal + " 임대"} 문의예요.`);
@@ -111,7 +112,7 @@
       const qs = def.qs.filter(q => !q.show || q.show(a, ctx));
       body.innerHTML = `<h2 class="lead-h">${def.title}</h2>
         ${ctx.cx ? `<p class="lead-pre"><i class='ic' data-i='building'></i>${esc(ctx.cx.name)}${ctx.cx.area ? ` · ${esc(ctx.cx.area)}㎡` : ""} · ${esc(def.deal)}</p>` : ""}
-        ${def.area ? `<p class="lead-area">${def.area}</p>` : ""}${saved ? `<p class="lead-area">지난번에 저장한 조건을 불러왔어요.</p>` : ""}
+        ${def.area ? `<p class="lead-area">${def.area}</p>` : ""}${ctx.hint ? `<p class="lead-area"><a href="/apt/">${esc(ctx.hint)} ›</a></p>` : ""}${saved ? `<p class="lead-area">지난번에 저장한 조건을 불러왔어요.</p>` : ""}
         ${qs.map(q => `<div class="lead-q" data-k="${q.k}"><p class="lead-qt">${q.q}${q.sub ? ` <small>${q.sub}</small>` : ""}${q.opt ? ` <small>(선택)</small>` : ""}</p>
           ${q.t === "chips" ? `<div class="lead-op">${q.o.map(o => `<button type="button" class="${a[q.k] === o ? "on" : ""}" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div>`
             : q.t === "date" ? `<div class="lead-op"><label class="lead-in lead-date"><input type="date" value="${/^\d{4}-/.test(a[q.k] || "") ? esc(a[q.k]) : ""}"></label>${q.alt.map(o => `<button type="button" class="${a[q.k] === o ? "on" : ""}" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div>`
@@ -129,7 +130,7 @@
       const gr = grade(kind, a, ctx), box = body.querySelector(".lead-out");
       if (!gr) {
         const miss = def.qs.filter(q => !q.opt && (!q.show || q.show(a, ctx)) && !a[q.k]).map(q => q.q.replace(/[?？].*$/, ""));
-        box.innerHTML = `<p class="lead-wait">${miss.length ? `남은 질문: <b>${esc(miss.slice(0, 2).join(" · "))}</b>${miss.length > 2 ? ` 외 ${miss.length - 2}개` : ""}` : "질문에 답하시면 의뢰 내용이 정리돼요."}</p>`; return;
+        box.innerHTML = `<button type="button" class="lead-go" disabled>의뢰 내용 확인</button><p class="lead-wait">${miss.length ? `<b>${esc(miss.slice(0, 2).join(" · "))}</b>${miss.length > 2 ? ` 외 ${miss.length - 2}개` : ""}에 답해 주세요` : "질문에 답하시면 의뢰 내용이 정리돼요."}</p>`; return;
       }
       if (gr.g === "P") {
         const condTxt = message(kind, ctx, a, { g: "준비" }).replace(/\n\(접수 준비\)$/, "");
@@ -144,13 +145,14 @@
           e.target.textContent = ok ? "✓ 이 폰에 저장했어요 (복사도 했어요)" : "✓ 복사했어요"; };
         return;
       }
-      box.innerHTML = `<div class="lead-res"><p>✓ 의뢰 내용이 정리됐어요</p>
+      box.innerHTML = `<div class="lead-res"><p>✓ 이렇게 보낼게요 · 고칠 게 있으면 위에서 바꾸세요</p>
           ${gr.note ? `<p class="lead-note">${gr.note}</p>` : ""}<pre class="lead-msg"></pre></div>
         <div class="lead-q"><p class="lead-qt">연락받을 전화번호 <small>(선택)</small></p>
           <label class="lead-in"><input type="tel" inputmode="tel" autocomplete="tel" placeholder="010-0000-0000" value="${esc(a.phone || "")}" id="lead-phone"></label>
           <p class="lead-fine" style="text-align:left;margin-top:6px">적지 않아도 카톡으로 상담해 드려요. 적으면 이 상담 연락에만 쓰고, 상담이 끝나거나 마지막 연락 후 3개월이 지나면 지워요. <a href="/privacy/" target="_blank" rel="noopener">개인정보처리방침</a></p></div>
-        <button type="button" class="lead-go">의뢰 내용 복사하고 카톡 열기</button>
-        <p class="lead-fine" id="lead-hint">카톡에 붙여넣어 보내면 접수돼요 · 입력한 내용은 이 사이트 서버에 저장되지 않아요<br>${NOTE}</p>`;
+        <button type="button" class="lead-go">문의 내용 복사하고 카톡 열기</button>
+        <p class="lead-fine lead-strong" id="lead-hint">카톡 창에 붙여넣고 보내면 문의가 접수돼요</p>
+        <p class="lead-fine">입력한 내용은 이 사이트 서버에 저장되지 않아요 · ${NOTE}</p>`;
       const pre = box.querySelector(".lead-msg"), ph = box.querySelector("#lead-phone");
       const upd = () => { pre.textContent = message(kind, ctx, a, gr); };
       ph.oninput = () => { a.phone = ph.value.replace(/[^\d-]/g, "").slice(0, 13); upd(); }; upd();
@@ -159,7 +161,7 @@
         try { await navigator.clipboard.writeText(msg); ok = true; } catch (e) { /* 수동 복사 안내 */ }
         saveCond(kind, ctx, { ...a, phone: "" });
         window.open(`${KAKAO}/chat`, "_blank", "noopener");
-        box.querySelector("#lead-hint").innerHTML = ok ? "✓ 복사됐어요. 카톡 대화창에 붙여넣어 보내면 접수돼요." : "자동 복사가 안 됐어요. 위 내용을 길게 눌러 복사해서 카톡으로 보내주세요.";
+        box.querySelector("#lead-hint").innerHTML = ok ? "✓ 복사됐어요. 카톡 대화창에 붙여넣고 보내면 문의가 접수돼요." : "자동 복사가 안 됐어요. 위 내용을 길게 눌러 복사해서 카톡으로 보내주세요.";
       };
     };
     render();

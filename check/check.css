@@ -37,3 +37,7 @@
 .cta2{background:#fff;border:1px solid var(--line)}.cta2 button,.cta2 a{background:#1C1A19}
 .privacy{background:#fff;border:1px solid var(--line);color:#55524C}.privacy .ic{color:var(--pink)}
 h1 .ic{color:var(--pink)}
+.progrow{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.onlyopen{font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;cursor:pointer}.onlyopen input{width:18px;height:18px;accent-color:var(--pink)}
+.hide-done .it.done{display:none}
+.stars button{color:#CFC8BE}.stars button.on{color:#E8A400}

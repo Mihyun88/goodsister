@@ -51,7 +51,7 @@
       <h1 style="margin-top:6px">${L.emoji} ${L.title}</h1><p class="lead">${L.desc}</p>
       <p class="privacy"><i class='ic' data-i='lock'></i>체크한 내용은 <b>이 폰에만</b> 저장되고 착한언니 서버로 보내지 않아요.</p>
       <div class="ctx">${L.ctx.map((t, i) => `<label>${t}<input data-ctx="${i}" ${L.date && i === 1 ? 'type="date"' : 'type="text"'} value="${esc(S.ctx[i] || "")}"></label>`).join("")}</div>
-      <div class="prog"><i></i></div><p class="progt"></p>
+      <div class="prog"><i></i></div><div class="progrow"><p class="progt"></p><label class="onlyopen"><input type="checkbox" id="onlyopen"> 미완료만 보기</label></div>
       ${L.groups.map(([g, list]) => `<section class="grp"><h2>${g}</h2>${list.map(([id, t, d, off]) => `
         <div class="it ${S.c[id] ? "done" : ""}" data-id="${id}"><label class="row"><input type="checkbox" ${S.c[id] ? "checked" : ""}>
           <span class="t">${off != null && L.date ? `<span class="dd">${off === 0 ? "D-day" : off < 0 ? `D${off}` : `D+${off}`}</span>` : ""}${esc(t)}${d ? `<small>${esc(d)}</small>` : ""}</span></label>
@@ -83,6 +83,7 @@
   }
   function avg(s) { const v = Object.values(s.s || {}).filter(Boolean); return v.length ? (v.reduce((a, b) => a + b, 0) / v.length).toFixed(1) : "-"; }
   function bind() {
+    $("#onlyopen").onchange = e => main.classList.toggle("hide-done", e.target.checked);
     main.querySelectorAll("[data-ctx]").forEach(inp => inp.oninput = () => { S.ctx[+inp.dataset.ctx] = inp.value; persist(); });
     main.querySelectorAll(".it").forEach(el => {
       const id = el.dataset.id;
