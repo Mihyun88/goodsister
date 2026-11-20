@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<script src="../assets/host.js?v=20261110d"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net; img-src 'self' data:; connect-src 'self' https://cloudflareinsights.com; object-src 'none'; base-uri 'self'; form-action 'self'">
+<title>단지 시세 · 착한언니복덕방</title>
+<meta name="description" content="서울·경기 아파트 단지를 검색하면 같은 면적의 최근 매매·전세·월세 실거래를 한 화면에 보여드려요. 착한언니복덕방">
+<link rel="canonical" href="https://unnizip.kr/apt/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="착한언니복덕방">
+<meta property="og:url" content="https://unnizip.kr/apt/">
+<meta property="og:title" content="단지 시세 · 착한언니복덕방">
+<meta property="og:description" content="이 단지, 같은 면적 매매·전세·월세 최근 거래는? 국토부 실거래로 한 번에 확인해요.">
+<meta property="og:image" content="https://unnizip.kr/tools/img/banner.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" integrity="sha384-GIdEBaqGN9mNkDkMkzMHW8EKUqtpPIe/sLj1X7DIrnc9uPtLROJgmuDlh+3rBw0j" crossorigin="anonymous">
+<meta name="theme-color" content="#FAF8F5">
+<link rel="stylesheet" href="apt.css?v=20261120">
+<link rel="stylesheet" href="../assets/lead.css?v=20261120">
+</head>
+<body>
+<a class="skip" href="#main">본문 바로가기</a>
+<header class="hd">
+  <a class="wm" href="../" aria-label="착한언니복덕방 홈"><svg aria-hidden="true" viewBox="0 0 40 30" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 22 L20 6 L37 22"/><path d="M28 12 V5 H32 V15"/></svg>착한언니복덕방</a>
+  <nav><a href="../tools/">도구</a><a href="../check/">체크리스트</a></nav>
+</header>
+
+<main id="main" class="wrap">
+  <section id="home">
+    <h1>이 단지, <em>요즘 얼마에</em> 거래돼요?</h1>
+    <p class="lead">서울·경기 아파트를 검색하면 같은 면적의 매매·전세·월세 실거래를 한 화면에 보여드려요.</p>
+    <div class="search" role="search">
+      <input id="q" type="search" placeholder="단지명 또는 동 이름 (예: 마포래미안, 아현동)" autocomplete="off" aria-label="단지 검색">
+      <ul id="sug" class="sug" role="listbox" hidden></ul>
+    </div>
+    <div class="quick" id="pop"></div>
+    <div class="paths">
+      <button type="button" class="path" data-lead="offi"><b>🏠 신촌·이대 오피스텔 구해요</b><span>입주일·주거비·도보 거리만 알려주세요</span></button>
+      <button type="button" class="path" data-lead="owner-free"><b>🔑 집을 내놓고 싶어요</b><span>단지를 먼저 검색하면 주변 시세와 같이 봐드려요</span></button>
+      <a class="path" href="../tools/#budget"><b>💰 내 예산으로 어디까지?</b><span>현금·소득으로 살 수 있는 단지 찾기</span></a>
+    </div>
+  </section>
+
+  <section id="detail" hidden></section>
+  <section id="compare" hidden></section>
+</main>
+
+<footer class="foot">
+  <p>신촌자이엘라부동산 · 대표 신수경 · 중개사무소 등록번호 11410-2019-00062 · 서울시 서대문구 대현동 104-36 신촌자이엘라 B101호 · <a href="tel:023644080">02-364-4080</a></p>
+  <p>마포그랑자이(착한언니)부동산공인중개사사무소 · 대표 신혜선 · 중개사무소 등록번호 11440-2022-00085 · 서울시 마포구 대흥로 175 상가4동 102호 · <a href="tel:027073434">02-707-3434</a></p>
+  <p>실거래는 국토교통부 실거래가 공개시스템 자료이며 계약 후 30일 안에 신고되므로 최근 1~2개월 수치는 늘어날 수 있어요. 참고용 정보이며 투자 판단의 근거가 될 수 없어요.</p>
+</footer>
+
+<script src="../assets/lead.js?v=20261120"></script>
+<script src="apt.js?v=20261120"></script>
+</body>
+</html>
