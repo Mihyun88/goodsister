@@ -49,20 +49,20 @@
     let mk = "";
     if (M) { const s = M.series.sale["서울"], ch = (s[s.length - 1] / s[s.length - 2] - 1) * 100;
       const up = Object.keys(M.series.sale).filter(k => /구$/.test(k)).filter(k => { const x = M.series.sale[k]; return x[x.length - 1] > x[x.length - 2]; }).length;
-      mk = `<a class="mkline" href="#news"><span>📊 이번 주 서울 아파트 <small style="color:var(--mut)">${M.dates[M.dates.length - 1].slice(5).replace("-", ".")} 기준</small></span><span><b class="${ch >= 0 ? "up" : "dn"}">${ch >= 0 ? "+" : ""}${ch.toFixed(2)}%</b> · ${up}개 구 상승 ›</span></a>`; }
+      mk = `<a class="mkline" href="#news"><span><i class='ic' data-i='chart'></i>이번 주 서울 아파트 <small style="color:var(--mut)">${M.dates[M.dates.length - 1].slice(5).replace("-", ".")} 기준</small></span><span><b class="${ch >= 0 ? "up" : "dn"}">${ch >= 0 ? "+" : ""}${ch.toFixed(2)}%</b> · ${up}개 구 상승 ›</span></a>`; }
     main.innerHTML = `<h1>오늘은 <em>뭐가 궁금해요?</em></h1>
       <p class="lead">고르기만 하면 바로 알려드려요. 무료 · 회원가입 없음 · 입력한 내용은 폰에만 저장돼요.</p>
-      ${last ? `<a class="recent" href="#report"><span>🕘 지난번 리포트: <b>현금 ${short(last.cash)} → ${short(last.P)}</b></span><span>다시 보기 ›</span></a>` : ""}
+      ${last ? `<a class="recent" href="#report"><span><i class='ic' data-i='clock'></i>지난번 리포트: <b>현금 ${short(last.cash)} → ${short(last.P)}</b></span><span>다시 보기 ›</span></a>` : ""}
       <div class="qs">
-        <a class="qc big" href="#report"><span class="e">📋</span><div><p>내 상황 진단 리포트 받기</p><span>질문 7개 · 예산·대출·세금·갈 수 있는 곳·청약까지 한 장으로</span></div></a>
-        <a class="qc" href="../apt/"><span class="e">🏢</span><p>이 단지,<br>요즘 얼마예요?</p><span>단지 시세 (서울·경기)</span></a>
-        <a class="qc" href="#apply"><span class="new">NEW</span><span class="e">🎫</span><p>청약,<br>뭐가 나왔어요?</p><span>공고 · 분양가 vs 주변 시세</span></a>
-        <a class="qc" href="../tools/#rent"><span class="e">🚇</span><p>출근 편하고<br>월세 싼 동네는?</p><span>자취 동네</span></a>
-        <a class="qc" href="../tools/#cost"><span class="e">🧾</span><p>세금·복비<br>합치면 얼마?</p><span>부대비용</span></a>
-        <a class="qc" href="../check/"><span class="e">📝</span><p>집 보러 갈 때<br>뭘 봐야 해요?</p><span>임장·잔금·계약 체크리스트</span></a>
-        <a class="qc" href="#news"><span class="e">📰</span><p>요즘 바뀐 정책,<br>나랑 상관있나?</p><span>뉴스 · 그래서 나는?</span></a>
+        <a class="qc big" href="#report"><span class="e"><i class='ic' data-i='report'></i></span><div><p>내 상황 진단 리포트 받기</p><span>질문 7개 · 예산·대출·세금·갈 수 있는 곳·청약까지 한 장으로</span></div></a>
+        <a class="qc" href="../apt/"><span class="e"><i class='ic' data-i='building'></i></span><p>이 단지,<br>요즘 얼마예요?</p><span>단지 시세 (서울·경기)</span></a>
+        <a class="qc" href="#apply"><span class="new">NEW</span><span class="e"><i class='ic' data-i='ticket'></i></span><p>청약,<br>뭐가 나왔어요?</p><span>공고 · 분양가 vs 주변 시세</span></a>
+        <a class="qc" href="../tools/#rent"><span class="e"><i class='ic' data-i='train'></i></span><p>출근 편하고<br>월세 싼 동네는?</p><span>자취 동네</span></a>
+        <a class="qc" href="../tools/#cost"><span class="e"><i class='ic' data-i='receipt'></i></span><p>세금·복비<br>합치면 얼마?</p><span>부대비용</span></a>
+        <a class="qc" href="../check/"><span class="e"><i class='ic' data-i='check'></i></span><p>집 보러 갈 때<br>뭘 봐야 해요?</p><span>임장·잔금·계약 체크리스트</span></a>
+        <a class="qc" href="#news"><span class="e"><i class='ic' data-i='news'></i></span><p>요즘 바뀐 정책,<br>나랑 상관있나?</p><span>뉴스 · 그래서 나는?</span></a>
       </div>${mk}
-      <div class="paths" style="margin-top:14px"><button type="button" class="path" id="offi"><b>🏠 신촌·이대 오피스텔 구해요</b><span>입주일·주거비·도보 거리만 알려주세요</span></button></div>
+      <div class="paths" style="margin-top:14px"><button type="button" class="path" id="offi"><b><i class='ic' data-i='home'></i>신촌·이대 오피스텔 구해요</b><span>입주일·주거비·도보 거리만 알려주세요</span></button></div>
       <section class="why2">
         <p class="q1">“부동산이 방만 보여주는 거 아니에요?”</p>
         <p class="q2">현장에서 가장 많이 듣는 말이에요.</p>
@@ -114,7 +114,7 @@
       <p class="stepn">${S.t}</p><h1>${S.h}</h1>
       ${S.type === "money" ? `<div class="bin"><label>${S.label}</label><div class="num"><input id="v" type="number" inputmode="numeric" min="0" value="${esc(A[S.k])}" placeholder="0"><span>만 원</span></div>
         <p class="han" id="hn">${han(A[S.k])}</p><div class="quick2">${S.quick.map(q => `<button type="button" data-q="${q}">+${short(q)}</button>`).join("")}<button type="button" data-q="0">지우기</button></div>
-        ${S.hint ? `<small class="h">💡 ${S.hint}</small>` : ""}</div>` : ""}
+        ${S.hint ? `<small class="h"><i class='ic' data-i='bulb'></i>${S.hint}</small>` : ""}</div>` : ""}
       ${S.extra ? `<div class="bin"><label>${S.extra.label}</label><div class="num"><input id="x" type="number" inputmode="numeric" min="0" value="${esc(A[S.extra.k])}" placeholder="${S.extra.ph}"><span>만 원</span></div></div>` : ""}
       ${S.type === "chips" ? `<div class="bin"><div class="opts" id="o">${S.o.map(([v, t]) => `<button type="button" data-v="${v}" class="${A[S.k] === v ? "on" : ""}">${t}</button>`).join("")}</div></div>` : ""}
       ${S.chips2 ? `<div class="bin"><label>${S.chips2.label}</label><div class="opts" id="o2">${S.chips2.o.map(g => `<button type="button" class="${A.gus.includes(g) ? "on" : ""}">${g}</button>`).join("")}</div></div>` : ""}
@@ -219,7 +219,7 @@
       ${openAp.length ? `<p class="why" style="margin-top:8px">지금 접수 예정·진행 중인 수도권 공고 중 <b>분양가가 내 예산 안에 드는 주택형이 있는 곳</b></p><div class="lst">${openAp.slice(0, 4).map(x => `<a href="#apply"><span>${esc(x.name)}<small>${esc(x.addr.split(" ").slice(0, 3).join(" "))} · 접수 ${x.rcpt[0].slice(5).replace("-", ".")}~</small></span><b>${short(Math.min(...x.types.map(t => t.top).filter(Boolean)))}~</b></a>`).join("")}</div>` : ""}
 
       <h3 class="rs"><i>07</i> 나에게 해당하는 정책</h3>
-      ${rules.map(r => `<div class="pol"><b>📌 ${esc(r.t)}</b><p>${esc(r.d)}</p></div>`).join("")}
+      ${rules.map(r => `<div class="pol"><b><i class='ic' data-i='pin'></i>${esc(r.t)}</b><p>${esc(r.d)}</p></div>`).join("")}
       ${pol.map(x => `<div class="pol"><b>${esc(x.t)}</b><p>${esc(x.me || x.d)}</p></div>`).join("")}
 
       <h3 class="rs"><i>08</i> 다음 할 일</h3>
@@ -232,7 +232,7 @@
       <div class="say"><b>착한언니 한마디</b> ${say}</div>
       ${+A.when && +A.when <= 6 ? `<div class="act" style="margin-top:14px"><button type="button" class="ac main" id="lead"><b>이 리포트로 매물 의뢰하기 ›</b><span>예산·시기·자금 상황이 의뢰 내용에 그대로 들어가요 · 예약 손님 우선</span></button></div>`
         : `<div class="flag fw" style="margin-top:14px"><b>지금은 준비 단계예요</b>시기가 가까워지면 이 리포트를 다시 열어 의뢰해 주세요. 아래에서 저장해 두면 편해요.</div>`}
-      <div class="rbtn"><button type="button" id="print">🖨 PDF 저장</button><button type="button" id="link">🔗 링크 복사</button><button type="button" id="redo">✏️ 조건 바꾸기</button></div>
+      <div class="rbtn"><button type="button" id="print"><i class='ic' data-i='print'></i>PDF 저장</button><button type="button" id="link"><i class='ic' data-i='link'></i>링크 복사</button><button type="button" id="redo"><i class='ic' data-i='pencil'></i>조건 바꾸기</button></div>
       <p class="basis"><b>이 리포트의 근거</b> 국토교통부 아파트 매매 실거래가(${T ? `${ymL(T.months[0])}~${ymL(T.months[T.months.length - 1])}` : ""} 신고분, 해제 거래 제외) · 한국은행 예금은행 주택담보대출 금리(신규취급액) · 10.15 주택시장 안정화 대책 대출 규칙 · 지방세법 취득세율·생애최초 감면 · 공인중개사법 중개보수 상한 · 청약홈 분양정보<br>
       <b>이 리포트가 하지 않는 것</b> 집값 예측 · 실제 대출 승인 · 등기부 권리 분석 · 매물 추천. 입력한 정보는 이 폰에만 저장되고 서버로 보내지 않아요.<br>만든 사람: 착한언니복덕방 공인중개사 4명 (신혜선·신수경 대표) · 신촌자이엘라부동산 · 마포그랑자이(착한언니)부동산 · unnizip.kr</p>`;
     $("#print").onclick = () => window.print();
@@ -283,8 +283,8 @@
         <div class="cmp3"><div>분양가 (최고가 기준)<b>${tops.length ? (lo === hi ? short(lo) : `${short(lo)}~${short(hi)}`) : "-"}</b></div>
           <div>분양가 ㎡당 (전용)<b>${myppm ? `${Math.round(myppm).toLocaleString()}만` : "-"}</b></div>
           <div>같은 동 실거래 ㎡당<b>${x.near ? `${x.near.ppm.toLocaleString()}만` : "-"}</b></div></div>
-        ${x.near ? `<p class="spl">📍 ${esc(x.near.dong)} 최근 6개월 아파트 매매 ${x.near.n}건 중위${x.near.new_ppm ? ` · 10년 이내 신축 ${x.near.new_n}건 중위 ${x.near.new_ppm.toLocaleString()}만/㎡` : ""} (구축 포함, 면적·층 차이로 단순 비교는 참고만)</p>` : ""}
-        <p class="spl">🎫 특별공급 ${spTxt || "-"}${gen ? ` · 일반공급 ${gen}세대` : ""}${cmpMax != null ? ` · <b>1순위 해당지역 최고 ${cmpMax}:1</b>` : ""}</p>
+        ${x.near ? `<p class="spl"><i class='ic' data-i='pin'></i>${esc(x.near.dong)} 최근 6개월 아파트 매매 ${x.near.n}건 중위${x.near.new_ppm ? ` · 10년 이내 신축 ${x.near.new_n}건 중위 ${x.near.new_ppm.toLocaleString()}만/㎡` : ""} (구축 포함, 면적·층 차이로 단순 비교는 참고만)</p>` : ""}
+        <p class="spl"><i class='ic' data-i='ticket'></i>특별공급 ${spTxt || "-"}${gen ? ` · 일반공급 ${gen}세대` : ""}${cmpMax != null ? ` · <b>1순위 해당지역 최고 ${cmpMax}:1</b>` : ""}</p>
         <div class="sched">${steps.map(([t, v]) => `<div class="${v && dd(v) >= 0 && dd(v) <= 7 ? "now" : ""}"><b>${t}</b>${v.slice(5).replace("-", ".")}</div>`).join("")}</div>
         <div class="lk"><a href="${esc(x.url)}" target="_blank" rel="noopener">공고 원문</a><a href="#report">내 예산 보기</a>${x.hp ? `<a href="${esc(/^https?:/.test(x.hp) ? x.hp : "https://" + x.hp)}" target="_blank" rel="noopener">분양 홈페이지</a>` : ""}</div></div>`;
     };
@@ -294,8 +294,8 @@
   // ---------- 뉴스 ----------
   function news() {
     const N = window.GS_NEWS, M = window.GS_MARKET; if (!N) { main.innerHTML = `<p class="empty">뉴스를 불러오지 못했어요.</p>`; return; }
-    const P = { all: "전체", buy: "🏠 집 살 사람", rent: "🔑 전월세", apply: "🎫 청약", own: "💰 집 있는 사람" };
-    const IM = { g: ["🟢 유리", "g"], b: ["🔴 불리", "b"], i: ["⚪ 참고", "i"] };
+    const P = { all: "전체", buy: "<i class='ic' data-i='home'></i>집 살 사람", rent: "<i class='ic' data-i='key'></i>전월세", apply: "<i class='ic' data-i='ticket'></i>청약", own: "<i class='ic' data-i='wallet'></i>집 있는 사람" };
+    const IM = { g: ["유리", "g"], b: ["불리", "b"], i: ["참고", "i"] };
     let who = store.get("gs_who", "all");
     const today = new Date(new Date().toISOString().slice(0, 10));
     const draw = () => {
@@ -309,19 +309,19 @@
       if (M) {
         const s = M.series.sale, gus = Object.keys(s).filter(k => /구$/.test(k)).map(k => [k, (s[k][s[k].length - 1] / s[k][s[k].length - 2] - 1) * 100]).sort((a, b) => b[1] - a[1]);
         const se = (s["서울"][s["서울"].length - 1] / s["서울"][s["서울"].length - 2] - 1) * 100, mx = Math.max(...gus.map(g => Math.abs(g[1])));
-        mk = `<p class="sec">📊 이번 주 서울 아파트 <small>${M.dates[M.dates.length - 1]} 기준 · 한국부동산원</small></p><div class="mkb"><span class="big ${se >= 0 ? "up" : "dn"}">${se >= 0 ? "+" : ""}${se.toFixed(2)}%</span> <span style="color:var(--mut);font-size:13px">서울 평균 · 오른 구 ${gus.filter(g => g[1] > 0).length}개 · 내린 구 ${gus.filter(g => g[1] < 0).length}개</span>
+        mk = `<p class="sec"><i class='ic' data-i='chart'></i>이번 주 서울 아파트 <small>${M.dates[M.dates.length - 1]} 기준 · 한국부동산원</small></p><div class="mkb"><span class="big ${se >= 0 ? "up" : "dn"}">${se >= 0 ? "+" : ""}${se.toFixed(2)}%</span> <span style="color:var(--mut);font-size:13px">서울 평균 · 오른 구 ${gus.filter(g => g[1] > 0).length}개 · 내린 구 ${gus.filter(g => g[1] < 0).length}개</span>
           ${[...gus.slice(0, 3), ...gus.slice(-2)].map(([k, v]) => `<div class="mkrow"><span>${k}</span><span class="t"><i style="${v >= 0 ? "left:50%" : `right:50%`};width:${(Math.abs(v) / mx * 50).toFixed(0)}%;background:${v >= 0 ? "#C2325F" : "#2457A6"}"></i></span><b class="${v >= 0 ? "up" : "dn"}">${v >= 0 ? "+" : ""}${v.toFixed(2)}%</b></div>`).join("")}
           <a class="nsrc" href="../tools/#market">구별 전체 보기 ›</a></div>`;
       }
       main.innerHTML = `<h1>이번 주 부동산 뉴스,<br><em>나한테 뭐가 바뀌어요?</em></h1>
         <p class="lead">착한언니가 원문을 확인하고 쉽게 다시 썼어요 · ${esc(N.updated.slice(5).replace("-", "."))} 업데이트</p>
         <div class="per">${Object.entries(P).map(([k, t]) => `<button type="button" data-w="${k}" class="${who === k ? "on" : ""}">${t}</button>`).join("")}</div>
-        ${top.length ? `<p class="sec">⭐ 이번 주 꼭 알아야 할 ${top.length}개</p>${top.map((x, i) => row(x, i)).join("")}` : ""}
-        ${(N.dates || []).length ? `<p class="sec">📅 다가오는 날짜</p><div class="cal2">${N.dates.map(d => { const dt = new Date(d.d.length === 7 ? d.d + "-01" : d.d), n = Math.round((dt - today) / 864e5);
+        ${top.length ? `<p class="sec"><i class='ic' data-i='star'></i>이번 주 꼭 알아야 할 ${top.length}개</p>${top.map((x, i) => row(x, i)).join("")}` : ""}
+        ${(N.dates || []).length ? `<p class="sec"><i class='ic' data-i='calendar'></i>다가오는 날짜</p><div class="cal2">${N.dates.map(d => { const dt = new Date(d.d.length === 7 ? d.d + "-01" : d.d), n = Math.round((dt - today) / 864e5);
           return `<div class="cd2"><p class="d">${d.d.length === 7 ? `${+d.d.slice(5)}월` : esc(d.d.slice(5).replace("-", "."))}</p><p class="dd ${n < 0 ? "gray" : ""}">${d.d.length === 7 ? (n < 31 ? "이번 달" : `${+d.d.slice(5)}월`) : n < 0 ? "시행 중" : n === 0 ? "D-day" : `D-${n}`}</p><p>${esc(d.t)}</p></div>`; }).join("")}</div>` : ""}
         ${mk}
-        <p class="sec">🗂 지난 뉴스 <small>${rest.length}개</small></p><div class="nl">${rest.map(x => row(x)).join("")}</div>
-        <details class="fold2"><summary>📌 지금 서울에 적용 중인 핵심 규칙 ${N.rules.length}개</summary><div class="in">${N.rules.map(r => `<p><b>${esc(r.t)}</b><br>${esc(r.d)} <a class="nsrc" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.src)} ↗</a></p>`).join("")}</div></details>
+        <p class="sec"><i class='ic' data-i='folder'></i>지난 뉴스 <small>${rest.length}개</small></p><div class="nl">${rest.map(x => row(x)).join("")}</div>
+        <details class="fold2"><summary><i class='ic' data-i='pin'></i>지금 서울에 적용 중인 핵심 규칙 ${N.rules.length}개</summary><div class="in">${N.rules.map(r => `<p><b>${esc(r.t)}</b><br>${esc(r.d)} <a class="nsrc" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.src)} ↗</a></p>`).join("")}</div></details>
         <p class="src">세금 변화를 정권별로 보려면 <a href="../tools/#timeline">세금 타임라인 ›</a></p>`;
       main.querySelectorAll("[data-w]").forEach(b => b.onclick = () => { who = b.dataset.w; store.set("gs_who", who); draw(); });
     };

@@ -107,3 +107,38 @@ h3.rs{font-size:16.5px;font-weight:800;margin:26px 0 4px;display:flex;gap:8px;al
 .why2 .sign{font-size:13.5px;margin-top:12px;text-align:center;font-weight:600}
 .why2 .office{margin-top:12px;font-size:11.5px;color:var(--mut);line-height:1.6;border-top:1px solid var(--line);padding-top:10px}.why2 .office b{color:#555}
 .more2{display:block;margin-top:12px;text-align:center;background:var(--card);border-radius:12px;padding:12px;font-weight:700;font-size:14px;text-decoration:none;color:#222}
+
+/* ===== 메인 페이지와 같은 디자인 규칙 ===== */
+.pv{background:#1C1A19}
+.tabbar{border-top:1px solid var(--line)}
+.tabbar a i{filter:none;opacity:1;display:flex;justify-content:center;font-size:inherit;line-height:1;margin-bottom:3px}
+.tabbar a .ic{width:22px;height:22px;margin:0 auto 3px;display:block;color:#A9A39A}
+.tabbar a.on .ic{color:var(--pink)}
+.qc{box-shadow:none;border:1px solid var(--line);border-radius:16px}
+.qc:hover{border-color:#1C1A19}
+.qc .e{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--pinks);color:var(--pink);font-size:0}
+.qc .e .ic{width:22px;height:22px;margin:0}
+.qc.big{background:#1C1A19;border-color:#1C1A19}
+.qc.big .e{background:rgba(255,255,255,.1);color:#fff;flex:none}
+.qc .new{background:var(--pink)}
+.recent{background:#fff;border:1px solid var(--line)}
+.mkline{border:1px solid var(--line)}
+.bin,.t3,.ap,.gj,.mkb,.why2{box-shadow:none;border:1px solid var(--line)}
+.verdict{background:#1C1A19}
+.kpi4 div{background:rgba(255,255,255,.07)}
+.bars,.lst,.tb{border:1px solid var(--line)}
+.br .t i{background:#1C1A19}
+.nb.g,.nb.b,.nb.i,.nb.c{background:var(--card)}
+.nb.c{color:#55524C}
+.per button,.ftab button{border-color:var(--line)}.per button.on,.ftab button.on{background:#1C1A19;border-color:#1C1A19}
+.badges span{background:var(--card)}
+.badges .y{background:#FFF6DD}
+.why2 .four{background:#1C1A19}
+.why2 .four ol li::marker{color:var(--pink);font-weight:800}
+.navbtn button{background:#1C1A19}
+.ex2 button{color:var(--pink)}
+.say{background:var(--pinks)}
+.more2{background:#fff;border:1px solid var(--line)}
+h3.rs i{background:var(--pink)}
+.verdict h2 em{color:#FF9DB9}.kpi4 .w{background:rgba(255,157,185,.14)}.kpi4 .w b{color:#FF9DB9}
+.why2 .four>b{color:#FF9DB9}

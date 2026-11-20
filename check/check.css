@@ -31,3 +31,9 @@
 .cta2{margin-top:18px;background:var(--pinks);border-radius:16px;padding:14px 16px;font-size:13.5px}.cta2 b{color:var(--pink)}
 .cta2 button,.cta2 a{display:inline-block;margin-top:8px;border:0;background:var(--navy);color:#fff;border-radius:10px;padding:9px 12px;font:inherit;font-weight:700;font-size:13.5px;cursor:pointer;text-decoration:none}
 @media print{.hd,.no-print,.save,.nudge,.cta2,.privacy,.btns{display:none!important}body{background:#fff}.it{box-shadow:none;border:1px solid #ddd;break-inside:avoid}.memo{border:0;border-bottom:1px solid #999;border-radius:0}}
+.it{box-shadow:none;border:1px solid var(--line)}
+.save{border:1px solid var(--line)}
+.btns .p{background:#1C1A19}
+.cta2{background:#fff;border:1px solid var(--line)}.cta2 button,.cta2 a{background:#1C1A19}
+.privacy{background:#fff;border:1px solid var(--line);color:#55524C}.privacy .ic{color:var(--pink)}
+h1 .ic{color:var(--pink)}

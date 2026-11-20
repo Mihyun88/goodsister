@@ -155,9 +155,9 @@
         <button type="button" class="ac" id="own"><b>이 단지 집주인이에요 ›</b><span>전세·월세·매도 내놓기 · 주변 시세와 비교해 드려요</span></button>
       </div>` : ""}
       <div class="tools">
-        <a href="../check/?t=imjang&n=${encodeURIComponent(c.n)}&a=${g.label}">📝 임장 체크</a>
-        <button type="button" id="cmpadd" class="${inCmp ? "on" : ""}">${inCmp ? "✓ 비교에 담김" : "⚖️ 비교에 담기"}</button>
-        <a href="../tools/#cost${S.sale ? `?price=${(S.sale / 10000).toFixed(2)}` : ""}">🧾 부대비용</a>
+        <a href="../check/?t=imjang&n=${encodeURIComponent(c.n)}&a=${g.label}"><i class='ic' data-i='check'></i>임장 체크</a>
+        <button type="button" id="cmpadd" class="${inCmp ? "on" : ""}">${inCmp ? "✓ 비교에 담김" : "<i class='ic' data-i='scale'></i>비교에 담기"}</button>
+        <a href="../tools/#cost${S.sale ? `?price=${(S.sale / 10000).toFixed(2)}` : ""}"><i class='ic' data-i='receipt'></i>부대비용</a>
       </div>
       ${store.get("gs_cmp", []).length ? `<p class="fine"><a href="?cmp=1">담은 단지 ${store.get("gs_cmp", []).length}곳 비교하기 ›</a></p>` : ""}
       ${se ? "" : `<div class="gg"><p>경기 지역은 직접 중개하지 않아요.<br>3개월 안에 매수 계획이 있으시면 가능 여부를 먼저 확인해 드려요.</p><button type="button" id="ggq">중개 가능 여부 문의</button></div>`}`;
@@ -214,7 +214,7 @@
         <td>${short(r.S.sale)}</td><td>${short(r.S.jeon)}</td><td>${r.S.sale && r.S.jeon ? Math.round(r.S.jeon / r.S.sale * 100) + "%" : "-"}</td>
         <td>${r.S.t6.length}건 (${r.S.tp})</td><td>${r.c.y || "-"}</td><td><button type="button" class="x" data-i="${i}">빼기</button></td></tr>`).join("")}</tbody></table></div>
       ${rows.some(r => r.se) ? `<div class="act" style="margin-top:16px"><button type="button" class="ac main" id="cbuy"><b>이 중에서 매물 의뢰하기 ›</b><span>비교한 단지 그대로 의뢰 내용에 들어가요</span></button></div>` : ""}
-      <div class="tools" style="grid-template-columns:1fr 1fr"><a href="../check/?t=imjang">📝 임장 체크리스트</a><button type="button" id="cclear">비교 비우기</button></div>`;
+      <div class="tools" style="grid-template-columns:1fr 1fr"><a href="../check/?t=imjang"><i class='ic' data-i='check'></i>임장 체크리스트</a><button type="button" id="cclear">비교 비우기</button></div>`;
     $("#back").onclick = () => nav({});
     box.querySelectorAll(".x").forEach(b => b.onclick = () => { const r = rows[+b.dataset.i]; store.set("gs_cmp", store.get("gs_cmp", []).filter(y => !(y.id === r.x.id && y.a === r.x.a))); compare(); });
     $("#cclear").onclick = () => { store.set("gs_cmp", []); compare(); };

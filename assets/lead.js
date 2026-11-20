@@ -83,7 +83,7 @@
       const gr = grade(kind, a);
       const qs = def.qs.filter(q => !q.show || q.show(a));
       body.innerHTML = `<h2 class="lead-h">${def.title}</h2>
-        ${ctx.cx ? `<p class="lead-pre">🏢 ${esc(ctx.cx.name)}${ctx.cx.area ? ` · ${esc(ctx.cx.area)}㎡` : ""} · ${esc(def.deal)}</p>` : ""}
+        ${ctx.cx ? `<p class="lead-pre"><i class='ic' data-i='building'></i>${esc(ctx.cx.name)}${ctx.cx.area ? ` · ${esc(ctx.cx.area)}㎡` : ""} · ${esc(def.deal)}</p>` : ""}
         ${qs.map(q => `<div class="lead-q" data-k="${q.k}"><p class="lead-qt">${q.q}${q.sub ? ` <small>${q.sub}</small>` : ""}</p>
           ${q.t === "chips" ? `<div class="lead-op">${q.o.map(o => `<button type="button" class="${a[q.k] === o ? "on" : ""}" data-v="${esc(o)}">${esc(o)}</button>`).join("")}</div>`
             : `<label class="lead-in"><input ${q.t === "money" ? 'type="number" inputmode="decimal" min="0"' : 'type="text"'} placeholder="${esc(q.ph || "")}" value="${esc(a[q.k] || "")}">${q.unit ? `<span>${q.unit}</span>` : ""}</label>`}</div>`).join("")}
@@ -101,9 +101,9 @@
       if (gr.g === "P") {
         box.innerHTML = `<div class="lead-prep"><b>지금은 준비 단계예요</b>
           <p>${gr.gg ? "경기 지역은 직접 중개하지 않아서, 3개월 안에 매수 계획이 확실할 때만 가능 여부를 확인해 드려요." : "아직 시기가 남았다면 지금은 시세 흐름과 자금 계획을 잡아두는 게 좋아요."} 시기가 가까워지면 그때 의뢰해 주세요.</p>
-          <div class="lead-sv">${ctx.cx ? `<a href="/check/?t=imjang&n=${encodeURIComponent(ctx.cx.name)}&a=${encodeURIComponent(ctx.cx.area || "")}">📝 임장 체크리스트</a>` : `<a href="/check/?t=jachwi">📝 계약 체크리스트</a>`}
-          <a href="/tools/#budget">💰 예산 계산해 보기</a><a href="/tools/#news">📰 정책 뉴스 보기</a>
-          <a href="${KAKAO}/friend" target="_blank" rel="noopener">💬 채널 친구 추가</a></div></div>`;
+          <div class="lead-sv">${ctx.cx ? `<a href="/check/?t=imjang&n=${encodeURIComponent(ctx.cx.name)}&a=${encodeURIComponent(ctx.cx.area || "")}"><i class='ic' data-i='check'></i>임장 체크리스트</a>` : `<a href="/check/?t=jachwi"><i class='ic' data-i='check'></i>계약 체크리스트</a>`}
+          <a href="/tools/#budget"><i class='ic' data-i='wallet'></i>예산 계산해 보기</a><a href="/tools/#news"><i class='ic' data-i='news'></i>정책 뉴스 보기</a>
+          <a href="${KAKAO}/friend" target="_blank" rel="noopener"><i class='ic' data-i='chat'></i>채널 친구 추가</a></div></div>`;
         return;
       }
       const msg = message(kind, ctx, a, gr);
