@@ -70,7 +70,8 @@
     $("#home").hidden = !!(p.get("id") || p.get("cmp")); $("#detail").hidden = !p.get("id"); $("#compare").hidden = !p.get("cmp");
     if (p.get("id")) detail(p.get("id"), p.get("s"), p.get("a"));
     else if (p.get("cmp")) compare();
-    else document.title = "단지 시세 · 착한언니복덕방";
+    else { document.title = "단지 시세 · 착한언니복덕방";
+      if (p.get("q")) { q.value = p.get("q"); suggest().then(() => { const ex = hits.filter(r => r[1] === p.get("q")); if (ex.length === 1) nav({ id: ex[0][0], s: ex[0][5] }, true); }); } }
     window.scrollTo(0, 0);
   }
 

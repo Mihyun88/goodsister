@@ -73,6 +73,7 @@
 
   // ---------- 화면: 모드 전환 ----------
   const form = $("#f-cost");
+  if (!form) { window.GS_COST = { acqTax, bondRate, stamp, brokerFee, buyTotal }; return; } // 다른 페이지에서 계산 엔진만 쓸 때
   const sync = () => {
     const m = form.mode.value;
     form.querySelectorAll("[data-m]").forEach(el => el.hidden = !el.dataset.m.split(" ").includes(m));
