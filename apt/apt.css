@@ -75,3 +75,4 @@ h1{font-size:24px;font-weight:800;letter-spacing:-.6px;line-height:1.35}h1 em{fo
 .foot p{margin-top:6px}
 .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--navy);color:#fff;border-radius:99px;padding:10px 18px;font-size:14px;z-index:200}
 [hidden]{display:none!important}
+.foot .by{color:#444;font-size:12.5px;background:#fff;border-radius:12px;padding:10px 12px;margin-bottom:8px}.foot .by a{color:var(--pink);font-weight:700}

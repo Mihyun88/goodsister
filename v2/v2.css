@@ -93,3 +93,17 @@ h3.rs{font-size:16.5px;font-weight:800;margin:26px 0 4px;display:flex;gap:8px;al
 .mkb{background:#fff;border-radius:16px;padding:15px}.mkb .big{font-size:26px;font-weight:900}
 .mkrow{display:grid;grid-template-columns:70px 1fr 64px;gap:8px;align-items:center;font-size:13px;margin-top:6px}.mkrow .t{height:10px;background:var(--card);border-radius:9px;position:relative}.mkrow .t i{position:absolute;top:0;bottom:0;border-radius:9px}
 @media print{.tabbar,.pv,.hd nav,.rbtn,.navbtn{display:none!important}body{padding:0;background:#fff}}
+/* 왜 만들었나 */
+.why2{margin-top:30px;background:#fff;border-radius:20px;padding:22px 18px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.why2 .q1{font-size:18px;font-weight:800;color:#555}.why2 .q2{font-size:13px;color:var(--mut);margin-top:2px}
+.why2 h2{font-size:20px;font-weight:900;line-height:1.4;letter-spacing:-.4px;margin-top:14px}.why2 h2 em{font-style:normal;color:var(--pink)}
+.why2 .body{font-size:14px;line-height:1.7;margin-top:10px;color:#333}.why2 .body b{color:var(--pink)}
+.why2 .four{margin-top:16px;background:var(--navy);color:#fff;border-radius:16px;padding:16px}
+.why2 .four>b{font-size:14.5px;color:#FDD54D}
+.why2 .four ol{margin:8px 0 0 18px;font-size:13px;line-height:1.6;color:#C9D0DE}.why2 .four li{margin-top:6px}.why2 .four strong{display:block;color:#fff;font-size:14px}
+.team2{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
+.team2 figure{margin:0;text-align:center}.team2 img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;border-radius:12px;display:block}
+.team2 figcaption{font-size:11px;color:var(--mut);margin-top:4px;line-height:1.35}.team2 figcaption b{display:block;font-size:13px;color:#1F1F1F}
+.why2 .sign{font-size:13.5px;margin-top:12px;text-align:center;font-weight:600}
+.why2 .office{margin-top:12px;font-size:11.5px;color:var(--mut);line-height:1.6;border-top:1px solid var(--line);padding-top:10px}.why2 .office b{color:#555}
+.more2{display:block;margin-top:12px;text-align:center;background:var(--card);border-radius:12px;padding:12px;font-weight:700;font-size:14px;text-decoration:none;color:#222}

@@ -62,7 +62,23 @@
         <a class="qc" href="../check/"><span class="e">📝</span><p>집 보러 갈 때<br>뭘 봐야 해요?</p><span>임장·잔금·계약 체크리스트</span></a>
         <a class="qc" href="#news"><span class="e">📰</span><p>요즘 바뀐 정책,<br>나랑 상관있나?</p><span>뉴스 · 그래서 나는?</span></a>
       </div>${mk}
-      <div class="paths" style="margin-top:14px"><button type="button" class="path" id="offi"><b>🏠 신촌·이대 오피스텔 구해요</b><span>입주일·주거비·도보 거리만 알려주세요</span></button></div>`;
+      <div class="paths" style="margin-top:14px"><button type="button" class="path" id="offi"><b>🏠 신촌·이대 오피스텔 구해요</b><span>입주일·주거비·도보 거리만 알려주세요</span></button></div>
+      <section class="why2">
+        <p class="q1">“부동산이 방만 보여주는 거 아니에요?”</p>
+        <p class="q2">현장에서 가장 많이 듣는 말이에요.</p>
+        <h2>그래서 상담할 때 매번 해드리던 계산을<br><em>누구나 쓸 수 있게</em> 열어뒀어요</h2>
+        <p class="body">집 사라는 말은 많은데, 뭐부터 봐야 하는지 알려주는 곳은 드물어요. 부동산 강의 30만 원, 100만 원 안 들어도 되게, <b>내 동생한테 알려준다는 마음</b>으로 만들었어요.</p>
+        <div class="four"><b>12년 동안 계약 전에 꼭 확인해온 네 가지</b>
+          <ol><li><strong>등기부등본, 잔금날 아침에 한 번 더</strong> 계약 때 깨끗했던 등기부가 잔금날까지 깨끗하다는 보장은 없어요.</li>
+          <li><strong>전입신고 · 보증보험 가능 여부</strong> 대출·보증보험이 안 되는 집은 보러 가기 전에 먼저 걸러요.</li>
+          <li><strong>내 상황에 맞는 특약</strong> 수리 약속, 보증금 반환, 근저당 말소처럼 꼭 필요한 특약을 넣어요.</li>
+          <li><strong>밤길까지 생각한 동네 추천</strong> 낮 2시 골목이 아니라 밤 11시에 걷는 길을 기준으로 봐요.</li></ol></div>
+        <p class="body" style="margin-top:14px">이 사이트의 숫자는 시작일 뿐이에요. 계약서 한 줄, 등기부 한 장까지 같이 보는 게 <b>“부동산이 이렇게까지 해준다고?”</b> 소리를 듣는 이유예요.</p>
+        <div class="team2">${[["1", "신혜선", "대표 공인중개사"], ["3", "신수경", "대표 공인중개사"], ["2", "신수진", "공인중개사"], ["4", "윤미현", "공인중개사"]].map(([i, n, r]) => `<figure><img src="../tools/img/team-${i}.jpg" width="640" height="800" alt="${n} ${r}" loading="lazy" decoding="async"><figcaption><b>${n}</b>${r}</figcaption></figure>`).join("")}</div>
+        <p class="sign">카톡 너머에는 이 네 사람이 있어요. 첫 문의부터 잔금날까지 직접 답하고 챙겨요.</p>
+        <div class="office"><p><b>신촌자이엘라부동산</b> 대표 신수경 · 등록번호 11410-2019-00062 · 서대문구 대현동</p><p><b>마포그랑자이(착한언니)부동산</b> 대표 신혜선 · 등록번호 11440-2022-00085 · 마포구 대흥동</p></div>
+        <a class="more2" href="../#about">착한언니 이야기 더 보기 ›</a>
+      </section>`;
     $("#offi").onclick = () => GS_lead.open({ kind: "offi" });
   }
 
@@ -218,7 +234,7 @@
         : `<div class="flag fw" style="margin-top:14px"><b>지금은 준비 단계예요</b>시기가 가까워지면 이 리포트를 다시 열어 의뢰해 주세요. 아래에서 저장해 두면 편해요.</div>`}
       <div class="rbtn"><button type="button" id="print">🖨 PDF 저장</button><button type="button" id="link">🔗 링크 복사</button><button type="button" id="redo">✏️ 조건 바꾸기</button></div>
       <p class="basis"><b>이 리포트의 근거</b> 국토교통부 아파트 매매 실거래가(${T ? `${ymL(T.months[0])}~${ymL(T.months[T.months.length - 1])}` : ""} 신고분, 해제 거래 제외) · 한국은행 예금은행 주택담보대출 금리(신규취급액) · 10.15 주택시장 안정화 대책 대출 규칙 · 지방세법 취득세율·생애최초 감면 · 공인중개사법 중개보수 상한 · 청약홈 분양정보<br>
-      <b>이 리포트가 하지 않는 것</b> 집값 예측 · 실제 대출 승인 · 등기부 권리 분석 · 매물 추천. 입력한 정보는 이 폰에만 저장되고 서버로 보내지 않아요.<br>착한언니복덕방 · 공인중개사 직접 검수 · unnizip.kr</p>`;
+      <b>이 리포트가 하지 않는 것</b> 집값 예측 · 실제 대출 승인 · 등기부 권리 분석 · 매물 추천. 입력한 정보는 이 폰에만 저장되고 서버로 보내지 않아요.<br>만든 사람: 착한언니복덕방 공인중개사 4명 (신혜선·신수경 대표) · 신촌자이엘라부동산 · 마포그랑자이(착한언니)부동산 · unnizip.kr</p>`;
     $("#print").onclick = () => window.print();
     $("#link").onclick = async () => { const u = `${location.origin}${location.pathname}#report?s=${btoa(unescape(encodeURIComponent(JSON.stringify(A))))}`; try { await navigator.clipboard.writeText(u); toast("링크를 복사했어요"); } catch (e) { prompt("링크를 복사하세요", u); } };
     $("#redo").onclick = () => { step = 0; ask(); window.scrollTo(0, 0); };
