@@ -1,13 +1,13 @@
-/* 미리보기(/v2/) 통합 내비게이션.
-   /v2/ 를 열었거나 주소에 ?v2=1 이 있으면 이 브라우저 탭에서 '미리보기 모드'가 켜지고,
-   단지 시세·체크리스트·기존 도구 화면에도 같은 하단 탭바와 머리말이 붙는다. 일반 방문자에게는 아무 변화 없음. */
+/* 사이트 공통 내비게이션: 단지 시세·체크리스트·도구(/tools/) 화면에 앱(/app/)과 같은 하단 탭바와 머리말을 붙인다.
+   기존 도구의 '가격 검토'는 단지 시세로, '정책 뉴스'는 앱 뉴스 탭으로 보낸다. */
 (() => {
-  let on = false;
-  try {
-    if (location.pathname.startsWith("/v2") || new URLSearchParams(location.search).get("v2") === "1") sessionStorage.setItem("gs_v2", "1");
-    on = sessionStorage.getItem("gs_v2") === "1";
-  } catch (e) { /* 저장 불가 환경 */ }
-  if (!on || location.pathname.startsWith("/v2")) return;
+  if (location.pathname.startsWith("/app")) return;
+  if (location.pathname.startsWith("/tools")) {
+    const h = location.hash.slice(1).split("?")[0];
+    if (h === "check") { location.replace("/apt/"); return; }
+    if (h === "news") { location.replace("/app/#news"); return; }
+    window.addEventListener("hashchange", () => { const k = location.hash.slice(1).split("?")[0]; if (k === "check") location.replace("/apt/"); if (k === "news") location.replace("/app/#news"); });
+  }
   const P = location.pathname, isTools = P.startsWith("/tools"), isApt = P.startsWith("/apt"), isCheck = P.startsWith("/check");
   const TITLE = { budget: "예산으로 단지 찾기", rent: "자취 동네 찾기", check: "가격 검토", cost: "세금·복비 계산", market: "서울 시황", news: "정책 뉴스", timeline: "세금 타임라인", jachwi: "첫 자취방 가이드", tips: "부동산 꿀팁" };
   const ic = n => window.GS_ic ? window.GS_ic(n) : "";
@@ -17,15 +17,15 @@
     if (isTools) document.body.classList.add("v2skin");
     const cur = isApt ? "apt" : isTools ? (location.hash.slice(1).split("?")[0] === "market" || location.hash.startsWith("#news") ? "news" : "tools") : isCheck ? "tools" : "";
     document.body.insertAdjacentHTML("beforeend", `<nav class="v2tabbar" aria-label="주 메뉴">
-      ${tab("/v2/#home", "home", "홈", false)}${tab("/apt/", "building", "단지 시세", cur === "apt")}${tab("/v2/#tools", "report", "도구", cur === "tools")}${tab("/v2/#apply", "ticket", "청약", false)}${tab("/v2/#news", "news", "뉴스·시황", cur === "news")}</nav>`);
+      ${tab("/app/#home", "home", "홈", false)}${tab("/apt/", "building", "단지 시세", cur === "apt")}${tab("/app/#tools", "report", "도구", cur === "tools")}${tab("/app/#apply", "ticket", "청약", false)}${tab("/app/#news", "news", "뉴스·시황", cur === "news")}</nav>`);
     if (isTools) {
       const bar = document.createElement("div"); bar.className = "v2title";
-      const set = () => { const k = location.hash.slice(1).split("?")[0] || "budget"; bar.innerHTML = `<a href="/v2/#tools">‹ 도구</a><b>${TITLE[k] || "도구"}</b><span class="pvtag">미리보기</span>`; };
+      const set = () => { const k = location.hash.slice(1).split("?")[0] || "budget"; bar.innerHTML = `<a href="/app/#tools">‹ 도구</a><b>${TITLE[k] || "도구"}</b>`; };
       set(); window.addEventListener("hashchange", set);
       document.querySelector("header.top")?.after(bar);
     }
     const nav = document.querySelector(".hd nav");
-    if (nav) nav.innerHTML = `<span class="pvtag">미리보기</span>`;
+    if (nav) nav.innerHTML = `<a href="/">착한언니 소개</a>`;
   };
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", go) : go();
   const css = document.createElement("style");

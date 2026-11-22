@@ -10,7 +10,7 @@
   const days = s => s ? Math.round((new Date(s + "T00:00:00") - today()) / 864e5) : null;
   const man = v => { v = Math.round(+v); if (!v) return ""; const e = Math.floor(v / 10000), r = v % 10000; return [e ? `${e}억` : "", r ? `${r.toLocaleString()}만` : ""].filter(Boolean).join(" ") + " 원"; };
   const ymd = s => s ? s.replace(/-/g, ".") : "";
-  const inPreview = () => location.pathname.startsWith("/v2");
+  const inPreview = () => location.pathname.startsWith("/app");
 
   // t: chips | money | date | text | tel. date 질문은 alt 칩(미정·협의)도 받음
   const MOVE = ["미정"];
