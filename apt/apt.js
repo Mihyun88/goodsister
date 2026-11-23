@@ -113,7 +113,7 @@
     const { id, sgg, c, F, G, g } = cur, S = stats(F, c, g), se = seoul(sgg), box = $("#detail"), offi = F.kind === "offi" || c.k === "o";
     if (!cur.deal) cur.deal = offi ? (S.w.length ? "w" : S.j.length ? "j" : "m") : (S.sale ? "m" : S.jeon ? "j" : "w");
     const rate = S.sale && S.jeon ? Math.round(S.jeon / S.sale * 100) : null;
-    const won2 = v => short(v) + (/[만억천]$/.test(short(v)) ? " 원" : "");
+    const won2 = v => { const s = short(v); return /천$/.test(s) ? s + "만 원" : s + (/[만억]$/.test(s) ? " 원" : ""); };
     // 히어로: 고른 거래 유형의 중간값 + 바로 아래 근거
     const H = cur.deal === "m" ? { t: "매매 중간값", v: S.sale ? won2(S.sale) : null, n: S.t6.length, p: `최근 ${S.tp}` }
       : cur.deal === "j" ? { t: "전세 중간값", v: S.jeon ? won2(S.jeon) : null, n: S.j.length, p: "최근 6개월" }
