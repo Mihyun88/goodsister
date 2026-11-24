@@ -2,6 +2,7 @@
    → tools/data/cx/index.json (검색용) , tools/data/cx/{시군구코드}.json (단지별 거래)
    DATA_GO_KR_KEY 필요. 약 30~40분.
    python3 scripts/build_cx.py [--region seoul|gg|all] [--trade-months 12] [--rent-months 6]
+   python3 scripts/build_cx.py --recent 2   # 매주: 최근 2개월 거래만 새로 받아 기존 파일에 덮어씀 (약 3~5분)
 """
 import argparse, datetime as dt, json, os, sys
 from concurrent.futures import ThreadPoolExecutor
@@ -31,6 +32,17 @@ def ymd(r):
     return f"{r.get('dealYear')}{int(num(r.get('dealMonth'), int)):02d}{int(num(r.get('dealDay'), int)):02d}"
 
 
+def tr_row(r):
+    return [ymd(r), round(num(r.get("excluUseAr")), 2), won(r.get("dealAmount")),
+            num(r.get("floor"), int), 1 if "직거래" in r.get("dealingGbn", "") else 0]
+
+
+def rt_row(r):
+    ct = r.get("contractType", "").strip()
+    return [ymd(r), round(num(r.get("excluUseAr")), 2), won(r.get("deposit")), won(r.get("monthlyRent")),
+            num(r.get("floor"), int), 1 if ct == "신규" else 0 if ct == "갱신" else None]
+
+
 def grab(key, kind, codes, months):
     jobs = [(c, m) for c in codes for m in months]
     res = {}
@@ -49,8 +61,11 @@ def main():
     ap.add_argument("--trade-months", type=int, default=12)
     ap.add_argument("--rent-months", type=int, default=6)
     ap.add_argument("--offi-only", action="store_true", help="오피스텔(서대문·마포)만 다시 만들기")
+    ap.add_argument("--recent", type=int, default=0, help="최근 N개월만 새로 받아 기존 cx 파일에 덮어쓰기 (주간 갱신용)")
     a = ap.parse_args()
     key = os.environ.get("DATA_GO_KR_KEY") or sys.exit("DATA_GO_KR_KEY 환경변수를 설정하세요.")
+    if a.recent:
+        return build_recent(key, a.recent)
     if a.offi_only:
         return build_offi(key, a)
     names = {**(SEOUL if a.region in ("seoul", "all") else {}), **(GGN if a.region in ("gg", "all") else {})}
@@ -169,6 +184,67 @@ def build_offi(key, a):
     I["rows"].sort(key=lambda x: -(x[5] + x[6]))
     idx_path.write_text(json.dumps(I, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(f"오피스텔 건물 {sum(len(d) for d in by.values())}개 → cx/o*.json")
+
+
+def build_recent(key, n):
+    """최근 n개월 아파트·오피스텔 거래를 다시 받아, 기존 cx 파일에서 그 기간 거래만 갈아끼운다.
+       신고가 늦게 들어오는 최근 거래를 매주 반영하기 위한 가벼운 갱신. 기간 앞쪽(오래된 달)은 월간 전체 갱신이 정리한다."""
+    ms = months_back(n); cut = ms[0] + "01"; last = ms[-1]
+    I = json.loads((OUT / "index.json").read_text(encoding="utf-8"))
+    files = {}
+    for sg in I["regions"]:
+        files[sg] = json.loads((OUT / f"{sg}.json").read_text(encoding="utf-8"))
+    where = {cid: sg for sg, F in files.items() for cid in F["cx"]}          # 단지 id → 파일
+    hw_dong = {F["cx"][cid]["d"]: sg for sg, F in files.items() if sg in ("41591", "41593", "41595", "41597") for cid in F["cx"]}
+    apt_codes = [k for k in {**SEOUL, **GGN}]
+    print(f"최근 {ms[0]}~{last} 다시 받기 (아파트 {len(apt_codes)}곳 + 오피스텔 {len(OFFI)}곳)", flush=True)
+    T = grab(key, "apt_trade", apt_codes, ms); R = grab(key, "apt_rent", apt_codes, ms)
+    OT = grab(key, "offi_trade", list(OFFI), ms); OR_ = grab(key, "offi_rent", list(OFFI), ms)
+    new = {}  # sg -> cid -> {"t": [], "r": [], meta}
+    def slot(sg, cid, meta):
+        d = new.setdefault(sg, {}).setdefault(cid, {"t": [], "r": [], **meta}); return d
+    def apt_target(code, r):
+        cid = r.get("aptSeq") or f"{code}-{r.get('umdNm')}-{r.get('aptNm')}"
+        if code.startswith("4159"):
+            cid = f"41590-{r.get('umdNm')}-{r.get('aptNm')}"
+        sg = where.get(cid) or (hw_dong.get(r.get("umdNm"), "41590") if code == "41590" else code)
+        return sg, cid, {"n": r.get("aptNm", ""), "d": r.get("umdNm", ""), "y": num(r.get("buildYear"), int) or None}
+    def offi_target(code, r):
+        cid = f"O{code}-{r.get('umdNm')}-{r.get('offiNm')}"
+        return f"o{code}", cid, {"n": r.get("offiNm", ""), "d": r.get("umdNm", ""), "y": num(r.get("buildYear"), int) or None, "k": "o"}
+    for src, tgt, key_ in ((T, apt_target, "t"), (R, apt_target, "r"), (OT, offi_target, "t"), (OR_, offi_target, "r")):
+        for (code, m), rows in src.items():
+            for r in rows:
+                if key_ == "t" and (r.get("cdealType") or "").strip():
+                    continue
+                sg, cid, meta = tgt(code, r)
+                if sg not in files:
+                    continue
+                slot(sg, cid, meta)[key_].append(tr_row(r) if key_ == "t" else rt_row(r))
+    # 안전장치: 새로 받은 최근 거래가 기존보다 크게 적으면(포털 장애 등) 쓰지 않음
+    old_n = sum(1 for F in files.values() for c in F["cx"].values() for x in c["t"] + c["r"] if x[0] >= cut)
+    new_n = sum(len(c["t"]) + len(c["r"]) for d in new.values() for c in d.values())
+    print(f"최근 기간 거래: 기존 {old_n:,}건 → 새로 받은 {new_n:,}건", flush=True)
+    if new_n < old_n * 0.9:
+        sys.exit("새로 받은 거래가 기존보다 10% 넘게 적어서 파일을 바꾸지 않았어요. 포털 상태를 확인하세요.")
+    today = dt.date.today().isoformat(); added = 0
+    for sg, F in files.items():
+        for c in F["cx"].values():
+            c["t"] = [x for x in c["t"] if x[0] < cut]; c["r"] = [x for x in c["r"] if x[0] < cut]
+        for cid, d in new.get(sg, {}).items():
+            c = F["cx"].get(cid)
+            if not c:
+                c = F["cx"][cid] = {k: v for k, v in d.items() if k not in ("t", "r")}; c["t"], c["r"] = [], []; added += 1
+            c["t"] += d["t"]; c["r"] += d["r"]
+        for c in F["cx"].values():
+            c["t"].sort(key=lambda x: x[0]); c["r"].sort(key=lambda x: x[0])
+        F["updated"] = today; F["tm"][1] = max(F["tm"][1], last); F["rm"][1] = max(F["rm"][1], last)
+        (OUT / f"{sg}.json").write_text(json.dumps(F, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    I["rows"] = [[cid, c["n"], c["d"], c.get("y"), sg, len(c["t"]), len(c["r"])] for sg, F in files.items() for cid, c in F["cx"].items()]
+    I["rows"].sort(key=lambda x: -(x[5] + x[6]))
+    I["updated"] = today; I["tm"][1] = max(I["tm"][1], last); I["rm"][1] = max(I["rm"][1], last)
+    (OUT / "index.json").write_text(json.dumps(I, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    print(f"완료: 파일 {len(files)}개 갱신, 새 단지 {added}개, 전체 단지 {len(I['rows']):,}개")
 
 
 if __name__ == "__main__":
