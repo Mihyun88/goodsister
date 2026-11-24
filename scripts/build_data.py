@@ -25,6 +25,7 @@ EP = {"apt_trade": "RTMSDataSvcAptTradeDev/getRTMSDataSvcAptTradeDev",
       "apt_rent": "RTMSDataSvcAptRent/getRTMSDataSvcAptRent",
       "offi_rent": "RTMSDataSvcOffiRent/getRTMSDataSvcOffiRent",
       "offi_trade": "RTMSDataSvcOffiTrade/getRTMSDataSvcOffiTrade",
+      "apt_silv": "RTMSDataSvcSilvTrade/getRTMSDataSvcSilvTrade",   # 아파트 분양권·입주권 전매 (신축 등기 전 거래)
       "rh_rent": "RTMSDataSvcRHRent/getRTMSDataSvcRHRent",   # 연립·다세대
       "sh_rent": "RTMSDataSvcSHRent/getRTMSDataSvcSHRent"}   # 단독·다가구 (면적=계약면적 totalFloorAr)
 OUT = Path(__file__).resolve().parent.parent / "tools" / "data"

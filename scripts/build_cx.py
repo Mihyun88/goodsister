@@ -37,6 +37,25 @@ def tr_row(r):
             num(r.get("floor"), int), 1 if "직거래" in r.get("dealingGbn", "") else 0]
 
 
+def silv_row(r):
+    """분양권·입주권: 매매 행 + 6번째 칸 "분"(분양권)/"입"(입주권)"""
+    g = (r.get("ownershipGbn") or "").strip()[:1]
+    return tr_row(r) + [g if g in ("분", "입") else "분"]
+
+
+def name_map(by):
+    """{sgg: {cid: c}} → {(sgg, 동, 단지명): cid} — 분양권 자료엔 단지 고유번호가 없어 이름으로 붙임"""
+    return {(sg, c["d"], c["n"]): cid for sg, d in by.items() for cid, c in d.items()}
+
+
+def silv_target(code, r, nm, hw_dong):
+    umd, n = r.get("umdNm", ""), r.get("aptNm", "")
+    if code.startswith("4159"):
+        cid = f"41590-{umd}-{n}"; sg = hw_dong.get(umd, code if code != "41590" else "41590")
+        return sg, cid
+    return code, nm.get((code, umd, n)) or f"{code}-{umd}-{n}"
+
+
 def rt_row(r):
     ct = r.get("contractType", "").strip()
     return [ymd(r), round(num(r.get("excluUseAr")), 2), won(r.get("deposit")), won(r.get("monthlyRent")),
@@ -62,10 +81,13 @@ def main():
     ap.add_argument("--rent-months", type=int, default=6)
     ap.add_argument("--offi-only", action="store_true", help="오피스텔(서대문·마포)만 다시 만들기")
     ap.add_argument("--recent", type=int, default=0, help="최근 N개월만 새로 받아 기존 cx 파일에 덮어쓰기 (주간 갱신용)")
+    ap.add_argument("--silv-only", type=int, default=0, help="분양권·입주권만 최근 N개월 다시 받아 기존 cx 파일에 넣기")
     a = ap.parse_args()
     key = os.environ.get("DATA_GO_KR_KEY") or sys.exit("DATA_GO_KR_KEY 환경변수를 설정하세요.")
     if a.recent:
         return build_recent(key, a.recent)
+    if a.silv_only:
+        return build_silv(key, a.silv_only)
     if a.offi_only:
         return build_offi(key, a)
     names = {**(SEOUL if a.region in ("seoul", "all") else {}), **(GGN if a.region in ("gg", "all") else {})}
@@ -81,13 +103,16 @@ def main():
     cache = os.environ.get("CX_CACHE")  # 원자료 임시 저장 경로(저장소 밖). 다시 돌릴 때 API 재호출 생략
     if cache and Path(cache).exists():
         import pickle
-        T, R = pickle.loads(Path(cache).read_bytes())
+        P = pickle.loads(Path(cache).read_bytes())
+        T, R = P[0], P[1]
+        S = P[2] if len(P) > 2 else grab(key, "apt_silv", list(names), tm)
     else:
         T = grab(key, "apt_trade", list(names), tm)
         R = grab(key, "apt_rent", list(names), rm)
-        if cache:
-            import pickle
-            Path(cache).write_bytes(pickle.dumps((T, R)))
+        S = grab(key, "apt_silv", list(names), tm)
+    if cache:
+        import pickle
+        Path(cache).write_bytes(pickle.dumps((T, R, S)))
     OUT.mkdir(parents=True, exist_ok=True)
     today = dt.date.today().isoformat()
     by_sgg, index = {}, []
@@ -126,6 +151,16 @@ def main():
             cxof(code, r)["r"].append([ymd(r), round(num(r.get("excluUseAr")), 2), won(r.get("deposit")),
                                        won(r.get("monthlyRent")), num(r.get("floor"), int),
                                        1 if ct == "신규" else 0 if ct == "갱신" else None])
+    # 분양권·입주권: 같은 시군구·동·단지명의 단지에 붙이고, 없으면(입주 전 단지) 새로 만듦
+    nm = name_map(by_sgg)
+    for (code, m), rows in S.items():
+        for r in rows:
+            if (r.get("cdealType") or "").strip():
+                continue
+            sg, cid = silv_target(code, r, nm, hw_dong)
+            d = by_sgg.setdefault(sg, {})
+            c = d.get(cid) or d.setdefault(cid, {"n": r.get("aptNm", ""), "d": r.get("umdNm", ""), "y": None, "t": [], "r": []})
+            c["t"].append(silv_row(r))
     # 41590 에 남은(동 매칭 안 된) 단지는 그대로 화성시로 둠
     for sgg, d in by_sgg.items():
         region = names.get(sgg, "경기 화성시")
@@ -142,7 +177,7 @@ def main():
     index.sort(key=lambda x: -(x[5] + x[6]))
     (OUT / "index.json").write_text(json.dumps(
         {"updated": today, "tm": [tm[0], tm[-1]], "rm": [rm[0], rm[-1]],
-         "source": "국토교통부 아파트 매매·전월세 실거래가", "cols": ["id", "name", "dong", "year", "sgg", "nTrade", "nRent"],
+         "source": "국토교통부 아파트 매매·분양권·입주권·전월세 실거래가", "cols": ["id", "name", "dong", "year", "sgg", "nTrade", "nRent"],
          "regions": {k: names.get(k, "경기 화성시") for k in by_sgg}, "rows": index}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(f"완료: 단지 {len(index)}개, 파일 {len(by_sgg) + 1}개 → {OUT}")
 
@@ -198,7 +233,7 @@ def build_recent(key, n):
     hw_dong = {F["cx"][cid]["d"]: sg for sg, F in files.items() if sg in ("41591", "41593", "41595", "41597") for cid in F["cx"]}
     apt_codes = [k for k in {**SEOUL, **GGN}]
     print(f"최근 {ms[0]}~{last} 다시 받기 (아파트 {len(apt_codes)}곳 + 오피스텔 {len(OFFI)}곳)", flush=True)
-    T = grab(key, "apt_trade", apt_codes, ms); R = grab(key, "apt_rent", apt_codes, ms)
+    T = grab(key, "apt_trade", apt_codes, ms); R = grab(key, "apt_rent", apt_codes, ms); SV = grab(key, "apt_silv", apt_codes, ms)
     OT = grab(key, "offi_trade", list(OFFI), ms); OR_ = grab(key, "offi_rent", list(OFFI), ms)
     new = {}  # sg -> cid -> {"t": [], "r": [], meta}
     def slot(sg, cid, meta):
@@ -221,6 +256,15 @@ def build_recent(key, n):
                 if sg not in files:
                     continue
                 slot(sg, cid, meta)[key_].append(tr_row(r) if key_ == "t" else rt_row(r))
+    nm = name_map({sg: F["cx"] for sg, F in files.items()})
+    for (code, m), rows in SV.items():
+        for r in rows:
+            if (r.get("cdealType") or "").strip():
+                continue
+            sg, cid = silv_target(code, r, nm, hw_dong)
+            if sg not in files:
+                continue
+            slot(sg, cid, {"n": r.get("aptNm", ""), "d": r.get("umdNm", ""), "y": None})["t"].append(silv_row(r))
     # 안전장치: 새로 받은 최근 거래가 기존보다 크게 적으면(포털 장애 등) 쓰지 않음
     old_n = sum(1 for F in files.values() for c in F["cx"].values() for x in c["t"] + c["r"] if x[0] >= cut)
     new_n = sum(len(c["t"]) + len(c["r"]) for d in new.values() for c in d.values())
@@ -245,6 +289,42 @@ def build_recent(key, n):
     I["updated"] = today; I["tm"][1] = max(I["tm"][1], last); I["rm"][1] = max(I["rm"][1], last)
     (OUT / "index.json").write_text(json.dumps(I, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(f"완료: 파일 {len(files)}개 갱신, 새 단지 {added}개, 전체 단지 {len(I['rows']):,}개")
+
+
+def build_silv(key, n):
+    """분양권·입주권(6칸 행)만 최근 n개월로 갈아끼움. 일반 매매·전월세는 그대로 둠."""
+    ms = months_back(n)
+    I = json.loads((OUT / "index.json").read_text(encoding="utf-8"))
+    files = {sg: json.loads((OUT / f"{sg}.json").read_text(encoding="utf-8")) for sg in I["regions"]}
+    hw_dong = {F["cx"][cid]["d"]: sg for sg, F in files.items() if sg in ("41591", "41593", "41595", "41597") for cid in F["cx"]}
+    nm = name_map({sg: F["cx"] for sg, F in files.items()})
+    SV = grab(key, "apt_silv", [k for k in {**SEOUL, **GGN}], ms)
+    for F in files.values():
+        for c in F["cx"].values():
+            c["t"] = [x for x in c["t"] if len(x) < 6]
+    n_rows = added = 0
+    for (code, m), rows in SV.items():
+        for r in rows:
+            if (r.get("cdealType") or "").strip():
+                continue
+            sg, cid = silv_target(code, r, nm, hw_dong)
+            if sg not in files:
+                continue
+            c = files[sg]["cx"].get(cid)
+            if not c:
+                c = files[sg]["cx"][cid] = {"n": r.get("aptNm", ""), "d": r.get("umdNm", ""), "y": None, "t": [], "r": []}; added += 1
+            c["t"].append(silv_row(r)); n_rows += 1
+    today = dt.date.today().isoformat()
+    for sg, F in files.items():
+        for c in F["cx"].values():
+            c["t"].sort(key=lambda x: x[0])
+        F["updated"] = today
+        (OUT / f"{sg}.json").write_text(json.dumps(F, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    I["rows"] = [[cid, c["n"], c["d"], c.get("y"), sg, len(c["t"]), len(c["r"])] for sg, F in files.items() for cid, c in F["cx"].items()]
+    I["rows"].sort(key=lambda x: -(x[5] + x[6])); I["updated"] = today
+    I["source"] = "국토교통부 아파트 매매·분양권·입주권·전월세 실거래가"
+    (OUT / "index.json").write_text(json.dumps(I, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    print(f"분양권·입주권 {n_rows:,}건 반영, 새 단지(입주 전) {added}개")
 
 
 if __name__ == "__main__":

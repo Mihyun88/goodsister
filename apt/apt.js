@@ -124,7 +124,7 @@
     else if (!offi) one.push("최근 1년 매매 신고가 없어요");
     if (S.lo != null && S.t.length >= 3 && S.hi / S.lo > 1.08) one.push(`1년 동안 <b>${short(S.lo)}~${short(S.hi)}</b> 사이에서 층·향·시점에 따라 차이가 커요`);
     if (offi && S.w.length) one.push(`월세는 보증금에 따라 크게 달라져서, 보증금이 비슷한 거래끼리 보는 게 정확해요`);
-    const list = [...S.t.map(x => ({ k: "m", d: x[0], f: x[3], p: short(x[2]), ar: x[1], x: x[4] ? "직거래" : "" })),
+    const list = [...S.t.map(x => ({ k: "m", d: x[0], f: x[3], p: short(x[2]), ar: x[1], x: [x[5] === "입" ? "입주권" : x[5] === "분" ? "분양권" : "", x[4] ? "직거래" : ""].filter(Boolean).join(" · ") })),
       ...S.r.map(x => ({ k: x[3] ? "w" : "j", d: x[0], f: x[4], p: x[3] ? `${short(x[2])} / 월 ${x[3]}만` : short(x[2]), ar: x[1], x: x[5] === 1 ? "신규" : x[5] === 0 ? "갱신" : "" }))]
       .filter(x => cur.filter === "all" || x.k === cur.filter).sort((a, b) => b.d.localeCompare(a.d));
     const shown = cur.all ? list : list.slice(0, 6), K = { m: ["매매", "bm"], j: ["전세", "bj"], w: ["월세", "bw"] };
