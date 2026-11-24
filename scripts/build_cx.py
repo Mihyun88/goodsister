@@ -63,14 +63,32 @@ def rt_row(r):
 
 
 def grab(key, kind, codes, months):
+    """여러 지역·달을 받아 {(지역, 달): rows}. CX_RAW 환경변수(저장소 밖 폴더)를 주면 받은 것을 저장해 두고,
+       포털이 끊겨 중간에 실패해도 다시 실행하면 못 받은 것만 이어서 받는다."""
+    raw = os.environ.get("CX_RAW")
+    if raw:
+        Path(raw).mkdir(parents=True, exist_ok=True)
+    def one(c, m):
+        f = Path(raw) / f"{kind}-{c}-{m}.json" if raw else None
+        if f and f.exists():
+            return json.loads(f.read_text(encoding="utf-8"))
+        rows = fetch(key, kind, c, m)
+        if f:
+            f.write_text(json.dumps(rows, ensure_ascii=False), encoding="utf-8")
+        return rows
     jobs = [(c, m) for c in codes for m in months]
-    res = {}
+    res, fails = {}, []
     with ThreadPoolExecutor(int(os.environ.get("CX_WORKERS", "3"))) as ex:
-        futs = {ex.submit(fetch, key, kind, c, m): (c, m) for c, m in jobs}
+        futs = {ex.submit(one, c, m): (c, m) for c, m in jobs}
         for i, f in enumerate(futs):
-            res[futs[f]] = f.result()
+            try:
+                res[futs[f]] = f.result()
+            except RuntimeError as e:
+                fails.append(str(e))
             if i % 50 == 0:
                 print(f"  {kind} {i}/{len(jobs)}", flush=True)
+    if fails:
+        raise RuntimeError(f"{kind} {len(fails)}건 못 받음 (다시 실행하면 이어서 받음): {fails[0]}")
     return res
 
 
