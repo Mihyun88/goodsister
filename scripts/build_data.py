@@ -39,7 +39,7 @@ def get_json(u):
         except Exception:
             if i == 5:
                 return None
-            time.sleep(1.5 * (i + 1))
+            time.sleep(min(3 * (i + 1), 30))  # 포털 연결이 자주 끊길 때를 대비해 천천히 재시도
 
 
 def households(key, sgg, bjd, bun, ji):
@@ -68,7 +68,7 @@ def fetch(key, kind, lawd, ymd):
     while True:
         u = (f"https://apis.data.go.kr/1613000/{EP[kind]}?serviceKey={key}"
              f"&LAWD_CD={lawd}&DEAL_YMD={ymd}&numOfRows=1000&pageNo={page}")
-        for i in range(8):
+        for i in range(15):
             try:
                 root = ET.fromstring(urllib.request.urlopen(u, timeout=60).read())
                 code = (root.findtext(".//resultCode") or "").strip()
@@ -83,9 +83,9 @@ def fetch(key, kind, lawd, ymd):
                 raise
             except Exception:
                 pass
-            if i == 7:
+            if i == 14:
                 raise RuntimeError(f"재시도 실패: {kind} {lawd} {ymd} p{page}")
-            time.sleep(1.5 * (i + 1))
+            time.sleep(min(3 * (i + 1), 30))  # 포털 연결이 자주 끊길 때를 대비해 천천히 재시도
         items = [{c.tag: (c.text or "").strip() for c in it} for it in root.iter("item")]
         out += items
         total = int(root.findtext(".//totalCount") or 0)

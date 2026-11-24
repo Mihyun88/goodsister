@@ -46,7 +46,7 @@ def rt_row(r):
 def grab(key, kind, codes, months):
     jobs = [(c, m) for c in codes for m in months]
     res = {}
-    with ThreadPoolExecutor(6) as ex:
+    with ThreadPoolExecutor(int(os.environ.get("CX_WORKERS", "3"))) as ex:
         futs = {ex.submit(fetch, key, kind, c, m): (c, m) for c, m in jobs}
         for i, f in enumerate(futs):
             res[futs[f]] = f.result()
