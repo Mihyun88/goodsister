@@ -156,7 +156,7 @@
       <div class="flt">${[["all", "전체"], ["m", "매매"], ["j", "전세"], ["w", "월세"]].map(([k, t]) => `<button type="button" data-f="${k}" class="${cur.filter === k ? "on" : ""}">${t}</button>`).join("")}</div>
       <ul class="tx">${shown.map(x => `<li><span class="d"><span class="b ${K[x.k][1]}">${K[x.k][0]}</span>${dfmt(x.d)} · ${x.f}층 · ${x.ar}㎡${x.x ? ` · ${x.x}` : ""}${W.isNew(x) ? ` <span class="nw2">새로 확인</span>` : ""}</span><b>${x.p}</b></li>`).join("") || `<li>해당 거래가 없어요</li>`}</ul>
       ${list.length > 6 ? `<button type="button" class="more" id="more">${cur.all ? "접기 ▴" : `전체 ${list.length}건 보기 ▾`}</button>` : ""}
-      <p class="src">출처: 국토교통부 ${offi ? "오피스텔" : "아파트"} 매매·전월세 실거래가 (매매 ${ym(F.tm[0])}~${ym(F.tm[1])}, 전월세 ${ym(F.rm[0])}~${ym(F.rm[1])} 계약분) · 갱신 ${esc(F.updated)} · 최근 1~2개월은 신고가 더 들어올 수 있어요. 해제된 거래는 뺐어요.${!offi && /타워|오피|스테이트|하우스/.test(c.n) ? " 주상복합은 국토부 신고 유형(아파트)을 따라요." : ""} 실거래는 과거 계약이고, 지금 입주 가능한 매물은 문의로 확인해요.</p>
+      <p class="src">출처: 국토교통부 ${offi ? "오피스텔 매매·전월세" : "아파트 매매·분양권·입주권·전월세"} 실거래가 (매매 ${ym(F.tm[0])}~${ym(F.tm[1])}, 전월세 ${ym(F.rm[0])}~${ym(F.rm[1])} 계약분) · 갱신 ${esc(F.updated)} · 최근 1~2개월은 신고가 더 들어올 수 있어요. 해제된 거래는 뺐어요.${!offi && /타워|오피|스테이트|하우스/.test(c.n) ? " 주상복합은 국토부 신고 유형(아파트)을 따라요." : ""} 실거래는 과거 계약이고, 지금 입주 가능한 매물은 문의로 확인해요.</p>
       ${se && S.r.length ? `
       <section class="own">
         <p class="sec" style="margin-top:0">집주인이라면, 내놓기 전에 확인할 것</p>
