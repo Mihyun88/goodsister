@@ -1,0 +1,17 @@
+name: probe-gov-api
+on:
+  push:
+    branches: [ccr-75ee6780-i259rw]
+    paths: [.github/workflows/probe-gov.yml]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          curl -s https://ipinfo.io/json | grep -E '"(ip|country|org)"' || true
+          ok=0
+          for i in $(seq 1 20); do
+            c=$(curl -s -o /dev/null -w "%{http_code}" --max-time 15 "https://apis.data.go.kr/1613000/RTMSDataSvcAptTradeDev/getRTMSDataSvcAptTradeDev")
+            echo "try $i: $c"; [ "$c" != "000" ] && ok=$((ok+1))
+          done
+          echo "RESULT ok=$ok/20"
